@@ -3,6 +3,7 @@
 .logs/
 .telemetry/
 deploy/
+SWZ/
 
 .gradle
 build/
