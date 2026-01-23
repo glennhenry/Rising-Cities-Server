@@ -14,6 +14,7 @@ fun Route.fileRoutes() {
     }
     staticFiles("site", File("static/site"))
     staticFiles("game", File("static/game"))
+    staticFiles("/xml", File("static/game/xml"))
 
     get("/docs") {
         val docsIndex = File("docs/index.html")
