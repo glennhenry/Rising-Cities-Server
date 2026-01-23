@@ -28,7 +28,8 @@ export default defineConfig({
         PageFrame: "./src/components/PageFrame.astro",
       },
       editLink: {
-        baseUrl: "https://github.com/glennhenry/Rising-Cities-Server/edit/main/",
+        baseUrl:
+          "https://github.com/glennhenry/Rising-Cities-Server/edit/main/",
       },
       social: [
         {
@@ -44,6 +45,8 @@ export default defineConfig({
       ],
       sidebar: [
         { label: "Intro", slug: "index" },
+        { label: "Flow", slug: "flow" },
+        { label: "Proxy", slug: "proxy" },
       ],
     }),
   ],
