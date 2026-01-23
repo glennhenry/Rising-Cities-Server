@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<application xmlns="http://ns.adobe.com/air/application/14.0">
+    <id>com.bigpoint.risingcities</id>
+    <filename>RisingCities</filename>
+    <name>Rising Cities</name>
+    <versionNumber>1.0.0</versionNumber>
+    <description>Rising Cities – private server revival</description>
+    <copyright>© Bigpoint</copyright>
+
+    <initialWindow>
+        <content>Main.swf</content>
+        <title>Rising Cities</title>
+        <visible>true</visible>
+        <width>800</width>
+        <height>600</height>
+        <renderMode>gpu</renderMode>
+    </initialWindow>
+
+</application>
