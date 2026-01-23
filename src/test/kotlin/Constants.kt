@@ -1,0 +1,1 @@
+const val RCSERVER_TEST_DB_NAME = "RCSERVER-test-DB"
