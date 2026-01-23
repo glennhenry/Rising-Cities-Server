@@ -17,7 +17,7 @@ export default defineConfig({
     starlight({
       head: [...fontHeadTags],
       plugins: [starlightThemeObsidian()],
-      favicon: "favicon.svg",
+      favicon: "favicon.ico",
       customCss: ["./src/assets/custom.css"],
       tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 6 },
       credits: true,
@@ -28,13 +28,13 @@ export default defineConfig({
         PageFrame: "./src/components/PageFrame.astro",
       },
       editLink: {
-        baseUrl: "https://github.com/glennhenry/rising-cities-server/edit/main/",
+        baseUrl: "https://github.com/glennhenry/Rising-Cities-Server/edit/main/",
       },
       social: [
         {
           icon: "github",
           label: "GitHub",
-          href: "https://github.com/glennhenry/rising-cities-server",
+          href: "https://github.com/glennhenry/Rising-Cities-Server",
         },
         {
           icon: "discord",

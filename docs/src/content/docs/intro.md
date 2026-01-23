@@ -4,4 +4,6 @@ slug: index
 description: Intro
 ---
 
-Intro page
+Documentation about Rising Cities client.
+ 
+![Rising Cities gameplay](../../assets/risingcities.jpg)
