@@ -31,7 +31,7 @@ To run the server, ensure MongoDB is running on (default `mongodb://localhost:27
 - File and API server runs on `127.0.0.1:8080`.
 - Socket server runs on `127.0.0.1:7777`.
 
-Open a browser that supports flash (e.g., Basilisk for Windows or [FlashBrowser](https://github.com/radubirsan/FlashBrowser) for cross platform), and go to `127.0.0.1:8080`.
+Open a browser that supports flash (e.g., Basilisk for Windows or [FlashBrowser](https://github.com/radubirsan/FlashBrowser) for cross-platform), and go to `127.0.0.1:8080`.
 
 You can also run the server by executing the script `dev.bat/sh` or via IntelliJ IDE run plugin.
 
