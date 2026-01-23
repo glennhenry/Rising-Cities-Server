@@ -8,7 +8,7 @@ A Kotlin port of https://github.com/Michielvde1253/risingcities.
 
 ## Requirements
 
-- **Java 25+**
+- **Java 24+**
 - **MongoDB v8.0+**
 - **Node v18.20.8 or v20.3.0, v22.0.0+** (only for docs)
 
