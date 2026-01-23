@@ -6,6 +6,14 @@ A Kotlin port of https://github.com/Michielvde1253/risingcities.
 
 **This project is not associated with Bigpoint**.
 
+## How to Play?
+
+As of now, it is still not playable. We are still stuck in the loading screen.
+
+![Loading](./loading.png)
+
+# Server Manual
+
 ## Requirements
 
 - **Java 24+**
