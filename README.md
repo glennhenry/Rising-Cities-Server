@@ -28,10 +28,20 @@ To run the server, ensure MongoDB is running on (default `mongodb://localhost:27
 .\gradlew run
 ```
 
-- File and API server runs on `127.0.0.1:8080`
-- Socket server runs on `127.0.0.1:7777`
+- File and API server runs on `127.0.0.1:8080`.
+- Socket server runs on `127.0.0.1:7777`.
+
+Open a browser that supports flash (e.g., Basilisk for Windows or [FlashBrowser](https://github.com/radubirsan/FlashBrowser) for cross platform), and go to `127.0.0.1:8080`.
 
 You can also run the server by executing the script `dev.bat/sh` or via IntelliJ IDE run plugin.
+
+## Debugging
+
+The `application.xml` allows you to run the game from [ADL](https://airsdk.dev/docs/building/air-debug-launcher). You would need to install Adobe AIR SDK and run the game from terminal by entering the command `adl application.xml` in the `static/game` directory.
+
+Running with ADL allows you to see the output of `trace` function in the client code.
+
+Alternatively, you can also debug client-code by calling `ExternalInterface.call("console.log", "message")`, this will route it to developer tools of browser.
 
 ## Build
 
