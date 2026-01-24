@@ -22,9 +22,14 @@ import server.messaging.codec.DefaultCodec
 import server.tasks.TaskName
 import utils.functions.hexAsciiString
 import utils.functions.safeAsciiString
+import utils.functions.startsWithBytes
 import utils.logging.Logger
 import utils.logging.Logger.LOG_INDENT_PREFIX
 import kotlin.system.measureTimeMillis
+
+val POLICY_FILE_REQUEST = "<policy-file-request/>".toByteArray()
+val POLICY_FILE_RESPONSE =
+    "<cross-domain-policy><allow-access-from domain=\"*\" to-ports=\"7777\"/></cross-domain-policy>\u0000".toByteArray()
 
 data class GameServerConfig(
     val host: String = SERVER_ADDRESS,
@@ -115,6 +120,13 @@ class GameServer(private val config: GameServerConfig) : Server {
                 loop@ while (isActive) {
                     val (bytesRead, data) = connection.read()
                     if (bytesRead <= 0) break@loop
+
+                    // response to policy request, then client will disconnect
+                    if (data.startsWithBytes(POLICY_FILE_REQUEST)) {
+                        Logger.debug { "[SOCKET] Policy file requested" }
+                        connection.write(POLICY_FILE_RESPONSE)
+                        return@launch
+                    }
 
                     serverContext.onlinePlayerRegistry.updateLastActivity(connection.playerId)
 
