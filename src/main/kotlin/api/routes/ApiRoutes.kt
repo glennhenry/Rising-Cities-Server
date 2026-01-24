@@ -10,7 +10,7 @@ import utils.logging.Logger
 import kotlin.collections.component1
 import kotlin.collections.component2
 
-val rcapiResponse = JSON.encode(mapOf("host" to SERVER_ADDRESS, "port" to SERVER_SOCKET_PORT))
+const val rcapiResponse = """{"host":"$SERVER_ADDRESS","port":$SERVER_SOCKET_PORT}"""
 
 fun Route.apiRoutes() {
     get("/RCApi") {
