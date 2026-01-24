@@ -1,3 +1,4 @@
+import api.routes.apiRoutes
 import api.routes.devtoolsRoutes
 import api.routes.fileRoutes
 import api.routes.timeUnderMinutes
@@ -191,6 +192,7 @@ suspend fun Application.module() {
     routing {
         fileRoutes()
         devtoolsRoutes(serverContext, devtoolsToken)
+        apiRoutes()
     }
 
     /* 11. Initialize servers */
