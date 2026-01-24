@@ -47,6 +47,7 @@ export default defineConfig({
         { label: "Intro", slug: "index" },
         { label: "Flow", slug: "flow" },
         { label: "Proxy", slug: "proxy" },
+        { label: "XML Files", slug: "xmlfiles" },
       ],
     }),
   ],
