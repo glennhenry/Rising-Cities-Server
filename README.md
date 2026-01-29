@@ -1,8 +1,8 @@
 # Rising Cities Server
 
-An attempt to create server emulator (revival) for the dead game: Rising Cities.
+An attempt to create server emulator (revival) for the dead game: **Rising Cities**.
 
-A Kotlin port of https://github.com/Michielvde1253/risingcities.
+A Kotlin port (continuation) of https://github.com/Michielvde1253/risingcities.
 
 **This project is not associated with Bigpoint**.
 
@@ -10,15 +10,15 @@ A Kotlin port of https://github.com/Michielvde1253/risingcities.
 
 As of now, it is still not playable. We are still stuck in the loading screen.
 
-![Loading](./loading.png)
+<img src="./loading.png" alt="Loading screen" width="400"/>
 
 # Server Manual
 
 ## Requirements
 
-- **Java 24+**
-- **MongoDB v8.0+**
-- **Node v18.20.8 or v20.3.0, v22.0.0+** (only for docs)
+- **Java 24+** (recommend to install in the default location)
+- **MongoDB v8.0+** (installing as a service is optional, recommended for user)
+- **Node v18.20.8 or v20.3.0, v22.0.0+** (only for docs, if you want to edit)
 
 ## Setup
 
@@ -31,7 +31,7 @@ To run the server, ensure MongoDB is running on (default `mongodb://localhost:27
 - File and API server runs on `127.0.0.1:8080`.
 - Socket server runs on `127.0.0.1:7777`.
 
-Open a browser that supports flash (e.g., Basilisk for Windows or [FlashBrowser](https://github.com/radubirsan/FlashBrowser) for cross-platform), and go to `127.0.0.1:8080`.
+Open a browser that supports flash (e.g., [old Basilisk (debug on)](https://www.mediafire.com/file/tmecqq7ke0uhqm7/Basilisk_with_Flash_%2528debug%2529.zip/file) only for Windows or [FlashBrowser](https://github.com/radubirsan/FlashBrowser) for any platforms), and go to `127.0.0.1:8080`.
 
 You can also run the server by executing the script `dev.bat/sh` or via IntelliJ IDE run plugin.
 
