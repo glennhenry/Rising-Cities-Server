@@ -38,7 +38,9 @@ import server.ServerContainer
 import server.core.OnlinePlayerRegistry
 import server.core.Server
 import server.messaging.format.MessageFormatRegistry
+import server.messaging.format.RCFormat
 import server.tasks.ServerTaskDispatcher
+import server.tasks.TaskName
 import user.PlayerAccountRepositoryMongo
 import user.auth.DefaultAuthProvider
 import user.auth.SessionManager
@@ -213,8 +215,20 @@ suspend fun Application.module() {
         Logger.verbose { "Docs website not available. Optionally, run 'npm install' & 'npm run dev' in the docs folder to preview it." }
     }
 
+    val gameServer = GameServer(gameServerConfig) { socketDispatcher, serverContext ->
+        serverContext.taskDispatcher.registerTask(
+            name = TaskName.DummyName,
+            stopFactory = {},
+            deriveTaskId = { playerId, name, _ ->
+                // RTD-playerId123-unit
+                "${name.code}-$playerId-unit"
+            }
+        )
+        serverContext.formatRegistry.register(RCFormat())
+    }
+
     val servers = buildList<Server> {
-        add(GameServer(gameServerConfig))
+        add(gameServer)
     }
 
     /* 12. Run all the servers */
