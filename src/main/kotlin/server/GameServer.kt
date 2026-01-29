@@ -11,7 +11,6 @@ import server.core.Server
 import server.core.network.Connection
 import server.core.network.DefaultConnection
 import server.handler.DefaultHandlerContext
-import server.handler.SocketMessageHandler
 import server.messaging.format.DecodeResult
 import server.messaging.socket.SocketMessage
 import server.messaging.socket.SocketMessageDispatcher
@@ -236,16 +235,13 @@ class GameServer(
 
         // Dispatch message to handler
         socketDispatcher.findHandlerFor(message).forEach { handler ->
-            @Suppress("UNCHECKED_CAST")
-            handler as SocketMessageHandler<SocketMessage>
-
-            handler.handle(
-                DefaultHandlerContext(
-                    connection = connection,
-                    playerId = connection.playerId,
-                    message = message
-                )
+            val context = DefaultHandlerContext(
+                connection = connection,
+                playerId = connection.playerId,
+                message = message
             )
+
+            handler.handleUnsafe(context)
         }
 
         return message.type()
