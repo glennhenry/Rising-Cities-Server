@@ -25,4 +25,13 @@ Client hard coded their requests to `xml/filename.xml`, we chose to keep as is a
 :::
 
 3. Client loads various locale files depending on the locale set in the flashvars.
-4. Client makes a request to `RCApi` with single param of `session=test` (depend on flashvars). This request is made by `ServerConfigProxy.loadServer`, where the incoming response is processed in the `onComplete` method.
+
+### Begin Socket Connection
+
+4. Client makes a request to `RCApi` with single param of `session=test` (depend on `FlashVarsProxy`). This request is made by `ServerConfigProxy.loadServer`, where the incoming response is processed in the `onComplete` method.
+5. Upon receiving server's host and port, the client create a temporary socket connection and make a policy request to the specified policy port (hard coded in `ServerCommunicationProxy`).
+6. Then, another socket connection is created, reconnecting to the socket server (specified from `RCApi` or can be overridden in `settings.xml`).
+
+### Authentication
+
+7. First message sent after reconnecting is a `LOGIN` message with a JSON payload of `uid` (user ID) and `ses` (session name).
