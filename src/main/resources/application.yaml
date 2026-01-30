@@ -5,6 +5,7 @@ ktor:
   development: "$DEV_MODE:true"
   deployment:
     port: 8080
+    watch: []
 game:
   host: "127.0.0.1"
   port: 7777
