@@ -1,6 +1,10 @@
 package server.messaging.socket.domain
 
+import core.model.ConfigDTO
+import core.model.PlayerDTO
 import kotlinx.serialization.Serializable
+import server.messaging.ClientMessage
+import server.messaging.ServerMessage
 import server.messaging.socket.RCMessage
 import server.messaging.socket.RCResponse
 
@@ -11,10 +15,18 @@ import server.messaging.socket.RCResponse
  */
 @Serializable
 data class LoginRequest(val uid: String, val ses: String) : RCMessage {
-    override val header = "LOGIN"
+    override val header = ClientMessage.LOGIN
 }
 
+/**
+ * what is needed so far:
+ * - config.r -> resourceIds
+ * - every player field
+ */
 @Serializable
-data class LoginResponse(val uid: String, val ses: String) : RCResponse {
-    override val header: String = "LOGIN"
+data class LoginResponse(
+    val config: ConfigDTO,
+    val player: PlayerDTO
+) : RCResponse {
+    override val header: String = ServerMessage.SERVER_MESSAGE_INITIAL_LOGIN_SUCCESS
 }
