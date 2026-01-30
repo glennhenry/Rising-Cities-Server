@@ -49,6 +49,7 @@ export default defineConfig({
         { label: "Proxy", slug: "proxy" },
         { label: "XML Files", slug: "xmlfiles" },
         { label: "Message", slug: "message" },
+        { label: "Command", slug: "command" },
       ],
     }),
   ],

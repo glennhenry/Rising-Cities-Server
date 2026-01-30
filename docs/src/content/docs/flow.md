@@ -35,3 +35,4 @@ Client hard coded their requests to `xml/filename.xml`, we chose to keep as is a
 ### Authentication
 
 7. First message sent after reconnecting is a `LOGIN` message with a JSON payload of `uid` (user ID) and `ses` (session name).
+8. The response that client expects is a message with the header of `SERVER_MESSAGE_LOGIN_SUCCESS` with JSON payload of `ConfigDTO` and `PlayerDTO`, which contains game configuration from server and player's basic game data.

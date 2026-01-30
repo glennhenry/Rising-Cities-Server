@@ -6,7 +6,7 @@ description: Message
 
 Notes about Rising Cities' socket message format. The class `net.bigpoint.cityrama.model.server.ServerCommunicationProxy` is responsible for the messaging system.
 
-### Overview
+## Overview
 
 RC message combines raw bytes, string as header, and JSON as payload.
 
@@ -45,3 +45,13 @@ Server responses follow the same framing format.
 Once the message is fully received and parsed, the message is either queued (if server spooling) or broadcasted with `ServerNotificationConstants.SERVER_NEW_MESSAGE`.
 
 Along the reading, the clients only read each section until all bytes are available.
+
+## Convention
+
+The client has a consistent naming for message constants.
+
+The client-only constant is located at `ServerMessageConstants.as`, while there is also combined constants at `ServerNotificationConstants.as`.
+
+In the `ServerNotificationConstants.as`, client message is prefixed with `CLIENT_`, and server message with `SERVER_`.
+
+Communication happens asynchronously, there is no place where the client lists the communication flow. Client registers the message it wants to listens from the server with `facade.registerCommand`, providing the message constant and a [command](/command) class.
