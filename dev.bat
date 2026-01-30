@@ -1,1 +1,0 @@
-start "Rising Cities Server" cmd /k ".\gradlew.bat run"

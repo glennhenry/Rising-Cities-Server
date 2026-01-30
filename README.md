@@ -1,10 +1,8 @@
 # Rising Cities Server
 
-An attempt to create server emulator (revival) for the dead game: **Rising Cities**.
+An attempt to create a server emulator for the flash game **Rising Cities**, developed by Bigpoint, closed in 2015.
 
-A Kotlin port (continuation) of https://github.com/Michielvde1253/risingcities.
-
-**This project is not associated with Bigpoint**.
+*This project tries to reconstruct the server-side behavior. It is not official and is not associated with the original creators.*
 
 ## How to Play?
 
@@ -16,7 +14,7 @@ As of now, it is still not playable. We are still stuck in the loading screen.
 
 ## Requirements
 
-- **Java 24+** (recommend to install in the default location)
+- **Java 24+** (recommend installing in the default location)
 - **MongoDB v8.0+** (installing as a service is optional, recommended for user)
 - **Node v18.20.8 or v20.3.0, v22.0.0+** (only for docs, if you want to edit)
 
@@ -33,7 +31,7 @@ To run the server, ensure MongoDB is running on (default `mongodb://localhost:27
 
 Open a browser that supports flash (e.g., [old Basilisk (debug on)](https://www.mediafire.com/file/tmecqq7ke0uhqm7/Basilisk_with_Flash_%2528debug%2529.zip/file) only for Windows or [FlashBrowser](https://github.com/radubirsan/FlashBrowser) for any platforms), and go to `127.0.0.1:8080`.
 
-You can also run the server by executing the script `dev.bat/sh` or via IntelliJ IDE run plugin.
+You can also run the server via IntelliJ IDE run plugin.
 
 ## Debugging
 
@@ -45,7 +43,7 @@ Alternatively, you can also debug client-code by calling `ExternalInterface.call
 
 ## Build
 
-To build the server, simply run the `build.bat/sh` script. Output will be in `deploy/`. Run the deployment server using `java -jar rcserver.jar` or simply execute the script `autorun.bat/sh`.
+To build the server, simply run the `build.bat/sh` script. Output will be in `deploy/`. Run the deployment server using `java -jar rcserver.jar`.
 
 For manual build:
 
@@ -81,7 +79,7 @@ java -jar rcserver.jar
 
 ## Docs
 
-Empty documentation template ([built with Starlight](https://starlight.astro.build/), based on [sl-obsidian-starter](https://github.com/glennhenry/sl-obsidian-starter)) is available on `docs/`
+Documentation for the game is available on `docs/`.
 
 To run the website locally:
 
@@ -120,8 +118,6 @@ description: example
 ## DevTools
 
 An external web-based developer toolkit that provides a user interface for monitoring and interacting with the server.
-
-- Commands: The server offers users the ability to send commands to the server for monitoring and to control its behavior.
 
 See `DevTools.md` for details.
 
