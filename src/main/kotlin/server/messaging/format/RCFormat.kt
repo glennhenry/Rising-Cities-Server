@@ -1,7 +1,7 @@
 package server.messaging.format
 
 import annotation.Untested
-import server.messaging.ServerMessage
+import server.messaging.ClientMessage
 import server.messaging.socket.RCResponse
 import server.messaging.socket.SocketMessage
 import server.messaging.socket.UnknownRCMessage
@@ -90,7 +90,7 @@ class RCFormat : MessageFormat<RCFrame> {
      */
     override fun materialize(decoded: RCFrame): SocketMessage {
         val message: SocketMessage = when (decoded.header) {
-            ServerMessage.LOGIN -> {
+            ClientMessage.LOGIN -> {
                 val json = JSON.decode<LoginRequest>(decoded.jsonPayload)
                 LoginRequest(json.uid, json.ses)
             }

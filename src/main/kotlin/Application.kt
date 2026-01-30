@@ -37,6 +37,7 @@ import server.GameServerConfig
 import server.ServerContainer
 import server.core.OnlinePlayerRegistry
 import server.core.Server
+import server.handler.impl.LoginHandler
 import server.messaging.format.MessageFormatRegistry
 import server.messaging.format.RCFormat
 import server.tasks.ServerTaskDispatcher
@@ -216,6 +217,7 @@ suspend fun Application.module() {
     }
 
     val gameServer = GameServer(gameServerConfig) { socketDispatcher, serverContext ->
+        socketDispatcher.register(LoginHandler())
         serverContext.taskDispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = {},
