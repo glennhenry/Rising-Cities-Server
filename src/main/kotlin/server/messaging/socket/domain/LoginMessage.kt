@@ -1,6 +1,6 @@
 package server.messaging.socket.domain
 
-import core.model.ConfigDTO
+import core.model.config.ConfigDTO
 import core.model.PlayerDTO
 import kotlinx.serialization.Serializable
 import server.messaging.ClientMessage

@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
  * The first version is what we need on server for client to build the second.
  *
  * The second is the actual DTO on `ResourceDTO.as`, needing the first object
- * from server and the second [ConfigResourceDTO] which is also from server.
+ * from server and the second [core.model.config.ConfigResourceDTO] which is also from server.
  */
 @Serializable
 data class ResourceDTO(

@@ -1,0 +1,46 @@
+package core.model.config
+
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class ConfigPlayfieldItemDTO(
+    @SerialName("id") val id: Int = 0,
+    @SerialName("gf") val gfxId: Int = 0,
+    @SerialName("bm") val buildMode: Int = 0,
+    @SerialName("it") val itemType: Int = 0,
+    @SerialName("fp") val preload: Boolean = false,
+    @SerialName("l") val levelId: Int = 0,
+    @SerialName("s") val sellable: Boolean = false,
+    @SerialName("b") val buyable: Boolean = false,
+    @SerialName("g") val giftable: Boolean = false,
+    @SerialName("m") val moveable: Boolean = false,
+    @SerialName("fl") val localeId: String = "",
+    @SerialName("upc") val maxHarvestCount: Int = 0,
+    @SerialName("uic") val nextConfigId: Int = 0,
+    @SerialName("up") val upgradeable: Boolean = false,
+    @SerialName("d") val destroyable: Boolean = false,
+    @SerialName("w") val walkable: Boolean = false,
+    @SerialName("dr") val driveable: Boolean = false,
+    @SerialName("x") val sizeX: Int = 0,
+    @SerialName("y") val sizeY: Int = 0,
+    @SerialName("cpi") val permissionConfigId: Int = 0,
+    @SerialName("ps") val maxProfessionalAmount: Int = 0,
+    @SerialName("csg") val configSecurityGrades: List<ConfigSecurityGradeDTO> = emptyList(),
+    @SerialName("z") val zLevels: List<Int> = emptyList(),
+    @SerialName("cph") val constructionPhases: List<ConfigPhaseDTO>? = null,
+    @SerialName("aph") val activePhases: List<ConfigPhaseDTO>? = null,
+    @SerialName("dph") val destructionPhases: List<ConfigPhaseDTO>? = null,
+    @SerialName("gbu") val globalBuffs: List<ConfigOutputDTO>? = null,
+    @SerialName("ug") val upgradeConfig: ConfigUpgradeVo = ConfigUpgradeVo(),
+    @SerialName("nd") val needShopConfigs: List<ConfigNeedDTO>? = null,
+    @SerialName("nq") val needRequireConfigs: List<ConfigNeedRequireDTO>? = null,
+    @SerialName("tag") val tagIds: List<Int>? = null,
+    @SerialName("edc") val educationSteps: List<ConfigEducationStepDTO>? = null,
+    @SerialName("et") val educationBasicTime: UInt = 0u,
+    @SerialName("cibi") val configInventoryBagId: Int = 0,
+    @SerialName("sl") val improvementSlots: List<ConfigPlayfieldItemImprovementSlotDTO>? = null,
+    @SerialName("cpr") val playfieldRestrictions: List<ConfigPlayfieldItemPlayfieldRestrictionDTO>? = null,
+    @SerialName("ma") val configMasteryChallengeDTO: ConfigMasteryChallengeDTO? = null,
+    @SerialName("myst") val mysteryOutputPossiblities: List<ConfigOutputDTO>? = null,
+)

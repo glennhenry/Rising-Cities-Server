@@ -2,12 +2,11 @@ package server.handler.impl
 
 import annotation.RevisitLater
 import core.data.ResourceConstants
-import core.model.ConfigDTO
-import core.model.ConfigResourceDTO
+import core.model.config.ConfigDTO
+import core.model.config.ConfigResourceDTO
 import server.handler.HandlerContext
 import server.handler.SocketMessageHandler
 import server.messaging.ClientMessage
-import server.messaging.format.RCSerializer
 import server.messaging.socket.domain.LoginRequest
 import utils.logging.Logger
 import kotlin.reflect.KClass
