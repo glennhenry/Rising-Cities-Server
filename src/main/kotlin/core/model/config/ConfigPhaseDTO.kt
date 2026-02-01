@@ -12,7 +12,7 @@ data class ConfigPhaseDTO(
     @SerialName("d") val duration: ConfigDurationVo? = null,
     @SerialName("oid") val phaseOrderId: Int = 0,
     @SerialName("t") val phaseType: String = "",
-    @SerialName("pid") val phaseId: Int = 0,
+    @SerialName("pid") val phaseId: Long = 0,
 ) {
     init {
         require(phaseType in ServerPhaseType.ALL) {

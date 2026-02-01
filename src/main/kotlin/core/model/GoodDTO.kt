@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GoodDTO(
-    @SerialName("id") val id: Int = 0,
-    @SerialName("c") val configId: Int = 0,
-    @SerialName("a") val amount: Int = 0
+    @SerialName("id") val id: Long = 0,
+    @SerialName("c") val configId: Long = 0,
+    @SerialName("a") val amount: Long = 0
 )

@@ -3,15 +3,15 @@ package core.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-// inherits PhaseDTO
+// extends PhaseDTO
 @Serializable
 data class ImprovementDTO(
-    @SerialName("pid") val phaseId: Int = 0,
-    @SerialName("et") val expirationTime: Int = 0,
-    @SerialName("tl") val timeLeft: Int = 0,
-    @SerialName("it") val initTime: Int = 0,
-    @SerialName("myst") val mystId: Int = 0,
-    @SerialName("cid") val configId: Int = 0,
-    @SerialName("sid") val slotId: Int = 0,
-    @SerialName("bid") val buildingId: Int = 0,
+    @SerialName("pid") val phaseId: Long = 0,
+    @SerialName("et") val expirationTime: Long = 0,
+    @SerialName("tl") val timeLeft: Long = 0,
+    @SerialName("it") val initTime: Long = 0,
+    @SerialName("myst") val mystId: Long = 0,
+    @SerialName("cid") val configId: Long = 0,
+    @SerialName("sid") val slotId: Long = 0,
+    @SerialName("bid") val buildingId: Long = 0,
 )

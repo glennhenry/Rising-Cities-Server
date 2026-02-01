@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ConfigNeedStackDTO(
-    @SerialName("id") val id: Int = 0,
-    @SerialName("s") val maxStack: Int = 0,
+    @SerialName("id") val id: Long = 0,
+    @SerialName("s") val maxStack: Long = 0,
     @SerialName("o") val configOutput: ConfigOutputDTO = ConfigOutputDTO(),
 )

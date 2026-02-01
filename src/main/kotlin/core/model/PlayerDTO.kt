@@ -1,19 +1,18 @@
 package core.model
 
+import core.model.config.ConfigNewsscreenListDTO
 import core.model.quest.QuestBookManagerVo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
  * `PlayerDTO.as`
- *
- * most types are still placeholdered
  */
 @Serializable
 data class PlayerDTO(
-    @SerialName("id") val id: Int = 0,
+    @SerialName("id") val id: Long = 0,
     @SerialName("d") val defaultCity: CityDTO = CityDTO(),
-    @SerialName("cul") val configUserLevelId: Int = 0,
+    @SerialName("cul") val configUserLevelId: Long = 0,
     @SerialName("ip") val premiumPlayer: Boolean = false,
     @SerialName("n") val playerName: String = "",
     @SerialName("q") val questBooks: QuestBookManagerVo = QuestBookManagerVo(),

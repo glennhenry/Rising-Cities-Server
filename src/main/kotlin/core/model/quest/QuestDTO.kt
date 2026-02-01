@@ -11,6 +11,6 @@ data class QuestDTO(
     @SerialName("v") val viewCount: UInt = 0u,
     @SerialName("o") val eventConfig: ConfigEventDTO? = null,
     @SerialName("sid") val slotID: UInt = 0u,
-    @SerialName("l") val lastUpdated: Int = 0,
+    @SerialName("l") val lastUpdated: Long = 0,
     @SerialName("rw") val rewardList: List<QuestCostVo?> = emptyList()
 )

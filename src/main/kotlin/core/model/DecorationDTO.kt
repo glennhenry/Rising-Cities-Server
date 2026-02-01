@@ -5,10 +5,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DecorationDTO(
-    @SerialName("id") val id: Int = 0,
-    @SerialName("c") val configId: Int = 0,
-    @SerialName("x") val posX: Int = 0,
-    @SerialName("y") val posY: Int = 0,
-    @SerialName("cr") val cr: Int = 0,
-    @SerialName("lu") val lastUpdatedTimeStamp: Int = 0,
+    @SerialName("id") val id: Long = 0,
+    @SerialName("c") val configId: Long = 0,
+    @SerialName("x") val posX: Long = 0,
+    @SerialName("y") val posY: Long = 0,
+    @SerialName("cr") val cr: Long = 0,
+    @SerialName("lu") val lastUpdatedTimeStamp: Long = 0,
 )

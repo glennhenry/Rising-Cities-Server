@@ -1,15 +1,17 @@
 package core.model.config
 
+import annotation.RevisitLater
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-// inherits [ConfigOutputDTO]
+@RevisitLater("constants")
+// extends [ConfigOutputDTO]
 @Serializable
 data class ConfigEffectDTO(
     @SerialName("t") val type: String = "",
-    @SerialName("cid") val configId: Int = 0,
-    @SerialName("o") val outputAmount: Int = 0,
-    @SerialName("m") val multiplier: Int = 0,
-    @SerialName("ta") val target: Int = 0,
+    @SerialName("cid") val configId: Long = 0,
+    @SerialName("o") val outputAmount: Long = 0,
+    @SerialName("m") val multiplier: Long = 0,
+    @SerialName("ta") val target: String = "",
     @SerialName("out") val targetOutputList: List<ConfigOutputDTO> = emptyList(),
 )

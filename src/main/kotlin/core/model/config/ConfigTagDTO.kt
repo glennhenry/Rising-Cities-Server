@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ConfigTagDTO(
-    @SerialName("id") val tagId: Int = 0,
+    @SerialName("id") val tagId: Long = 0,
     @SerialName("tn") val tagName: String = "",
 )

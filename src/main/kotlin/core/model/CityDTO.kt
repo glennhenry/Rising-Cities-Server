@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class CityDTO(
-    @SerialName("id") val id: Int = 0,
+    @SerialName("id") val id: Long = 0,
     @SerialName("n") val name: String = "",
     @SerialName("p") val playfields: List<String> = emptyList(),
     @SerialName("r") val resources: List<ResourceDTO> = emptyList(),

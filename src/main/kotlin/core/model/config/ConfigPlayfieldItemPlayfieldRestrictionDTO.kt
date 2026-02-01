@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ConfigPlayfieldItemPlayfieldRestrictionDTO(
-    @SerialName("cpi") val configPlayfieldId: Int = 0,
+    @SerialName("cpi") val configPlayfieldId: Long = 0,
 )

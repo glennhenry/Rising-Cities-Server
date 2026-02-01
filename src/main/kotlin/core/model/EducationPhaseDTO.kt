@@ -3,13 +3,13 @@ package core.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-// inherits [PhaseDTO]
+// extends [PhaseDTO]
 @Serializable
 data class EducationPhaseDTO(
-    @SerialName("pid") val phaseId: Int = 0,
-    @SerialName("et") val expirationTime: Int = 0,
-    @SerialName("tl") val timeLeft: Int = 0,
-    @SerialName("it") val initTime: Int = 0,
-    @SerialName("myst") val mystId: Int = 0,
+    @SerialName("pid") val phaseId: Long = 0,
+    @SerialName("et") val expirationTime: Long = 0,
+    @SerialName("tl") val timeLeft: Long = 0,
+    @SerialName("it") val initTime: Long = 0,
+    @SerialName("myst") val mystId: Long = 0,
     @SerialName("a") val educationStep: Int = 0
 )

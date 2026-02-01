@@ -1,8 +1,10 @@
 package core.model
 
+import annotation.RevisitLater
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@RevisitLater("constants")
 @Serializable
 data class DepartmentRequirementDTO(
     @SerialName("e") val emergencyCode: Int = 0,

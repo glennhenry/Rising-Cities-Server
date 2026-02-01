@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NeedStockDTO(
-    @SerialName("cid") val configId: Int = 0,
-    @SerialName("a") val amount: Int = 0,
+    @SerialName("cid") val configId: Long = 0,
+    @SerialName("a") val amount: Long = 0,
 )

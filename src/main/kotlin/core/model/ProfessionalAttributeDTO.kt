@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ProfessionalAttributeDTO(
-    @SerialName("cpa") val configId: Int = 0,
-    @SerialName("ap") val attributePoints1: Int = 0,
-    @SerialName("prof") val professionalID: Int = 0,
+    @SerialName("cpa") val configId: Long = 0,
+    @SerialName("ap") val attributePoints: Int = 0,
+    @SerialName("prof") val professionalID: Long = 0,
 )

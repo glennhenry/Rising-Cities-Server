@@ -1,8 +1,10 @@
-package core.model.config
+package core.model.quest
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import annotation.RevisitLater
 
+@RevisitLater("constants")
 @Serializable
 data class QuestRequirementDTO(
     @SerialName("t") val type: String = "",

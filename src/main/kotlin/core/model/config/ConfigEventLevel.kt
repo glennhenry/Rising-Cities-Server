@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ConfigEventLevel(
-    @SerialName("mi") val minimum: Int = 0,
-    @SerialName("ma") val maximum: Int = 0,
+    @SerialName("mi") val minimum: Long = 0,
+    @SerialName("ma") val maximum: Long = 0,
 )

@@ -46,7 +46,7 @@ data class ConfigDTO(
     @SerialName("mb") val masteryBoni: List<ConfigMasteryBonusDTO> = emptyList(),
     @SerialName("c") val configCinema: List<ConfigCinemaDTO> = emptyList(),
     @SerialName("cf") val flashConfig: List<MapEntryDTO> = emptyList(),
-    @SerialName("v") val version: Int = 0
+    @SerialName("v") val version: Long = 0
 )
 
 

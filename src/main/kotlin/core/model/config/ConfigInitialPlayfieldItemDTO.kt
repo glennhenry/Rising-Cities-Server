@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ConfigInitialPlayfieldItemDTO(
-    @SerialName("cpi") val configId: Int = 0,
+    @SerialName("cpi") val configId: Long = 0,
     @SerialName("x") val xPos: Int = 0,
     @SerialName("y") val yPos: Int = 0
 )
