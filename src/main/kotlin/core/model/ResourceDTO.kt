@@ -2,18 +2,22 @@ package core.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import core.model.config.ConfigResourceDTO
+import core.model.config.ConfigDTO
 
 /**
  * `ResourceDTO.as`
  *
- * note: this `ResourceDTO` don't mirror client-side exactly,
- * because there is "two" ResourceDTO.
+ * Note: this `ResourceDTO` does not fully mirror the client-side version.
  *
- * The first is the intermediate object, which have all the fields listed here.
- * The first version is what we need on server for client to build the second.
+ * Client-side initialization requires both a `configId` and the corresponding
+ * [ConfigResourceDTO], which are delivered in different phases:
+ * - `ConfigResourceDTO` during [ConfigDTO] loading
+ * - `ResourceDTO` later as part of [CityDTO]
  *
- * The second is the actual DTO on `ResourceDTO.as`, needing the first object
- * from server and the second [core.model.config.ConfigResourceDTO] which is also from server.
+ * Therefore, this server-side DTO only models what is required on the server.
+ *
+ * Note: This is similar to other DTOs that depends on `ConfigFactory.as` for construction.
  */
 @Serializable
 data class ResourceDTO(

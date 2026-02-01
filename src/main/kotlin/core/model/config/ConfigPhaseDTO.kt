@@ -1,5 +1,6 @@
 package core.model.config
 
+import core.model.constants.ServerPhaseType
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -12,4 +13,10 @@ data class ConfigPhaseDTO(
     @SerialName("oid") val phaseOrderId: Int = 0,
     @SerialName("t") val phaseType: String = "",
     @SerialName("pid") val phaseId: Int = 0,
-)
+) {
+    init {
+        require(phaseType in ServerPhaseType.ALL) {
+            "Invalid constants: $phaseType"
+        }
+    }
+}
