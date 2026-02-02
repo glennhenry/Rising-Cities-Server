@@ -26,7 +26,7 @@ fun Route.apiRoutes() {
     post("/eventstream") {
         val bytes = call.receive<ByteArray>()
         val json = decompress(bytes)
-        Logger.debug { "POST to /eventstream: $json" }
+        Logger.debug(logFull = false) { "POST to /eventstream: $json" }
         call.respondText("OK", ContentType.Text.Plain, HttpStatusCode.OK)
     }
 
@@ -37,7 +37,7 @@ fun Route.apiRoutes() {
         val message = params["message"]
         val logLevel = params["logLevel"]
 
-        Logger.debug {
+        Logger.debug(logFull = false) {
             buildString {
                 appendLine("POST to /debug (playerId=$playerId, logLevel=$logLevel)")
                 appendLine(message)
