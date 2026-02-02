@@ -1,14 +1,49 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 
 <head>
-    <title>Rising Cities - Reborn</title>
+    <title>Rising Cities</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <link rel="shortcut icon" href="./site/favicon.ico">
     <script type="text/javascript" src="./site/swfobject.js"></script>
     <script type="text/javascript">
+        // external interface calls
+        function stub(functionName, input) {
+            console.log("Received stub ExternalInterface.call on", functionName, "with input of:", input);
+        }
+        window.eval = (function (origEval) {
+            return function (code) {
+                console.log("[Flash eval]", code);
+                return origEval(code);
+            };
+        })(window.eval)
+        window.SLAYER = {};
+        SLAYER.renderInviteDialog = function () { stub("Slayer.renderInviteDialog", null) };
+        function showMarketPlace() { stub("showMarketPlace", null) }
+        function setMarketInfo(jsonObj) { stub("showMarketPlace", jsonObj) }
+        function initCurrencies(ingameCurrency, realCurrency) { stub("initCurrencies", `${ingameCurrency} - ${realCurrency}`) }
+        function openPayment() { stub("openPayment", null) }
+        function trackLevelUp() { stub("trackLevelUp", null) }
+        function toggleFullscreen() { stub("toggleFullscreen", null) }
+        function showPms() { stub("showPms", null) }
+        function updateInbox() { stub("updateInbox", null) }
+        function updateShop() { stub("updateShop", null) }
+        function cinemaCheck() { stub("cinemaCheck", null) }
+        function cinemaShow() { stub("cinemaShow", null) }
+        function cinemaHide() { stub("cinemaHide", null) }
+        function showMarketOffers(goodId) { stub("showMarketOffers", goodId) }
+        function closeMarketPlace() { stub("closeMarketPlace", null) }
+        function jsCallbackPlaySound(playSound) { stub("jsCallbackPlaySound", playSound) }
+        function jsCallbackOpenTab(openTab) { stub("jsCallbackOpenTab", openTab) }
+        function jsCallbackPmsRead(allMessagesRead) { stub("jsCallbackPmsRead", allMessagesRead) }
+        function jsCallbackOpenTreasury(openTreasury) { stub("jsCallbackOpenTreasury", openTreasury) }
+        function jsCallbackMouseWheel(mouseWheel) { stub("jsCallbackMouseWheel", mouseWheel) }
+        // html js
+        function hidePayment() { console.log("hidePayment called") }
+        function hideProfilePage() { console.log("hideProfilePage called") }
+
         var flashVars = {
-            uId: 'uid123',
-            token: 'token123',
+            uId: 'uId1',
+            token: 'test',
             apiHost: '127.0.0.1:8080',
             cdnHost: '127.0.0.1:8080/game',
             locale: 'en',
@@ -20,7 +55,11 @@
             friendInvite: 0,
             logging: 0,
             tutS: '0',
-            tutT: '0'
+            tutT: '0',
+            debugMode: '1',
+            uid: '1',
+            debugLayerUrl: 'http://127.0.0.1/debug',
+            eventStreamContext: "eyJ1aWQiOjF9"
         };
 
         var flashParams = {
@@ -51,12 +90,41 @@
             flashAttributes
         );
     </script>
-    <style type="text/css">
+    <style>
+        html,
         body {
-            color: #eee;
             margin: 0;
-            background-color: #1b1b1c;
-            font-family: Calibri, Arial, Verdana, sans-serif;
+            padding: 0;
+            background: rgb(231, 231, 231);
+        }
+
+        .page {
+            width: 100%;
+        }
+
+        .frame-container {
+            width: 100%;
+            max-width: 100%;
+            height: 720px;
+            background: rgb(231, 231, 231);
+        }
+
+        .client-frame,
+        #client-placeholder {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .footer {
+            background: #202020;
+            padding: 12px;
+            text-align: center;
+            border-top: 1px solid #444;
+            font-family: Calibri;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
         }
 
         a:link,
@@ -64,54 +132,34 @@
             color: #fff;
         }
 
-        #wrapper {
-            margin: 40px auto 0 auto;
-            width: 800px;
-            height: 600px;
-            border: 1px solid #686868;
-        }
-
-        .github,
-        .discord {
-            padding: 4px;
-            font-family: Tahoma, Arial;
-            font-size: 14px;
-            font-weight: bold;
-            padding: 5px 10px;
-            border-radius: 5px;
-            text-decoration: none;
-            border: solid 1px rgb(109, 109, 109);
-        }
-
-        .github {
-            background-color: #272b30;
-        }
-
-        .discord {
-            background-color: #2e3579;
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 
 <body>
-    <div id="wrapper">
-        <div id="client-placeholder"></div>
+    <div class="page">
+        <div class="frame-container">
+            <div class="client-frame">
+                <div class="payment hidden" id="payment">
+                    <div class="payment-close" id="paymentClose" onclick="hidePayment();"></div>
+                    <div id="paymentIframe"></div>
+                </div>
+
+                <div class="profile hidden" id="profile">
+                    <div class="profile-close" id="profileClose" onclick="hideProfilePage();"></div>
+                    <div id="profileIframe"></div>
+                </div>
+
+                <div id="client-placeholder"></div>
+            </div>
+        </div>
+        <footer class="footer">
+            <a class="github" href="https://github.com/glennhenry/Rising-Cities-Server">GitHub</a>
+            <a class="discord" href="https://discord.gg/tVPSUgvG8n">Discord</a>
+        </footer>
     </div>
-
-    <div style="text-align:center;margin:20px 0;">
-        <a class="github" href="https://github.com/glennhenry/Rising-Cities-Server">GitHub</a>
-        <a class="discord" href="https://discord.gg/tVPSUgvG8n">Discord</a>
-    </div>
-
-    <div style="text-align:center;margin:20px 0;">
-        <em>This revival project is not affiliated with Bigpoint and is created solely for preservation purposes.</em>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-
-        });
-    </script>
 </body>
 
 </html>
