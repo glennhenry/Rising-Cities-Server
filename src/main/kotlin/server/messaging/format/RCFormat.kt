@@ -94,6 +94,7 @@ class RCFormat : MessageFormat<RCFrame> {
                 val json = JSON.decode<LoginRequest>(decoded.jsonPayload)
                 LoginRequest(json.uid, json.ses)
             }
+
             else -> {
                 UnknownRCMessage(decoded.header, decoded.jsonPayload)
             }
@@ -111,6 +112,27 @@ object RCSerializer {
         val payload = JSON.encode(input)
         val headerBytes = input.header.toByteArray(Charsets.UTF_8)
         val payloadBytes = payload.toByteArray(Charsets.UTF_8)
+
+        val buffer = ByteBuffer.allocate(
+            4 + 2 + headerBytes.size + payloadBytes.size
+        ).order(ByteOrder.BIG_ENDIAN)
+
+        buffer.putInt(payloadBytes.size)
+        buffer.putShort(headerBytes.size.toShort())
+        buffer.put(headerBytes)
+        buffer.put(payloadBytes)
+
+        return buffer.array()
+    }
+
+    /**
+     * Serialize an already encoded payload.
+     *
+     * This function merely complete the protocol (i.e., writing header/payload length).
+     */
+    fun serializeEncoded(header: String, jsonPayload: String): ByteArray {
+        val headerBytes = header.toByteArray(Charsets.UTF_8)
+        val payloadBytes = jsonPayload.toByteArray(Charsets.UTF_8)
 
         val buffer = ByteBuffer.allocate(
             4 + 2 + headerBytes.size + payloadBytes.size
