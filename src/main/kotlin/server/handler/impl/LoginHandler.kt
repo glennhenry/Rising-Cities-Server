@@ -2,6 +2,7 @@ package server.handler.impl
 
 import annotation.RevisitLater
 import core.data.ResourceConstants
+import core.model.CityDTO
 import core.model.PlayerDTO
 import core.model.config.ConfigDTO
 import core.model.config.ConfigResourceDTO
@@ -57,7 +58,7 @@ class LoginHandler : SocketMessageHandler<LoginRequest> {
         )
     )
 
-    @RevisitLater("Don't generate PlayerDTO, load from DB instead")
+    @RevisitLater("Don't generate PlayerDTO and CityDTO, should load from DB instead")
     override suspend fun handle(ctx: HandlerContext<LoginRequest>) = with(ctx) {
         Logger.info { "Received ${ctx.message}." }
 
@@ -79,6 +80,17 @@ class LoginHandler : SocketMessageHandler<LoginRequest> {
         )
 
         sendRaw(response)
+
+        // city update
+        val cityElement = JsonGenerator.generate<CityDTO>(json, policy)
+        val responseJson2 = buildJsonObject {
+            put("c", cityElement)
+        }
+        val response2 = RCSerializer.serializeEncoded(
+            ServerMessage.SERVER_MESSAGE_PLAYER_CITY_UPDATE,
+            json.encodeToString(JsonElement.serializer(), responseJson2)
+        )
+        sendRaw(response2)
     }
 
     private fun buildConfig(): ConfigDTO {
