@@ -2,34 +2,13 @@
 
 package utils
 
-import kotlinx.serialization.DeserializationStrategy
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.InternalSerializationApi
-import kotlinx.serialization.SerializationStrategy
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonNull
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.boolean
-import kotlinx.serialization.json.booleanOrNull
-import kotlinx.serialization.json.buildJsonArray
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.double
-import kotlinx.serialization.json.doubleOrNull
-import kotlinx.serialization.json.encodeToJsonElement
-import kotlinx.serialization.json.int
-import kotlinx.serialization.json.intOrNull
-import kotlinx.serialization.json.internal.writeJson
-import kotlinx.serialization.json.long
-import kotlinx.serialization.json.longOrNull
-import kotlinx.serialization.serializer
-import kotlinx.serialization.serializerOrNull
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.SerialKind
+import kotlinx.serialization.descriptors.StructureKind
+import kotlinx.serialization.descriptors.PrimitiveKind
 import utils.logging.Logger
-import kotlin.collections.map
-import kotlin.collections.mapValues
-import kotlin.reflect.KClass
 
 /**
  * Preset JSON serialization and deserialization.
@@ -125,11 +104,191 @@ fun Any?.toJsonValue(prioritizeToString: Boolean = false): JsonElement = when (t
                 serializer != null -> {
                     JSON.json.encodeToJsonElement(serializer as SerializationStrategy<Any>, this)
                 }
+
                 else -> {
                     Logger.warn { "Serializer missing for $kClass, used 'toString()' fallback." }
                     JsonPrimitive(this.toString())
                 }
             }
         }
+    }
+}
+
+/**
+ * Generate JSON of a particular class recursively with all default value.
+ * List or Map type will have one element exactly.
+ */
+object JsonGenerator {
+    inline fun <reified T> generate(
+        json: Json, policy: GenerationPolicy
+    ): String {
+        val serializer = serializer<T>()
+        val element = generateElement(serializer.descriptor, policy)
+        return json.encodeToString(JsonElement.Companion.serializer(), element)
+    }
+
+    fun generateElement(
+        desc: SerialDescriptor,
+        policy: GenerationPolicy,
+        path: MutableSet<SerialDescriptor> = mutableSetOf()
+    ): JsonElement {
+        if (desc.isInline) {
+            return generateElement(
+                desc.getElementDescriptor(0),
+                policy,
+                path
+            )
+        }
+
+        if (!path.add(desc)) {
+            return JsonNull
+        }
+
+        val result = when (desc.kind) {
+            StructureKind.CLASS -> {
+                buildJsonObject {
+                    for (i in 0 until desc.elementsCount) {
+                        val name = desc.getElementName(i)
+                        val childDesc = desc.getElementDescriptor(i)
+                        put(
+                            name,
+                            generateElement(
+                                childDesc,
+                                policy,
+                                path
+                            )
+                        )
+                    }
+                }
+            }
+
+            StructureKind.LIST -> {
+                generateList(desc, policy.collections) {
+                    generateElement(it, policy, path)
+                }
+            }
+
+            StructureKind.MAP -> {
+                generateMap(desc, policy.collections, policy.keys) {
+                    generateElement(it, policy, path)
+                }
+            }
+
+            is PrimitiveKind -> primitiveValue(desc, policy.values)
+
+            else -> JsonNull
+        }
+
+        path.remove(desc)
+        return result
+    }
+
+    fun primitiveValue(
+        desc: SerialDescriptor,
+        policy: ValuePolicy
+    ): JsonPrimitive =
+        when (desc.kind) {
+            PrimitiveKind.INT -> JsonPrimitive(policy.int())
+            PrimitiveKind.LONG -> JsonPrimitive(policy.long())
+            PrimitiveKind.STRING -> JsonPrimitive(policy.string())
+            PrimitiveKind.BOOLEAN -> JsonPrimitive(policy.boolean())
+            PrimitiveKind.FLOAT -> JsonPrimitive(policy.float())
+            PrimitiveKind.DOUBLE -> JsonPrimitive(policy.double())
+            SerialKind.CONTEXTUAL -> {
+                if (desc.serialName == "kotlin.UInt") {
+                    JsonPrimitive(policy.uint().toInt())
+                } else {
+                    // add more if needed
+                    JsonPrimitive(1)
+                }
+            }
+
+            else -> JsonNull
+        }
+
+    fun generateList(
+        desc: SerialDescriptor,
+        policy: CollectionPolicy,
+        gen: (SerialDescriptor) -> JsonElement
+    ): JsonArray = buildJsonArray {
+        when (policy) {
+            CollectionPolicy.EMPTY -> Unit
+            CollectionPolicy.ONE -> add(gen(desc.getElementDescriptor(0)))
+            is CollectionPolicy.MANY ->
+                repeat(policy.count) {
+                    add(gen(desc.getElementDescriptor(0)))
+                }
+        }
+    }
+
+    fun generateMap(
+        desc: SerialDescriptor,
+        policy: CollectionPolicy,
+        keyPolicy: KeyPolicy,
+        gen: (SerialDescriptor) -> JsonElement
+    ): JsonObject = buildJsonObject {
+        if (policy == CollectionPolicy.EMPTY) return@buildJsonObject
+
+        val keyDesc = desc.getElementDescriptor(0)
+        val valueDesc = desc.getElementDescriptor(1)
+
+        val count = when (policy) {
+            CollectionPolicy.ONE -> 1
+            is CollectionPolicy.MANY -> policy.count
+            CollectionPolicy.EMPTY -> 0
+        }
+
+        repeat(count) { index ->
+            val key = keyPolicy.placeholder(keyDesc, index)
+            put(key, gen(valueDesc))
+        }
+    }
+
+    data class GenerationPolicy(
+        val collections: CollectionPolicy = CollectionPolicy.ONE,
+        val values: ValuePolicy = ValuePolicy(),
+        val keys: KeyPolicy = KeyPolicy()
+    )
+
+    class KeyPolicy(
+        val int: (Int) -> String = { "0" },
+        val uint: (UInt) -> String = { "0" },
+        val long: (Int) -> String = { "0" },
+        val string: (Int) -> String = { "exampleKey" },
+        val boolean: (Int) -> String = { "true" }
+    ) {
+        fun placeholder(desc: SerialDescriptor, index: Int): String =
+            when (desc.kind) {
+                PrimitiveKind.INT -> int(index)
+                PrimitiveKind.LONG -> long(index)
+                PrimitiveKind.STRING -> string(index)
+                PrimitiveKind.BOOLEAN -> boolean(index)
+                SerialKind.CONTEXTUAL -> {
+                    if (desc.serialName == "kotlin.UInt") {
+                        uint(index.toUInt())
+                    } else {
+                        // add more if needed
+                        "1"
+                    }
+                }
+
+                else -> "<${desc.serialName}>"
+            }
+    }
+
+    class ValuePolicy(
+        val int: () -> Int = { 0 },
+        val uint: () -> UInt = { 0u },
+        val long: () -> Long = { 0L },
+        val string: () -> String = { "" },
+        val boolean: () -> Boolean = { false },
+        val float: () -> Float = { 0f },
+        val double: () -> Double = { 0.0 },
+    )
+
+    sealed class CollectionPolicy {
+        object EMPTY : CollectionPolicy()
+        object ONE : CollectionPolicy()
+        data class MANY(val count: Int) : CollectionPolicy()
     }
 }
