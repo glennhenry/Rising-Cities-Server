@@ -42,24 +42,36 @@
         function hideProfilePage() { console.log("hideProfilePage called") }
 
         var flashVars = {
-            uId: 'uId1',
-            token: 'test',
-            apiHost: '127.0.0.1:8080',
-            cdnHost: '127.0.0.1:8080/game',
-            locale: 'en',
-            preCv: 'largeplanes',
-            isHTTPS: 'false',
-            eventStreamContext: "",
-            openSocial: 0,
-            ssoUser: 0,
-            friendInvite: 0,
-            logging: 0,
-            tutS: '0',
-            tutT: '0',
-            debugMode: '1',
             uid: '1',
+            lang: 'en',
+            sid: 'test-session',
+            connectionUrl: 'http://127.0.0.1:7777',
+            supportUrl: 'http://127.0.0.1/support',
+            logoutUrl: 'http://127.0.0.1/logout',
+            profileUrl: 'http://127.0.0.1/profile',
+            forumUrl: 'http://127.0.0.1/forum',
+            paymentUrl: 'http://127.0.0.1/payment',
+            cvtagfilepath: 'xml/cvFileLinks.xml',
+            debugMode: 'true',
             debugLayerUrl: 'http://127.0.0.1/debug',
-            eventStreamContext: "eyJ1aWQiOjF9"
+            cvtagruntimepath: 'xml/cvRuntimeLinks.xml',
+            isIE: 'false',
+            isSsoUser: 'false',
+            evoucherUrl: 'http://127.0.0.1/evoucher',
+            unreadMessages: 'false',
+            soldOffers: 'false',
+            buffLevel: '6',
+            marketLevel: '5',
+            newsscreenLinkType: '',
+            newsscreenLinkValue: '',
+            improvmentLevel: '7',
+            boosterStoreLevel: '7',
+            cinemaMaintenance: 'false',
+            cinemaDisabled: 'false',
+            upsell: 'false',
+            inviteDisabled: 'false',
+            projectId: '865',
+            eventStream: 'eyJ1aWQiOjF9'
         };
 
         var flashParams = {
@@ -90,6 +102,7 @@
             flashAttributes
         );
     </script>
+
     <style>
         html,
         body {
