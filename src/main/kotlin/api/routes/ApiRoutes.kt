@@ -6,16 +6,24 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.contentType
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
+import io.ktor.server.response.respondText
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
+import io.ktor.util.date.getTimeMillis
+import io.netty.handler.codec.base64.Base64Decoder
 import utils.logging.Logger
+import java.util.zip.Inflater
 import kotlin.collections.component1
 import kotlin.collections.component2
+import kotlin.io.encoding.Base64
+import kotlin.time.Duration.Companion.minutes
 
 const val rcapiResponse = """{"host":"$SERVER_ADDRESS","port":$SERVER_SOCKET_PORT}"""
 
 fun Route.apiRoutes() {
+    var lastLog: Long? = null
+
     get("/RCApi") {
         Logger.debug {
             "RCApi request params: ${
@@ -27,27 +35,27 @@ fun Route.apiRoutes() {
         call.respond(rcapiResponse)
     }
 
-	post("/debug") {
-		val bytes = call.receive<ByteArray>()
+    post("/debug") {
+        val compressed = call.receive<ByteArray>()
 
-		Logger.debug {
-			buildString {
-				appendLine("=== /debug POST ===")
-				appendLine("Content-Type: ${call.request.contentType()}")
-				appendLine("Content-Length: ${bytes.size}")
-				appendLine("Headers:")
-				call.request.headers.forEach { k, v ->
-					appendLine("  $k = $v")
-				}
-			}
-		}
+        if (lastLog == null || (getTimeMillis() - lastLog!!).minutes > 1.minutes) {
+            Logger.debug { "Client POST to /debug: ${decompress(compressed)}" }
+            lastLog = getTimeMillis()
+        }
 
-		try {
-			Logger.debug { "Body (UTF-8): ${bytes.toString(Charsets.UTF_8)}" }
-		} catch (_: Throwable) {
-			Logger.debug { "Body not UTF-8 (likely compressed)" }
-		}
+        call.respond(HttpStatusCode.OK)
+    }
+}
 
-		call.respond(HttpStatusCode.OK)
-	}
+fun decompress(bytes: ByteArray): String {
+    val inflater = Inflater()
+    inflater.setInput(bytes)
+    val output = ByteArray(8192)
+    val decompressed = StringBuilder()
+    while (!inflater.finished()) {
+        val count = inflater.inflate(output)
+        decompressed.append(String(output, 0, count, Charsets.UTF_8))
+    }
+    inflater.end()
+    return decompressed.toString()
 }
