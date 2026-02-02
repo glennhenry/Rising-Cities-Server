@@ -36,7 +36,7 @@ class LoginHandler : SocketMessageHandler<LoginRequest> {
     private val json = Json {
         encodeDefaults = true
         ignoreUnknownKeys = true
-        prettyPrint = true
+        prettyPrint = false
     }
     val policy = GenerationPolicy(
         collections = CollectionPolicy.ONE,
@@ -66,7 +66,8 @@ class LoginHandler : SocketMessageHandler<LoginRequest> {
         // val player = PlayerDTO()
         // val response = RCSerializer.serialize(LoginResponse(config, player))
 
-        val playerElement = JsonGenerator.generate<PlayerDTO>(json, policy)
+        val playerJson = JsonGenerator.generate<PlayerDTO>(json, policy)
+        val playerElement = json.parseToJsonElement(playerJson)
         val configElement = json.parseToJsonElement(configJsonResponse)
 
         val responseJson = buildJsonObject {
@@ -82,7 +83,8 @@ class LoginHandler : SocketMessageHandler<LoginRequest> {
         sendRaw(response)
 
         // city update
-        val cityElement = JsonGenerator.generate<CityDTO>(json, policy)
+        val cityJson = JsonGenerator.generate<CityDTO>(json, policy)
+        val cityElement = json.parseToJsonElement(cityJson)
         val responseJson2 = buildJsonObject {
             put("c", cityElement)
         }
