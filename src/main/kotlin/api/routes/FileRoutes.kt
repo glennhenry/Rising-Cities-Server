@@ -42,4 +42,12 @@ fun Route.fileRoutes() {
 
         call.respondFile(file)
     }
+
+    get("/crossdomain.xml") {
+        call.respondFile(File("static/crossdomain.xml"))
+    }
+
+    get("/debug/crossdomain.xml") {
+        call.respondFile(File("static/crossdomain.xml"))
+    }
 }
