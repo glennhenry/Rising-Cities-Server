@@ -13,8 +13,8 @@ import devtools.command.core.variantsAsString
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.assertThrows
 import utils.JSON
+import utils.functions.randomString
 import utils.logging.TestLogger
-import utils.randomString
 import kotlin.random.Random
 import kotlin.test.BeforeTest
 import kotlin.test.Test

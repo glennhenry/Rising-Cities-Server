@@ -5,8 +5,8 @@ import utils.JsonGenerator.CollectionPolicy
 import utils.JsonGenerator.GenerationPolicy
 import utils.JsonGenerator.KeyPolicy
 import utils.JsonGenerator.ValuePolicy
+import utils.functions.randomString
 import utils.logging.Logger
-import utils.randomString
 import kotlin.random.Random
 import kotlin.test.Test
 
