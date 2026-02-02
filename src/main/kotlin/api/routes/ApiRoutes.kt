@@ -2,28 +2,16 @@ package api.routes
 
 import SERVER_ADDRESS
 import SERVER_SOCKET_PORT
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.request.contentType
-import io.ktor.server.request.receive
-import io.ktor.server.response.respond
-import io.ktor.server.response.respondText
-import io.ktor.server.routing.Route
-import io.ktor.server.routing.get
-import io.ktor.server.routing.post
-import io.ktor.util.date.getTimeMillis
-import io.netty.handler.codec.base64.Base64Decoder
+import io.ktor.http.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import utils.logging.Logger
 import java.util.zip.Inflater
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlin.io.encoding.Base64
-import kotlin.time.Duration.Companion.minutes
 
 const val rcapiResponse = """{"host":"$SERVER_ADDRESS","port":$SERVER_SOCKET_PORT}"""
 
 fun Route.apiRoutes() {
-    var lastLog: Long? = null
-
     get("/RCApi") {
         Logger.debug {
             "RCApi request params: ${
@@ -35,15 +23,28 @@ fun Route.apiRoutes() {
         call.respond(rcapiResponse)
     }
 
-    post("/debug") {
-        val compressed = call.receive<ByteArray>()
+    post("/eventstream") {
+        val bytes = call.receive<ByteArray>()
+        val json = decompress(bytes)
+        Logger.debug { "POST to /eventstream: $json" }
+        call.respondText("OK", ContentType.Text.Plain, HttpStatusCode.OK)
+    }
 
-        if (lastLog == null || (getTimeMillis() - lastLog!!).minutes > 1.minutes) {
-            Logger.debug { "Client POST to /debug: ${decompress(compressed)}" }
-            lastLog = getTimeMillis()
+    post("/debug") {
+        val params = call.receiveParameters()
+
+        val playerId = params["playerId"]
+        val message = params["message"]
+        val logLevel = params["logLevel"]
+
+        Logger.debug {
+            buildString {
+                appendLine("POST to /debug (playerId=$playerId, logLevel=$logLevel)")
+                appendLine(message)
+            }
         }
 
-        call.respond(HttpStatusCode.OK)
+        call.respondText("OK", ContentType.Text.Plain, HttpStatusCode.OK)
     }
 }
 
