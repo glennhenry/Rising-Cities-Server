@@ -2,12 +2,15 @@ package server.handler.impl
 
 import annotation.RevisitLater
 import core.data.ResourceConstants
+import core.model.PlayerDTO
 import core.model.config.ConfigDTO
 import core.model.config.ConfigResourceDTO
 import server.handler.HandlerContext
 import server.handler.SocketMessageHandler
 import server.messaging.ClientMessage
+import server.messaging.format.RCSerializer
 import server.messaging.socket.domain.LoginRequest
+import server.messaging.socket.domain.LoginResponse
 import utils.logging.Logger
 import kotlin.reflect.KClass
 
@@ -18,6 +21,13 @@ class LoginHandler : SocketMessageHandler<LoginRequest> {
 
     override suspend fun handle(ctx: HandlerContext<LoginRequest>) = with(ctx) {
         Logger.info { "Received ${ctx.message}." }
+
+        // ...load from DB
+        val config = ConfigDTO()
+        val player = PlayerDTO()
+        val response = RCSerializer.serialize(LoginResponse(config, player))
+
+        sendRaw(response, logFull = true)
     }
 
     @RevisitLater(

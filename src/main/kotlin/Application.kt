@@ -29,8 +29,10 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.ClassDiscriminatorMode
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
 import org.bson.Document
 import server.GameServer
 import server.GameServerConfig
@@ -40,6 +42,8 @@ import server.core.Server
 import server.handler.impl.LoginHandler
 import server.messaging.format.MessageFormatRegistry
 import server.messaging.format.RCFormat
+import server.messaging.socket.RCResponse
+import server.messaging.socket.domain.LoginResponse
 import server.tasks.ServerTaskDispatcher
 import server.tasks.TaskName
 import user.PlayerAccountRepositoryMongo
@@ -63,6 +67,7 @@ const val SERVER_ADDRESS = "127.0.0.1"
 const val SERVER_API_FILE_PORT = 8080
 const val SERVER_SOCKET_PORT = 7777
 
+@OptIn(ExperimentalSerializationApi::class)
 @Suppress("unused")
 suspend fun Application.module() {
     /* 1. Setup logger */
@@ -99,11 +104,15 @@ suspend fun Application.module() {
     }
 
     /* 2. Setup serialization */
-    val module = SerializersModule {}
+    val module = SerializersModule {
+        polymorphic(RCResponse::class) {
+            subclass(LoginResponse::class, LoginResponse.serializer())
+        }
+    }
     val json = Json {
+        classDiscriminatorMode = ClassDiscriminatorMode.NONE
         serializersModule = module
-        classDiscriminator = "_t"
-        prettyPrint = true
+        prettyPrint = false
         isLenient = true
         ignoreUnknownKeys = true
         encodeDefaults = true
