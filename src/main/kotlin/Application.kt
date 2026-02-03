@@ -228,7 +228,7 @@ suspend fun Application.module() {
     }
 
     val gameServer = GameServer(gameServerConfig) { socketDispatcher, serverContext ->
-        socketDispatcher.register(LoginHandler())
+        socketDispatcher.register(LoginHandler(serverContext))
         serverContext.taskDispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = {},

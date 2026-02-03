@@ -1,6 +1,7 @@
 package server.handler.impl
 
 import annotation.RevisitLater
+import context.ServerContext
 import core.model.CityDTO
 import core.model.PlayerDTO
 import core.model.config.ConfigDTO
@@ -27,7 +28,7 @@ import java.io.File
 import kotlin.random.Random
 import kotlin.reflect.KClass
 
-class LoginHandler : SocketMessageHandler<LoginRequest> {
+class LoginHandler(private val serverContext: ServerContext) : SocketMessageHandler<LoginRequest> {
     override val name: String = "LoginHandler"
     override val messageType: String = ClientMessage.LOGIN
     override val expectedMessageClass: KClass<LoginRequest> = LoginRequest::class
@@ -59,7 +60,18 @@ class LoginHandler : SocketMessageHandler<LoginRequest> {
 
     @RevisitLater("Don't generate PlayerDTO and CityDTO, should load from DB instead")
     override suspend fun handle(ctx: HandlerContext<LoginRequest>) = with(ctx) {
-        Logger.info { "Received ${ctx.message}." }
+        // verify ses (session) string
+        val verified = serverContext.sessionManager.verify(message.ses)
+        if (verified) {
+            Logger.info { "Received ${ctx.message}: token valid" }
+        } else {
+            Logger.info { "Received ${ctx.message}: token invalid" }
+            return@with
+        }
+
+        // mark player as online, assign userId to Connection object
+        serverContext.onlinePlayerRegistry.markOnline(message.uid)
+        updateUserId(message.uid)
 
         // ...load from each player's DB
         // val player = PlayerDTO()

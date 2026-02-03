@@ -25,6 +25,7 @@ fun Route.webLoginRoutes(serverContext: ServerContext, adminEnabled: Boolean) {
             return@post
         }
 
+        // admin reserved name: always succeed if admin is enabled
         if (username == AdminData.ADMIN_RESERVED_NAME) {
             if (adminEnabled) {
                 val session = serverContext.authProvider.adminLogin()
@@ -36,8 +37,10 @@ fun Route.webLoginRoutes(serverContext: ServerContext, adminEnabled: Boolean) {
             return@post
         }
 
+        // check whether username exist
         val usernameExist = serverContext.authProvider.doesUsernameExist(username)
         if (usernameExist) {
+            // try logging in the username with password
             val loginResult = serverContext.authProvider.login(username, password)
 
             if (loginResult.isFailure) {
@@ -49,9 +52,9 @@ fun Route.webLoginRoutes(serverContext: ServerContext, adminEnabled: Boolean) {
                 )
                 return@post
             } else {
+                // if login success, return successful login response
                 val loginSession = loginResult.getOrNull()
-                val passwordRight = loginSession != null
-                if (passwordRight) {
+                if (loginSession != null) {
                     Logger.info { "Web login result of username '$username': success" }
                     call.respond(HttpStatusCode.OK, json.encodeToString(createLoginSuccessResponse(loginSession)))
                 } else {
@@ -63,6 +66,7 @@ fun Route.webLoginRoutes(serverContext: ServerContext, adminEnabled: Boolean) {
                 }
             }
         } else {
+            // if username doesn't exist, then register the user
             val registerResult = serverContext.authProvider.register(username, password)
 
             if (registerResult.isFailure) {
@@ -74,6 +78,7 @@ fun Route.webLoginRoutes(serverContext: ServerContext, adminEnabled: Boolean) {
                 )
                 return@post
             } else {
+                // registration succeed, return successful login response
                 val session = registerResult.getOrNull()
                 if (session != null) {
                     Logger.info { "Web register result of username '$username': success=${registerResult.isSuccess}" }
