@@ -84,7 +84,7 @@ data class ServerContext(
  *
  * @return `null` if context is not found.
  */
-fun ServerContext.getPlayerContextOrNull(userId: String): PlayerContext? =
+fun ServerContext.getPlayerContextOrNull(userId: Long): PlayerContext? =
     contextTracker.getContext(userId)
 
 /**
@@ -92,7 +92,7 @@ fun ServerContext.getPlayerContextOrNull(userId: String): PlayerContext? =
  *
  * @throws IllegalStateException if context is not found.
  */
-fun ServerContext.requirePlayerContext(userId: String): PlayerContext =
+fun ServerContext.requirePlayerContext(userId: Long): PlayerContext =
     getPlayerContextOrNull(userId)
         ?: error("PlayerContext not found for userId=$userId")
 

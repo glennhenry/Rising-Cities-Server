@@ -31,7 +31,7 @@ class DefaultAuthProvider(
     }
 
     override suspend fun adminLogin(): UserSession {
-        return sessionManager.create(AdminData.PLAYER_ID)
+        return sessionManager.create(AdminData.USER_ID)
     }
 
     override suspend fun doesUsernameExist(username: String): Boolean {

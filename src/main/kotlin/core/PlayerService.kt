@@ -24,7 +24,7 @@ interface PlayerService {
      *
      * @return An empty result just for denoting success or failure.
      */
-    suspend fun init(userId: String): Result<Unit>
+    suspend fun init(userId: Long): Result<Unit>
 
     /**
      * Closes the service for the specified [userId].
@@ -35,5 +35,5 @@ interface PlayerService {
      *
      * @return An empty result just for denoting success or failure.
      */
-    suspend fun close(userId: String): Result<Unit>
+    suspend fun close(userId: Long): Result<Unit>
 }

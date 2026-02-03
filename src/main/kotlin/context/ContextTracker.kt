@@ -16,7 +16,7 @@ interface ContextTracker {
      * Creates and registers a new [PlayerContext] for the given player.
      */
     suspend fun createContext(
-        userId: String,
+        userId: Long,
         connection: Connection,
         db: Database
     )
@@ -24,12 +24,12 @@ interface ContextTracker {
     /**
      * Get context of [userId].
      */
-    fun getContext(userId: String): PlayerContext?
+    fun getContext(userId: Long): PlayerContext?
 
     /**
      * Remove context of [userId].
      */
-    fun removeContext(userId: String)
+    fun removeContext(userId: Long)
 
     /**
      * Shutdown the tracker.

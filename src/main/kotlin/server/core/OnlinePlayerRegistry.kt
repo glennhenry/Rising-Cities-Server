@@ -12,7 +12,7 @@ class OnlinePlayerRegistry {
     /**
      * Mark a player of [userId] as online. Does nothing if the player is already online.
      */
-    fun markOnline(userId: String) {
+    fun markOnline(userId: Long) {
         val now = getTimeMillis()
         players[userId] = PlayerStatus(
             userId = userId,
@@ -24,14 +24,14 @@ class OnlinePlayerRegistry {
     /**
      * Mark a player of [userId] as offline. Does nothing if the player is already offline.
      */
-    fun markOffline(userId: String) {
+    fun markOffline(userId: Long) {
         players.remove(userId)
     }
 
     /**
      * Update the last network activity of [userId]. Does nothing if the player is not online.
      */
-    fun updateLastActivity(userId: String) {
+    fun updateLastActivity(userId: Long) {
         players.computeIfPresent(userId) { _, status ->
             status.copy(lastNetworkActivity = getTimeMillis())
         }
@@ -54,7 +54,7 @@ class OnlinePlayerRegistry {
  *                               of the player's most recent network activity.
  */
 data class PlayerStatus(
-    val userId: String,
+    val userId: Long,
     val onlineSince: Long,
     val lastNetworkActivity: Long,
 )

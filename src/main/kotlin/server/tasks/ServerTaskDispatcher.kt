@@ -29,7 +29,7 @@ import kotlin.time.toDuration
  */
 class ServerTaskDispatcher(private val time: TimeProvider = SystemTime) : TaskScheduler {
     private val runningInstances = mutableMapOf<String, TaskInstance>()
-    private val taskIdDerivers = mutableMapOf<String, (userId: String, name: TaskName, stopInput: Any) -> String>()
+    private val taskIdDerivers = mutableMapOf<String, (userId: Long, name: TaskName, stopInput: Any) -> String>()
     private val stopTaskFactories = mutableMapOf<String, () -> Any>()
 
     /**
@@ -43,7 +43,7 @@ class ServerTaskDispatcher(private val time: TimeProvider = SystemTime) : TaskSc
     fun <StopInput : Any> registerTask(
         name: TaskName,
         stopFactory: () -> StopInput,
-        deriveTaskId: (userId: String, name: TaskName, stopInput: StopInput) -> String
+        deriveTaskId: (userId: Long, name: TaskName, stopInput: StopInput) -> String
     ) {
         stopTaskFactories[name.code] = stopFactory
         taskIdDerivers[name.code] = { userId, name, stopInput ->
@@ -192,7 +192,7 @@ class ServerTaskDispatcher(private val time: TimeProvider = SystemTime) : TaskSc
     /**
      * Return all running tasks for [userId].
      */
-    fun getAllRunningTaskFor(userId: String): List<TaskInstance> {
+    fun getAllRunningTaskFor(userId: Long): List<TaskInstance> {
         return runningInstances.values.filter { it.userId == userId }
     }
 
@@ -257,7 +257,7 @@ class ServerTaskDispatcher(private val time: TimeProvider = SystemTime) : TaskSc
     /**
      * Stop all tasks for the [userId]
      */
-    fun stopAllTasksForPlayer(userId: String) {
+    fun stopAllTasksForPlayer(userId: Long) {
         runningInstances
             .filterValues { it.userId == userId }
             .forEach { (taskId, _) -> stopRunningTask(taskId) }
@@ -286,7 +286,7 @@ class ServerTaskDispatcher(private val time: TimeProvider = SystemTime) : TaskSc
  */
 data class TaskInstance(
     val name: String,
-    val userId: String,
+    val userId: Long,
     val config: TaskConfig,
     val job: Job,
 )

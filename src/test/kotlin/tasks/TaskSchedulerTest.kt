@@ -39,7 +39,7 @@ class TaskSchedulerTest {
         dispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = { ExampleTaskStopParameter() },
-            deriveTaskId = { userId: String, name, _ ->
+            deriveTaskId = { userId: Long, name, _ ->
                 // "DN-pid123-unit
                 "${name.code}-$userId-unit"
             }
@@ -73,7 +73,7 @@ class TaskSchedulerTest {
         dispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = { ExampleTaskStopParameter() },
-            deriveTaskId = { userId: String, name, _ ->
+            deriveTaskId = { userId: Long, name, _ ->
                 // "DN-pid123-unit
                 "${name.code}-$userId-unit"
             }
@@ -116,7 +116,7 @@ class TaskSchedulerTest {
         dispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = { ExampleTaskStopParameter() },
-            deriveTaskId = { userId: String, name, _ ->
+            deriveTaskId = { userId: Long, name, _ ->
                 // "DN-pid123-unit
                 "${name.code}-$userId-unit"
             }
@@ -159,7 +159,7 @@ class TaskSchedulerTest {
         dispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = { ExampleTaskStopParameter() },
-            deriveTaskId = { userId: String, name, _ ->
+            deriveTaskId = { userId: Long, name, _ ->
                 // "DN-pid123-unit
                 "${name.code}-$userId-unit"
             }
@@ -205,7 +205,7 @@ class TaskSchedulerTest {
         dispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = { ExampleTaskStopParameter() },
-            deriveTaskId = { userId: String, name, _ ->
+            deriveTaskId = { userId: Long, name, _ ->
                 // "DN-pid123-unit
                 "${name.code}-$userId-unit"
             }
@@ -253,7 +253,7 @@ class TaskSchedulerTest {
         dispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = { ExampleTaskStopParameter() },
-            deriveTaskId = { userId: String, name, _ ->
+            deriveTaskId = { userId: Long, name, _ ->
                 // "DN-pid123-unit
                 "${name.code}-$userId-unit"
             }
@@ -299,7 +299,7 @@ class TaskSchedulerTest {
         dispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = { ExampleTaskStopParameter() },
-            deriveTaskId = { userId: String, name, _ ->
+            deriveTaskId = { userId: Long, name, _ ->
                 // "DN-pid123-unit
                 "${name.code}-$userId-unit"
             }
@@ -347,7 +347,7 @@ class TaskSchedulerTest {
         dispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = { ExampleTaskStopParameter() },
-            deriveTaskId = { userId: String, name, _ ->
+            deriveTaskId = { userId: Long, name, _ ->
                 // "DN-pid123-unit
                 "${name.code}-$userId-unit"
             }

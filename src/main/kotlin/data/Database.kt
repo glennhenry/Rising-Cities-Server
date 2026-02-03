@@ -14,8 +14,8 @@ import data.collection.ServerData
  * - [ServerData]   : server-wide data.
  */
 interface Database {
-    suspend fun loadPlayerAccount(userId: String): PlayerAccount?
-    suspend fun loadPlayerData(userId: String): PlayerData?
+    suspend fun loadPlayerAccount(userId: Long): PlayerAccount?
+    suspend fun loadPlayerData(userId: Long): PlayerData?
     suspend fun loadServerData(): ServerData
 
     /**
@@ -34,6 +34,11 @@ interface Database {
      * @return userId (UUID) of the newly created player.
      */
     suspend fun createPlayer(username: String, password: String): String
+
+    /**
+     * Get the next UserID.
+     */
+    suspend fun getNextUserId(): Long
 
     suspend fun shutdown()
 }

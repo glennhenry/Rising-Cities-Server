@@ -28,6 +28,7 @@ fun Route.webLoginRoutes(serverContext: ServerContext, adminEnabled: Boolean) {
         if (username == AdminData.ADMIN_RESERVED_NAME) {
             if (adminEnabled) {
                 val session = serverContext.authProvider.adminLogin()
+                Logger.info { "Done web admin login" }
                 call.respond(HttpStatusCode.OK, json.encodeToString(createLoginSuccessResponse(session)))
             } else {
                 call.respond(HttpStatusCode.Forbidden, mapOf("reason" to "admin account not enabled"))
@@ -38,7 +39,7 @@ fun Route.webLoginRoutes(serverContext: ServerContext, adminEnabled: Boolean) {
         val usernameExist = serverContext.authProvider.doesUsernameExist(username)
         if (usernameExist) {
             val loginResult = serverContext.authProvider.login(username, password)
-            Logger.info { "Web login result of username '$username': $loginResult" }
+            Logger.info { "Web login result of username '$username': success=${loginResult.isSuccess}" }
             val loginSession = loginResult.getOrNull()
             val passwordRight = loginSession != null
             if (passwordRight) {
@@ -51,7 +52,7 @@ fun Route.webLoginRoutes(serverContext: ServerContext, adminEnabled: Boolean) {
             }
         } else {
             val registerResult = serverContext.authProvider.register(username, password)
-            Logger.info { "Web register result of username '$username': $registerResult" }
+            Logger.info { "Web register result of username '$username': success=${registerResult.isSuccess}" }
             val session = registerResult.getOrNull()
             if (session != null) {
                 call.respond(HttpStatusCode.OK, json.encodeToString(createLoginSuccessResponse(session)))
@@ -87,7 +88,7 @@ fun Route.webLoginRoutes(serverContext: ServerContext, adminEnabled: Boolean) {
 
 @Serializable
 data class WebLoginSuccessResponse(
-    val userId: String, val token: String, val flash: FlashConfig
+    val userId: Long, val token: String, val flash: FlashConfig
 )
 
 fun createLoginSuccessResponse(session: UserSession): WebLoginSuccessResponse {
@@ -107,7 +108,7 @@ fun createLoginSuccessResponse(session: UserSession): WebLoginSuccessResponse {
 // add more as needed
 @Serializable
 data class EventStreamClientContext(
-    val userId: Int
+    val userId: Long
 )
 
 val json = Json {
@@ -129,6 +130,6 @@ fun generateClientContext(context: EventStreamClientContext): String {
     return Base64.encode(json.encodeToString(context).toByteArray())
 }
 
-fun populateFlashVars(userId: Int, sessionId: String, eventStream: String): FlashVars {
+fun populateFlashVars(userId: Long, sessionId: String, eventStream: String): FlashVars {
     return FlashVars(uid = userId.toString(), sid = sessionId, eventStream = eventStream)
 }

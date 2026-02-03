@@ -8,14 +8,14 @@ import server.messaging.socket.SocketMessage
  */
 class DefaultHandlerContext<T : SocketMessage>(
     private val connection: Connection,
-    override var userId: String,
+    override var userId: Long,
     override val message: T
 ) : HandlerContext<T> {
     override suspend fun sendRaw(raw: ByteArray, logOutput: Boolean, logFull: Boolean) {
         connection.write(raw, logOutput, logFull)
     }
 
-    override fun updateUserId(userId: String) {
+    override fun updateUserId(userId: Long) {
         connection.updateUserId(userId)
         this.userId = userId
     }

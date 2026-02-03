@@ -22,7 +22,7 @@ class PlayerAccountRepositoryMongo(val accountCollection: MongoCollection<Player
         }
     }
 
-    override suspend fun getPlayerAccountById(userId: String): Result<PlayerAccount> {
+    override suspend fun getPlayerAccountById(userId: Long): Result<PlayerAccount> {
         return runMongoCatching {
             accountCollection
                 .find(Filters.eq("userId", userId))
@@ -78,7 +78,7 @@ class PlayerAccountRepositoryMongo(val accountCollection: MongoCollection<Player
     }
 
     override suspend fun updatePlayerAccount(
-        userId: String,
+        userId: Long,
         account: PlayerAccount
     ): Result<Unit> {
         return runMongoCatching {
@@ -87,7 +87,7 @@ class PlayerAccountRepositoryMongo(val accountCollection: MongoCollection<Player
         }
     }
 
-    override suspend fun updateLastLogin(userId: String, lastLogin: Long): Result<Unit> {
+    override suspend fun updateLastLogin(userId: Long, lastLogin: Long): Result<Unit> {
         return runMongoCatching {
             val result = accountCollection.updateOne(
                 Filters.eq("userId", userId),

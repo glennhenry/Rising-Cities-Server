@@ -14,7 +14,7 @@ import kotlin.time.Duration
  * @property lifetime Epoch millis of token's total validity if refreshed regularly.
  */
 data class UserSession(
-    val userId: String,
+    val userId: Long,
     val token: String,
     val issuedAt: Long,
     val singleSessionDuration: Duration,

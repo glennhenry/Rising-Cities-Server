@@ -11,7 +11,7 @@ import server.messaging.socket.SocketMessage
  * @param T Concrete implementation of [SocketMessage] interface.
  */
 interface HandlerContext<T : SocketMessage> {
-    var userId: String
+    var userId: Long
     val message: T
 
     /**
@@ -25,5 +25,5 @@ interface HandlerContext<T : SocketMessage> {
     /**
      * To update the userId for this connection (usually goes through [Connection.updateUserId]).
      */
-    fun updateUserId(userId: String)
+    fun updateUserId(userId: Long)
 }

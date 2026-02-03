@@ -14,7 +14,7 @@ import server.messaging.socket.SocketMessage
  * Utility to build state to test socket message handlers.
  */
 data class HandlerTestState<T : SocketMessage>(
-    val userId: String = "testUserId123",
+    val userId: Long = "testUserId123",
     val playerName: String = "TestPlayerABC",
     val message: T,
     val account: PlayerAccount = PlayerAccount.fake(userId, playerName),

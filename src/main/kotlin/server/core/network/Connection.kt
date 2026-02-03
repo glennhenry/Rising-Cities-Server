@@ -16,7 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 interface Connection {
     val remoteAddress: String
     val connectionScope: CoroutineScope
-    var userId: String
+    var userId: Long
     var playerName: String
 
     /**
@@ -40,7 +40,7 @@ interface Connection {
     /**
      * To update the userId for this connection.
      */
-    fun updateUserId(userId: String)
+    fun updateUserId(userId: Long)
 
     /**
      * Closes the connection and releases any associated resources.

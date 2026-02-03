@@ -5,7 +5,7 @@ package core.data
  */
 object AdminData {
     const val ADMIN_RESERVED_NAME = "givemeadmin"
-    const val PLAYER_ID = "adm-id-123456"
+    const val USER_ID = 1L
     const val DISPLAY_NAME = "AdminPlayer"
     const val EMAIL = "admin@admin.com"
     const val PASSWORD = "admin"

@@ -21,7 +21,7 @@ class DefaultConnection(
     override val remoteAddress: String,
     override val connectionScope: CoroutineScope
 ) : Connection {
-    override var userId: String = "[Undetermined]"
+    override var userId: Long = "[Undetermined]"
     override var playerName: String = "[Undetermined]"
 
     /**
@@ -62,7 +62,7 @@ class DefaultConnection(
         }
     }
 
-    override fun updateUserId(userId: String) {
+    override fun updateUserId(userId: Long) {
         this.userId = userId
     }
 

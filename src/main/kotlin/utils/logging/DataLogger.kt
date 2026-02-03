@@ -56,7 +56,7 @@ object DataLogger {
  */
 class DataLogBuilder(private val name: String) {
     private val data = mutableMapOf<String, Any>()
-    private var userId: String = "[Undefined]"
+    private var userId: Long = "[Undefined]"
     private var username: String = "[Undefined]"
     private var text: String = ""
     private val logJsonBuilder = Json { prettyPrint = false }
@@ -181,7 +181,7 @@ class DataLogBuilder(private val name: String) {
 @Serializable
 data class TelemetryEvent(
     val event: String,
-    val userId: String,
+    val userId: Long,
     val username: String,
     @Serializable(with = AnyMapSerializerStrict::class)
     val data: Map<String, Any> = emptyMap()
@@ -189,7 +189,7 @@ data class TelemetryEvent(
 
 @Serializable
 data class LogEvent(
-    val userId: String,
+    val userId: Long,
     val username: String,
     @Serializable(with = AnyMapSerializerReadable::class)
     val data: Map<String, Any> = emptyMap()

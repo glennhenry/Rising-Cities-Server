@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class UserProfile(
-    val userId: String,
+    val userId: Long,
     val email: String = "",
     val displayName: String,
     val createdAt: Long,
@@ -19,7 +19,7 @@ data class UserProfile(
         fun admin(): UserProfile {
             val now = getTimeMillis()
             return UserProfile(
-                userId = AdminData.PLAYER_ID,
+                userId = AdminData.USER_ID,
                 email = AdminData.EMAIL,
                 displayName = AdminData.DISPLAY_NAME,
                 createdAt = now,
@@ -27,7 +27,7 @@ data class UserProfile(
             )
         }
 
-        fun default(userId: String, displayName: String): UserProfile {
+        fun default(userId: Long, displayName: String): UserProfile {
             val now = getTimeMillis()
             return UserProfile(
                 userId = userId,

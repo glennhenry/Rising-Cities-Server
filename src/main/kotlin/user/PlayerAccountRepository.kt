@@ -12,11 +12,11 @@ interface PlayerAccountRepository {
     suspend fun isEmailAvailable(email: String): Result<Boolean>
 
     suspend fun getPlayerAccountByName(username: String): Result<PlayerAccount>
-    suspend fun getPlayerAccountById(userId: String): Result<PlayerAccount>
+    suspend fun getPlayerAccountById(userId: Long): Result<PlayerAccount>
     suspend fun getUserIdFromName(username: String): Result<String>
 
-    suspend fun updatePlayerAccount(userId: String, account: PlayerAccount): Result<Unit>
-    suspend fun updateLastLogin(userId: String, lastLogin: Long): Result<Unit>
+    suspend fun updatePlayerAccount(userId: Long, account: PlayerAccount): Result<Unit>
+    suspend fun updateLastLogin(userId: Long, lastLogin: Long): Result<Unit>
 
     /**
      * Confirm the player's password matches the stored credentials for the given username

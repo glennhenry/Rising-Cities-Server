@@ -26,7 +26,7 @@ class DefaultContextTracker: ContextTracker {
      * @throws IllegalArgumentException If the player's account data cannot be found.
      */
     override suspend fun createContext(
-        userId: String,
+        userId: Long,
         connection: Connection,
         db: Database
     ) {
@@ -43,7 +43,7 @@ class DefaultContextTracker: ContextTracker {
     }
 
     private suspend fun initializeServices(
-        userId: String,
+        userId: Long,
         db: Database,
     ): PlayerServices {
         val playerDataCollection = db.getCollection<MongoCollection<PlayerData>>("player_data")
@@ -53,11 +53,11 @@ class DefaultContextTracker: ContextTracker {
         )
     }
 
-    override fun getContext(userId: String): PlayerContext? {
+    override fun getContext(userId: Long): PlayerContext? {
         return players[userId]
     }
 
-    override fun removeContext(userId: String) {
+    override fun removeContext(userId: Long) {
         players.remove(userId)
     }
 

@@ -54,7 +54,7 @@ class MongoImpl(db: MongoDatabase, private val adminEnabled: Boolean) : Database
             Logger.info { "MongoDB: User collection ready, contains $count users." }
 
             if (adminEnabled) {
-                val adminDoc = accountCollection.find(Filters.eq("userId", AdminData.PLAYER_ID)).firstOrNull()
+                val adminDoc = accountCollection.find(Filters.eq("userId", AdminData.USER_ID)).firstOrNull()
                 if (adminDoc == null) {
                     val start = getTimeMillis()
                     val doc = PlayerAccount.admin()
@@ -78,11 +78,11 @@ class MongoImpl(db: MongoDatabase, private val adminEnabled: Boolean) : Database
         accountCollection.createIndex(Indexes.text("profile.displayName"))
     }
 
-    override suspend fun loadPlayerAccount(userId: String): PlayerAccount? {
+    override suspend fun loadPlayerAccount(userId: Long): PlayerAccount? {
         return accountCollection.find(Filters.eq("userId", userId)).firstOrNull()
     }
 
-    override suspend fun loadPlayerData(userId: String): PlayerData? {
+    override suspend fun loadPlayerData(userId: Long): PlayerData? {
         return dataCollection.find(Filters.eq("userId", userId)).firstOrNull()
     }
 
@@ -106,6 +106,10 @@ class MongoImpl(db: MongoDatabase, private val adminEnabled: Boolean) : Database
         dataCollection.insertOne(obj)
 
         return userId
+    }
+
+    override suspend fun getNextUserId(): Int {
+        return accountCollection
     }
 
     private fun hashPw(password: String): String {
@@ -173,7 +177,7 @@ inline fun runMongoCatchingUnit(
  * @throws NoSuchElementException if `matchedCount` is less than 1
  * @throws IllegalStateException if `modifiedCount` is less than 1
  */
-fun UpdateResult.throwIfNotModified(userId: String, info: String = "") {
+fun UpdateResult.throwIfNotModified(userId: Long, info: String = "") {
     if (matchedCount < 1) {
         throw NoSuchElementException("userId=$userId not found; $info")
     }

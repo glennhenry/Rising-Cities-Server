@@ -32,7 +32,7 @@ import kotlin.time.Duration.Companion.seconds
 class TestConnection(
     override val remoteAddress: String = "",
     override val connectionScope: CoroutineScope,
-    override var userId: String,
+    override var userId: Long,
     override var playerName: String
 ) : Connection {
     private val incoming = Channel<ByteArray>(Channel.UNLIMITED)
@@ -70,7 +70,7 @@ class TestConnection(
         writtenBytes += input
     }
 
-    override fun updateUserId(userId: String) {
+    override fun updateUserId(userId: Long) {
         this.userId = userId
     }
 

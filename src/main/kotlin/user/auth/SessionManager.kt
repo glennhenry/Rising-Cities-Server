@@ -48,10 +48,10 @@ class SessionManager(
      * - duration of [validFor], default 1 hour
      * - lifetime of [lifetime], default 6 hours.
      */
-    fun create(userId: String, validFor: Duration = 1.hours, lifetime: Duration = 6.hours): UserSession {
+    fun create(userId: Long, validFor: Duration = 1.hours, lifetime: Duration = 6.hours): UserSession {
         val now = time.now()
 
-        val token = if (userId == AdminData.PLAYER_ID) {
+        val token = if (userId == AdminData.USER_ID) {
             AdminData.TOKEN
         } else {
             UUID.new()
