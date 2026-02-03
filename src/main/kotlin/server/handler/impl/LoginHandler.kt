@@ -1,15 +1,14 @@
 package server.handler.impl
 
 import annotation.RevisitLater
-import core.data.ResourceConstants
 import core.model.CityDTO
 import core.model.PlayerDTO
 import core.model.config.ConfigDTO
 import core.model.config.ConfigResourceDTO
+import core.model.constants.ResourceConstants
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
 import server.handler.HandlerContext
 import server.handler.SocketMessageHandler
 import server.messaging.ClientMessage
