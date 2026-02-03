@@ -39,23 +39,48 @@ fun Route.webLoginRoutes(serverContext: ServerContext, adminEnabled: Boolean) {
         val usernameExist = serverContext.authProvider.doesUsernameExist(username)
         if (usernameExist) {
             val loginResult = serverContext.authProvider.login(username, password)
-            Logger.info { "Web login result of username '$username': success=${loginResult.isSuccess}" }
-            val loginSession = loginResult.getOrNull()
-            val passwordRight = loginSession != null
-            if (passwordRight) {
-                call.respond(HttpStatusCode.OK, json.encodeToString(createLoginSuccessResponse(loginSession)))
-            } else {
+
+            if (loginResult.isFailure) {
+                Logger.info { "Web login failed for username '$username': ${loginResult.exceptionOrNull()?.message}" }
+
                 call.respond(
                     HttpStatusCode.Unauthorized,
-                    mapOf("reason" to "wrong password or account don't exist")
+                    mapOf("reason" to "login failed: ${loginResult.exceptionOrNull()?.message}")
                 )
+                return@post
+            } else {
+                val loginSession = loginResult.getOrNull()
+                val passwordRight = loginSession != null
+                if (passwordRight) {
+                    Logger.info { "Web login result of username '$username': success" }
+                    call.respond(HttpStatusCode.OK, json.encodeToString(createLoginSuccessResponse(loginSession)))
+                } else {
+                    Logger.info { "Web login result of username '$username': password wrong" }
+                    call.respond(
+                        HttpStatusCode.Unauthorized,
+                        mapOf("reason" to "wrong password or account don't exist")
+                    )
+                }
             }
         } else {
             val registerResult = serverContext.authProvider.register(username, password)
-            Logger.info { "Web register result of username '$username': success=${registerResult.isSuccess}" }
-            val session = registerResult.getOrNull()
-            if (session != null) {
-                call.respond(HttpStatusCode.OK, json.encodeToString(createLoginSuccessResponse(session)))
+
+            if (registerResult.isFailure) {
+                Logger.info { "Web register failed for username '$username': ${registerResult.exceptionOrNull()?.message}" }
+
+                call.respond(
+                    HttpStatusCode.Unauthorized,
+                    mapOf("reason" to "register failed: ${registerResult.exceptionOrNull()?.message}")
+                )
+                return@post
+            } else {
+                val session = registerResult.getOrNull()
+                if (session != null) {
+                    Logger.info { "Web register result of username '$username': success=${registerResult.isSuccess}" }
+                    call.respond(HttpStatusCode.OK, json.encodeToString(createLoginSuccessResponse(session)))
+                } else {
+                    Logger.info { "Web register success but session is null for '$username'" }
+                }
             }
         }
     }
@@ -131,5 +156,5 @@ fun generateClientContext(context: EventStreamClientContext): String {
 }
 
 fun populateFlashVars(userId: Long, sessionId: String, eventStream: String): FlashVars {
-    return FlashVars(uid = userId.toString(), sid = sessionId, eventStream = eventStream)
+    return FlashVars(uid = userId, sid = sessionId, eventStream = eventStream)
 }

@@ -24,7 +24,7 @@ class DefaultAuthProvider(
     override suspend fun login(username: String, password: String): Result<UserSession> {
         val result = playerAccountRepository.verifyCredentials(username, password)
         result.onFailure {
-            Logger.error { "Failure on verifyCredentials for username=$username: ${it.message}" }
+            Logger.error { "Failure on login for username=$username: ${it.message}" }
             return Result.failure(it)
         }
         return Result.success(sessionManager.create(result.getOrThrow()))

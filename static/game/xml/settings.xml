@@ -1,6 +1,6 @@
 <root>
     <language>en</language>
-    <uid>123456</uid>
+    <uid>1</uid>
     <server>localhost</server>
     <port>7777</port>
 </root>
