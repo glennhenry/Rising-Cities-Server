@@ -46,6 +46,10 @@ fun Route.apiRoutes() {
 
         call.respondText("OK", ContentType.Text.Plain, HttpStatusCode.OK)
     }
+
+    get("/stub") {
+        call.respondText("Stub page [unimplemented]")
+    }
 }
 
 fun decompress(bytes: ByteArray): String {
