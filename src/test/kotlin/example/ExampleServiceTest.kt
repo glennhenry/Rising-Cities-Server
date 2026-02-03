@@ -36,22 +36,22 @@ class ExampleServiceTest {
     @Test
     fun testServices() = runTest {
         val mockRepo = object : ExampleRepository {
-            override suspend fun getStrData(playerId: String) = Result.success("s1")
-            override suspend fun getIntData(playerId: String) = Result.success(1)
-            override suspend fun getOneFromManyStrData(playerId: String, s: String) = Result.success("s2")
-            override suspend fun getAllStrData(playerId: String) = Result.success(listOf("s3", "s4"))
-            override suspend fun updateStrData(playerId: String, newStrData: String): Result<Unit> {
+            override suspend fun getStrData(userId: String) = Result.success("s1")
+            override suspend fun getIntData(userId: String) = Result.success(1)
+            override suspend fun getOneFromManyStrData(userId: String, s: String) = Result.success("s2")
+            override suspend fun getAllStrData(userId: String) = Result.success(listOf("s3", "s4"))
+            override suspend fun updateStrData(userId: String, newStrData: String): Result<Unit> {
                 TODO()
             }
 
-            override suspend fun updateIntData(playerId: String, newIntData: Int) = Result.success(Unit)
+            override suspend fun updateIntData(userId: String, newIntData: Int) = Result.success(Unit)
             override suspend fun updateOneFromManyStrData(
-                playerId: String,
+                userId: String,
                 oldOneStrData: String,
                 newOneStrData: String
             ) = TODO()
 
-            override suspend fun updateAllStrData(playerId: String, newManyStrData: List<String>) = TODO()
+            override suspend fun updateAllStrData(userId: String, newManyStrData: List<String>) = TODO()
         }
         // ExampleService doesn't have complicated logic, so realistically no need to be tested.
         // but here we try to test init just for demonstration
@@ -88,7 +88,7 @@ class ExampleServiceTest {
 
         // insert base data
         val baseData = ExampleModel(
-            playerId = "pid123",
+            userId = "pid123",
             strData = "hello",
             intData = 42,
             manyStrData = listOf("a", "b", "c")
@@ -123,7 +123,7 @@ class ExampleServiceTest {
 }
 
 data class ExampleModel(
-    val playerId: String,
+    val userId: String,
     val strData: String,
     val intData: Int,
     val manyStrData: List<String>
@@ -138,33 +138,33 @@ data class ExampleModel(
  * Use the return type as `Result<T>` or `Unit` if it doesn't have a return type.
  */
 interface ExampleRepository {
-    suspend fun getStrData(playerId: String): Result<String>
-    suspend fun getIntData(playerId: String): Result<Int>
-    suspend fun getOneFromManyStrData(playerId: String, s: String): Result<String>
-    suspend fun getAllStrData(playerId: String): Result<List<String>>
+    suspend fun getStrData(userId: String): Result<String>
+    suspend fun getIntData(userId: String): Result<Int>
+    suspend fun getOneFromManyStrData(userId: String, s: String): Result<String>
+    suspend fun getAllStrData(userId: String): Result<List<String>>
 
-    suspend fun updateStrData(playerId: String, newStrData: String): Result<Unit>
-    suspend fun updateIntData(playerId: String, newIntData: Int): Result<Unit>
-    suspend fun updateOneFromManyStrData(playerId: String, oldOneStrData: String, newOneStrData: String): Result<Unit>
-    suspend fun updateAllStrData(playerId: String, newManyStrData: List<String>): Result<Unit>
+    suspend fun updateStrData(userId: String, newStrData: String): Result<Unit>
+    suspend fun updateIntData(userId: String, newIntData: Int): Result<Unit>
+    suspend fun updateOneFromManyStrData(userId: String, oldOneStrData: String, newOneStrData: String): Result<Unit>
+    suspend fun updateAllStrData(userId: String, newManyStrData: List<String>): Result<Unit>
 }
 
 /**
  * [ExampleRepository] implementation with MongoDB.
  */
 class ExampleRepositoryMongo(val data: MongoCollection<ExampleModel>) : ExampleRepository {
-    override suspend fun getStrData(playerId: String): Result<String> {
+    override suspend fun getStrData(userId: String): Result<String> {
         return runMongoCatching {
-            val filter = Filters.eq("playerId", playerId)
+            val filter = Filters.eq("userId", userId)
             data.find(filter)
                 .firstOrNull()
                 ?.strData
         }
     }
 
-    override suspend fun getIntData(playerId: String): Result<Int> {
+    override suspend fun getIntData(userId: String): Result<Int> {
         return runMongoCatching {
-            val filter = Filters.eq("playerId", playerId)
+            val filter = Filters.eq("userId", userId)
             data.find(filter)
                 .firstOrNull()
                 ?.intData
@@ -172,11 +172,11 @@ class ExampleRepositoryMongo(val data: MongoCollection<ExampleModel>) : ExampleR
     }
 
     override suspend fun getOneFromManyStrData(
-        playerId: String,
+        userId: String,
         s: String
     ): Result<String> {
         return runMongoCatching {
-            val filter = Filters.eq("playerId", playerId)
+            val filter = Filters.eq("userId", userId)
             data.find(filter)
                 .firstOrNull()
                 ?.manyStrData
@@ -184,62 +184,62 @@ class ExampleRepositoryMongo(val data: MongoCollection<ExampleModel>) : ExampleR
         }
     }
 
-    override suspend fun getAllStrData(playerId: String): Result<List<String>> {
+    override suspend fun getAllStrData(userId: String): Result<List<String>> {
         return runMongoCatching {
-            val filter = Filters.eq("playerId", playerId)
+            val filter = Filters.eq("userId", userId)
             data.find(filter)
                 .firstOrNull()
                 ?.manyStrData
         }
     }
 
-    override suspend fun updateStrData(playerId: String, newStrData: String): Result<Unit> {
+    override suspend fun updateStrData(userId: String, newStrData: String): Result<Unit> {
         return runMongoCatching {
-            val filter = Filters.eq("playerId", playerId)
+            val filter = Filters.eq("userId", userId)
             val update = Updates.set("strData", newStrData)
 
             val result = data.updateOne(filter, update)
-            result.throwIfNotModified(playerId)
+            result.throwIfNotModified(userId)
         }
     }
 
-    override suspend fun updateIntData(playerId: String, newIntData: Int): Result<Unit> {
+    override suspend fun updateIntData(userId: String, newIntData: Int): Result<Unit> {
         return runMongoCatching {
-            val filter = Filters.eq("playerId", playerId)
+            val filter = Filters.eq("userId", userId)
             val update = Updates.set("intData", newIntData)
 
             val result = data.updateOne(filter, update)
-            result.throwIfNotModified(playerId)
+            result.throwIfNotModified(userId)
         }
     }
 
     override suspend fun updateOneFromManyStrData(
-        playerId: String,
+        userId: String,
         oldOneStrData: String,
         newOneStrData: String
     ): Result<Unit> {
         return runMongoCatching {
             val filter = Filters.and(
-                Filters.eq("playerId", playerId),
+                Filters.eq("userId", userId),
                 Filters.eq("manyStrData", oldOneStrData),
             )
             val update = Updates.set("manyStrData.$", newOneStrData)
 
             val result = data.updateOne(filter, update)
-            result.throwIfNotModified(playerId)
+            result.throwIfNotModified(userId)
         }
     }
 
     override suspend fun updateAllStrData(
-        playerId: String,
+        userId: String,
         newManyStrData: List<String>
     ): Result<Unit> {
         return runMongoCatching {
-            val filter = Filters.eq("playerId", playerId)
+            val filter = Filters.eq("userId", userId)
             val update = Updates.set("manyStrData", newManyStrData)
 
             val result = data.updateOne(filter, update)
-            result.throwIfNotModified(playerId)
+            result.throwIfNotModified(userId)
         }
     }
 }
@@ -248,7 +248,7 @@ class ExampleRepositoryMongo(val data: MongoCollection<ExampleModel>) : ExampleR
  * Example service class holding a repository contract.
  */
 class ExampleService(private val exampleRepository: ExampleRepository) : PlayerService {
-    private lateinit var playerId: String
+    private lateinit var userId: String
     private var strData: String = ""
     private var intData: Int = 0
     private val manyStrData = mutableListOf<String>()
@@ -267,7 +267,7 @@ class ExampleService(private val exampleRepository: ExampleRepository) : PlayerS
     }
 
     suspend fun updateStrData(s: String): Result<Unit> {
-        val result = exampleRepository.updateStrData(playerId, s)
+        val result = exampleRepository.updateStrData(userId, s)
         result.onFailure {
             Logger.error { "Error on ExampleService-updateStrData: ${it.message}" }
         }
@@ -278,7 +278,7 @@ class ExampleService(private val exampleRepository: ExampleRepository) : PlayerS
     }
 
     suspend fun updateIntData(i: Int): Result<Unit> {
-        val result = exampleRepository.updateIntData(playerId, i)
+        val result = exampleRepository.updateIntData(userId, i)
         result.onFailure {
             Logger.error { "Error on ExampleService-updateIntData: ${it.message}" }
         }
@@ -289,7 +289,7 @@ class ExampleService(private val exampleRepository: ExampleRepository) : PlayerS
     }
 
     suspend fun updateOneManyStrData(old: String, new: String): Result<Unit> {
-        val result = exampleRepository.updateOneFromManyStrData(playerId, old, new)
+        val result = exampleRepository.updateOneFromManyStrData(userId, old, new)
         result.onFailure {
             Logger.error { "Error on ExampleService-updateOneManyStrData: ${it.message}" }
         }
@@ -301,7 +301,7 @@ class ExampleService(private val exampleRepository: ExampleRepository) : PlayerS
     }
 
     suspend fun updateAllManyStrData(m: List<String>): Result<Unit> {
-        val result = exampleRepository.updateAllStrData(playerId, m)
+        val result = exampleRepository.updateAllStrData(userId, m)
         result.onFailure {
             Logger.error { "Error on ExampleService-updateAllManyStrData: ${it.message}" }
         }
@@ -312,14 +312,14 @@ class ExampleService(private val exampleRepository: ExampleRepository) : PlayerS
         return result
     }
 
-    override suspend fun init(playerId: String): Result<Unit> {
+    override suspend fun init(userId: String): Result<Unit> {
         return runCatching {
-            this.playerId = playerId
-            this.strData = exampleRepository.getStrData(playerId).getOrThrow()
-            this.intData = exampleRepository.getIntData(playerId).getOrThrow()
-            this.manyStrData.addAll(exampleRepository.getAllStrData(playerId).getOrThrow())
+            this.userId = userId
+            this.strData = exampleRepository.getStrData(userId).getOrThrow()
+            this.intData = exampleRepository.getIntData(userId).getOrThrow()
+            this.manyStrData.addAll(exampleRepository.getAllStrData(userId).getOrThrow())
         }
     }
 
-    override suspend fun close(playerId: String): Result<Unit> = Result.success(Unit)
+    override suspend fun close(userId: String): Result<Unit> = Result.success(Unit)
 }

@@ -19,31 +19,31 @@ class DefaultContextTracker: ContextTracker {
      * This function loads the player's account from the [Database], initializes
      * the associated [PlayerServices], and stores the resulting context in [players].
      *
-     * @param playerId The unique identifier of the player.
+     * @param userId The unique identifier of the player.
      * @param connection The player's active network [Connection].
      * @param db The [Database] instance used to load account data and initialize services.
      *
      * @throws IllegalArgumentException If the player's account data cannot be found.
      */
     override suspend fun createContext(
-        playerId: String,
+        userId: String,
         connection: Connection,
         db: Database
     ) {
         val playerAccount =
-            requireNotNull(db.loadPlayerAccount(playerId)) { "Missing PlayerAccount for playerId=$playerId" }
+            requireNotNull(db.loadPlayerAccount(userId)) { "Missing PlayerAccount for userId=$userId" }
 
         val context = PlayerContext(
-            playerId = playerId,
+            userId = userId,
             connection = connection,
             account = playerAccount,
-            services = initializeServices(playerId, db)
+            services = initializeServices(userId, db)
         )
-        players[playerId] = context
+        players[userId] = context
     }
 
     private suspend fun initializeServices(
-        playerId: String,
+        userId: String,
         db: Database,
     ): PlayerServices {
         val playerDataCollection = db.getCollection<MongoCollection<PlayerData>>("player_data")
@@ -53,12 +53,12 @@ class DefaultContextTracker: ContextTracker {
         )
     }
 
-    override fun getContext(playerId: String): PlayerContext? {
-        return players[playerId]
+    override fun getContext(userId: String): PlayerContext? {
+        return players[userId]
     }
 
-    override fun removeContext(playerId: String) {
-        players.remove(playerId)
+    override fun removeContext(userId: String) {
+        players.remove(userId)
     }
 
     override suspend fun shutdown() {

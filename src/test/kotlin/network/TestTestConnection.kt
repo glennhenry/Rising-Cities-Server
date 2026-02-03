@@ -15,7 +15,7 @@ class TestTestConnection {
     fun testConnection() = runTest {
         val conn = TestConnection(
             connectionScope = CoroutineScope(StandardTestDispatcher()),
-            playerId = "p1",
+            userId = "p1",
             playerName = "Alice"
         )
         conn.enqueueIncoming("Hello".toByteArray())

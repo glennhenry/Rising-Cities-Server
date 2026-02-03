@@ -80,21 +80,21 @@ data class ServerContext(
 }
 
 /**
- * Retrieve the [PlayerContext] of [playerId].
+ * Retrieve the [PlayerContext] of [userId].
  *
  * @return `null` if context is not found.
  */
-fun ServerContext.getPlayerContextOrNull(playerId: String): PlayerContext? =
-    contextTracker.getContext(playerId)
+fun ServerContext.getPlayerContextOrNull(userId: String): PlayerContext? =
+    contextTracker.getContext(userId)
 
 /**
- * Retrieve the non-null [PlayerContext] of [playerId].
+ * Retrieve the non-null [PlayerContext] of [userId].
  *
  * @throws IllegalStateException if context is not found.
  */
-fun ServerContext.requirePlayerContext(playerId: String): PlayerContext =
-    getPlayerContextOrNull(playerId)
-        ?: error("PlayerContext not found for playerId=$playerId")
+fun ServerContext.requirePlayerContext(userId: String): PlayerContext =
+    getPlayerContextOrNull(userId)
+        ?: error("PlayerContext not found for userId=$userId")
 
 /**
  * A container that holds all **global service instances** used by the server.

@@ -14,8 +14,8 @@ import data.collection.ServerData
  * - [ServerData]   : server-wide data.
  */
 interface Database {
-    suspend fun loadPlayerAccount(playerId: String): PlayerAccount?
-    suspend fun loadPlayerData(playerId: String): PlayerData?
+    suspend fun loadPlayerAccount(userId: String): PlayerAccount?
+    suspend fun loadPlayerData(userId: String): PlayerData?
     suspend fun loadServerData(): ServerData
 
     /**
@@ -31,7 +31,7 @@ interface Database {
      * Implementor should populate all three collections for the new player.
      * May throw error if insert is failed.
      *
-     * @return playerId (UUID) of the newly created player.
+     * @return userId (UUID) of the newly created player.
      */
     suspend fun createPlayer(username: String, password: String): String
 

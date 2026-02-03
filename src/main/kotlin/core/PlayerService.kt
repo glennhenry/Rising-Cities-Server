@@ -17,17 +17,17 @@ package core
  */
 interface PlayerService {
     /**
-     * Initializes the service for the specified [playerId].
+     * Initializes the service for the specified [userId].
      *
      * This method should be used to load or prepare all data related to the player
      * in this service's domain.
      *
      * @return An empty result just for denoting success or failure.
      */
-    suspend fun init(playerId: String): Result<Unit>
+    suspend fun init(userId: String): Result<Unit>
 
     /**
-     * Closes the service for the specified [playerId].
+     * Closes the service for the specified [userId].
      *
      * This method is called when the player logs off or disconnects.
      * It should synchronize any in-memory state with persistent storage
@@ -35,5 +35,5 @@ interface PlayerService {
      *
      * @return An empty result just for denoting success or failure.
      */
-    suspend fun close(playerId: String): Result<Unit>
+    suspend fun close(userId: String): Result<Unit>
 }

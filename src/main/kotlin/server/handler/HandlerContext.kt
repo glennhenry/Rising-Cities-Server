@@ -6,12 +6,12 @@ import server.messaging.socket.SocketMessage
 /**
  * Encapsulate objects and data needed by handlers to handle message.
  *
- * @property playerId The player in-game unique identifier.
+ * @property userId The player in-game unique identifier.
  * @property message High-level representation of the socket message.
  * @param T Concrete implementation of [SocketMessage] interface.
  */
 interface HandlerContext<T : SocketMessage> {
-    var playerId: String
+    var userId: String
     val message: T
 
     /**
@@ -23,7 +23,7 @@ interface HandlerContext<T : SocketMessage> {
     suspend fun sendRaw(raw: ByteArray, logOutput: Boolean = true, logFull: Boolean = false)
 
     /**
-     * To update the playerId for this connection (usually goes through [Connection.updatePlayerId]).
+     * To update the userId for this connection (usually goes through [Connection.updateUserId]).
      */
-    fun updatePlayerId(playerId: String)
+    fun updateUserId(userId: String)
 }

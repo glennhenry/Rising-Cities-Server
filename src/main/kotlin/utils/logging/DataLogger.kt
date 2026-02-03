@@ -18,7 +18,7 @@ const val TELEMETRY_DIRECTORY = ".telemetry"
  * Typical usage example:
  * ```kotlin
  * DataLogger.event("BuildingTask")
- *     .playerId("p1234")
+ *     .userId("p1234")
  *     .username("PlayerABC")
  *     .data("buildingId", "bld_woodcutter_01")
  *     .data("durationSec", 120)
@@ -40,7 +40,7 @@ object DataLogger {
      * Example:
      * ```kotlin
      * val log = DataLogger.event("PlayerLogin")
-     *     .playerId("p1234")
+     *     .userId("p1234")
      *     .data("ip", "127.0.0.1")
      *     .log()
      * ```
@@ -56,18 +56,18 @@ object DataLogger {
  */
 class DataLogBuilder(private val name: String) {
     private val data = mutableMapOf<String, Any>()
-    private var playerId: String = "[Undefined]"
+    private var userId: String = "[Undefined]"
     private var username: String = "[Undefined]"
     private var text: String = ""
     private val logJsonBuilder = Json { prettyPrint = false }
     private val recordJsonBuilder = Json { prettyPrint = true }
 
     /**
-     * Sets the `playerId` associated with this log entry.
+     * Sets the `userId` associated with this log entry.
      *
      * If not provided, defaults to `"[Undefined]"`.
      */
-    fun playerId(id: String) = apply { playerId = id }
+    fun userId(id: String) = apply { userId = id }
 
     /**
      * Sets the `username` associated with this log entry.
@@ -84,11 +84,11 @@ class DataLogBuilder(private val name: String) {
     /**
      * Adds or overwrites a key-value pair in this log entry.
      *
-     * Inputting `playerId` as key will automatically overwrite the [playerId].
+     * Inputting `userId` as key will automatically overwrite the [userId].
      */
     fun data(key: String, value: Any) = apply {
-        if (key.equals("playerId", ignoreCase = true)) {
-            playerId = value.toString()
+        if (key.equals("userId", ignoreCase = true)) {
+            userId = value.toString()
         } else if (key.equals("username", ignoreCase = true)) {
             username = value.toString()
         } else {
@@ -163,7 +163,7 @@ class DataLogBuilder(private val name: String) {
             } else {
                 append("[Event:$name] $text ")
             }
-            append(logJsonBuilder.encodeToString(LogEvent(playerId, username, data)))
+            append(logJsonBuilder.encodeToString(LogEvent(userId, username, data)))
         }
         return content
     }
@@ -174,14 +174,14 @@ class DataLogBuilder(private val name: String) {
      * This is the preferred representation for telemetry recording.
      */
     fun asJson(): String {
-        return recordJsonBuilder.encodeToString(TelemetryEvent(name, playerId, username, data))
+        return recordJsonBuilder.encodeToString(TelemetryEvent(name, userId, username, data))
     }
 }
 
 @Serializable
 data class TelemetryEvent(
     val event: String,
-    val playerId: String,
+    val userId: String,
     val username: String,
     @Serializable(with = AnyMapSerializerStrict::class)
     val data: Map<String, Any> = emptyMap()
@@ -189,7 +189,7 @@ data class TelemetryEvent(
 
 @Serializable
 data class LogEvent(
-    val playerId: String,
+    val userId: String,
     val username: String,
     @Serializable(with = AnyMapSerializerReadable::class)
     val data: Map<String, Any> = emptyMap()

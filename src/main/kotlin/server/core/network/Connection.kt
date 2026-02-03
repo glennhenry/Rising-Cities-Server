@@ -10,13 +10,13 @@ import kotlinx.coroutines.CoroutineScope
  *
  * @property remoteAddress The IP address or network identifier of the client.
  * @property connectionScope The coroutine scope with this connection.
- * @property playerId The in-game identifier of the connected player.
+ * @property userId The in-game identifier of the connected player.
  * @property playerName The display name or username associated with the player.
  */
 interface Connection {
     val remoteAddress: String
     val connectionScope: CoroutineScope
-    var playerId: String
+    var userId: String
     var playerName: String
 
     /**
@@ -38,9 +38,9 @@ interface Connection {
     suspend fun write(input: ByteArray, logOutput: Boolean = true, logFull: Boolean = false)
 
     /**
-     * To update the playerId for this connection.
+     * To update the userId for this connection.
      */
-    fun updatePlayerId(playerId: String)
+    fun updateUserId(userId: String)
 
     /**
      * Closes the connection and releases any associated resources.

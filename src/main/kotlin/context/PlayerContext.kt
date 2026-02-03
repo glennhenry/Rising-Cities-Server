@@ -16,7 +16,7 @@ import core.PlayerService
  * successfully authenticates. Context creation is handled by [ContextTracker].
  */
 data class PlayerContext(
-    val playerId: String,
+    val userId: String,
     val connection: Connection,
     val account: PlayerAccount,
     val services: PlayerServices

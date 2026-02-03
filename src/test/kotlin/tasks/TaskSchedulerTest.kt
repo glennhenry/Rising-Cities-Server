@@ -27,7 +27,7 @@ import kotlin.time.Duration.Companion.seconds
  */
 @Ignore("slow, real-time timer")
 class TaskSchedulerTest {
-    private val PID = "playerId123"
+    private val PID = "userId123"
     private val NAME = "PlayerABC"
 
     @Test
@@ -39,9 +39,9 @@ class TaskSchedulerTest {
         dispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = { ExampleTaskStopParameter() },
-            deriveTaskId = { playerId: String, name, _ ->
+            deriveTaskId = { userId: String, name, _ ->
                 // "DN-pid123-unit
-                "${name.code}-$playerId-unit"
+                "${name.code}-$userId-unit"
             }
         )
 
@@ -59,7 +59,7 @@ class TaskSchedulerTest {
         )
 
         assertTrue(
-            dispatcher.getAllRunningTaskFor(playerId = PID)
+            dispatcher.getAllRunningTaskFor(userId = PID)
                 .find { it.name == TaskName.DummyName.code } != null
         )
     }
@@ -73,9 +73,9 @@ class TaskSchedulerTest {
         dispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = { ExampleTaskStopParameter() },
-            deriveTaskId = { playerId: String, name, _ ->
+            deriveTaskId = { userId: String, name, _ ->
                 // "DN-pid123-unit
-                "${name.code}-$playerId-unit"
+                "${name.code}-$userId-unit"
             }
         )
 
@@ -102,7 +102,7 @@ class TaskSchedulerTest {
         )
 
         assertNull(
-            dispatcher.getAllRunningTaskFor(playerId = PID)
+            dispatcher.getAllRunningTaskFor(userId = PID)
                 .find { it.name == TaskName.DummyName.code }
         )
     }
@@ -116,9 +116,9 @@ class TaskSchedulerTest {
         dispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = { ExampleTaskStopParameter() },
-            deriveTaskId = { playerId: String, name, _ ->
+            deriveTaskId = { userId: String, name, _ ->
                 // "DN-pid123-unit
-                "${name.code}-$playerId-unit"
+                "${name.code}-$userId-unit"
             }
         )
 
@@ -159,9 +159,9 @@ class TaskSchedulerTest {
         dispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = { ExampleTaskStopParameter() },
-            deriveTaskId = { playerId: String, name, _ ->
+            deriveTaskId = { userId: String, name, _ ->
                 // "DN-pid123-unit
-                "${name.code}-$playerId-unit"
+                "${name.code}-$userId-unit"
             }
         )
 
@@ -205,9 +205,9 @@ class TaskSchedulerTest {
         dispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = { ExampleTaskStopParameter() },
-            deriveTaskId = { playerId: String, name, _ ->
+            deriveTaskId = { userId: String, name, _ ->
                 // "DN-pid123-unit
-                "${name.code}-$playerId-unit"
+                "${name.code}-$userId-unit"
             }
         )
 
@@ -253,9 +253,9 @@ class TaskSchedulerTest {
         dispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = { ExampleTaskStopParameter() },
-            deriveTaskId = { playerId: String, name, _ ->
+            deriveTaskId = { userId: String, name, _ ->
                 // "DN-pid123-unit
-                "${name.code}-$playerId-unit"
+                "${name.code}-$userId-unit"
             }
         )
 
@@ -299,9 +299,9 @@ class TaskSchedulerTest {
         dispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = { ExampleTaskStopParameter() },
-            deriveTaskId = { playerId: String, name, _ ->
+            deriveTaskId = { userId: String, name, _ ->
                 // "DN-pid123-unit
-                "${name.code}-$playerId-unit"
+                "${name.code}-$userId-unit"
             }
         )
 
@@ -347,9 +347,9 @@ class TaskSchedulerTest {
         dispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = { ExampleTaskStopParameter() },
-            deriveTaskId = { playerId: String, name, _ ->
+            deriveTaskId = { userId: String, name, _ ->
                 // "DN-pid123-unit
-                "${name.code}-$playerId-unit"
+                "${name.code}-$userId-unit"
             }
         )
 
@@ -392,7 +392,7 @@ class TaskSchedulerTest {
 
     private fun createConnection(scope: CoroutineScope): TestConnection {
         return TestConnection(
-            playerId = PID,
+            userId = PID,
             playerName = NAME,
             connectionScope = scope
         )

@@ -42,15 +42,15 @@ import kotlin.test.assertEquals
 class ExampleHandlerTest {
     @Test
     fun testHandler1() = runTest {
-        val playerId = "pid123"
+        val userId = "pid123"
         val playerName = "player123"
 
         // encapsulate every state
         val state = HandlerTestState(
-            playerId = playerId,
+            userId = userId,
             playerName = playerName,
             message = ExampleMessage2(payload = "MSG1.EX.hello.world.kotlin.ktor"),
-            account = PlayerAccount.fake(playerId, playerName),
+            account = PlayerAccount.fake(userId, playerName),
             services = PlayerServices(),
             connectionScope = CoroutineScope(StandardTestDispatcher())
         )
@@ -66,15 +66,15 @@ class ExampleHandlerTest {
 
     @Test
     fun testHandler2() = runTest {
-        val playerId = "pid123"
+        val userId = "pid123"
         val playerName = "player123"
 
         // encapsulate every state
         val state = HandlerTestState(
-            playerId = playerId,
+            userId = userId,
             playerName = playerName,
             message = ExampleMessage2(payload = "MSG1.EX.hello.world.kotlin|ktor"),
-            account = PlayerAccount.fake(playerId, playerName),
+            account = PlayerAccount.fake(userId, playerName),
             services = PlayerServices(),
             connectionScope = CoroutineScope(StandardTestDispatcher())
         )

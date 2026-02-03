@@ -33,13 +33,13 @@ fun Route.apiRoutes() {
     post("/debug") {
         val params = call.receiveParameters()
 
-        val playerId = params["playerId"]
+        val userId = params["userId"]
         val message = params["message"]
         val logLevel = params["logLevel"]
 
         Logger.debug(logFull = false) {
             buildString {
-                appendLine("POST to /debug (playerId=$playerId, logLevel=$logLevel)")
+                appendLine("POST to /debug (userId=$userId, logLevel=$logLevel)")
                 appendLine(message)
             }
         }

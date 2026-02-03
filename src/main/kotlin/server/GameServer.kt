@@ -108,7 +108,7 @@ class GameServer(
                         return@launch
                     }
 
-                    serverContext.onlinePlayerRegistry.updateLastActivity(connection.playerId)
+                    serverContext.onlinePlayerRegistry.updateLastActivity(connection.userId)
 
                     // start handle
                     var msgType = "[Undetermined]"
@@ -121,7 +121,7 @@ class GameServer(
                         buildString {
                             appendLine("<===== [SOCKET END]")
                             appendLine("$LOG_INDENT_PREFIX type      : $msgType")
-                            appendLine("$LOG_INDENT_PREFIX playerId  : ${connection.playerId}")
+                            appendLine("$LOG_INDENT_PREFIX userId  : ${connection.userId}")
                             appendLine("$LOG_INDENT_PREFIX duration  : ${elapsed}ms")
                             append("====================================================================================================")
                         }
@@ -132,12 +132,12 @@ class GameServer(
             } finally {
                 Logger.info { "Cleaning up for $connection" }
 
-                // Only perform cleanup if playerId is set (client was authenticated)
-                if (connection.playerId != "[Undetermined]") {
-                    serverContext.onlinePlayerRegistry.markOffline(connection.playerId)
-                    serverContext.playerAccountRepository.updateLastLogin(connection.playerId, getTimeMillis())
-                    serverContext.contextTracker.removeContext(connection.playerId)
-                    serverContext.taskDispatcher.stopAllTasksForPlayer(connection.playerId)
+                // Only perform cleanup if userId is set (client was authenticated)
+                if (connection.userId != "[Undetermined]") {
+                    serverContext.onlinePlayerRegistry.markOffline(connection.userId)
+                    serverContext.playerAccountRepository.updateLastLogin(connection.userId, getTimeMillis())
+                    serverContext.contextTracker.removeContext(connection.userId)
+                    serverContext.taskDispatcher.stopAllTasksForPlayer(connection.userId)
                 }
 
                 connection.shutdown()
@@ -183,7 +183,7 @@ class GameServer(
         Logger.debug {
             buildString {
                 appendLine("=====> [SOCKET RECEIVE]")
-                appendLine("$LOG_INDENT_PREFIX playerId  : ${connection.playerId}")
+                appendLine("$LOG_INDENT_PREFIX userId  : ${connection.userId}")
                 appendLine("$LOG_INDENT_PREFIX bytes     : ${data.size}")
                 appendLine("$LOG_INDENT_PREFIX raw       : ${data.safeAsciiString()}")
                 append("$LOG_INDENT_PREFIX raw (hex) : ${data.hexAsciiString()}")
@@ -237,7 +237,7 @@ class GameServer(
         socketDispatcher.findHandlerFor(message).forEach { handler ->
             val context = DefaultHandlerContext(
                 connection = connection,
-                playerId = connection.playerId,
+                userId = connection.userId,
                 message = message
             )
 

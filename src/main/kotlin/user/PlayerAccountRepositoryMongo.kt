@@ -22,22 +22,22 @@ class PlayerAccountRepositoryMongo(val accountCollection: MongoCollection<Player
         }
     }
 
-    override suspend fun getPlayerAccountById(playerId: String): Result<PlayerAccount> {
+    override suspend fun getPlayerAccountById(userId: String): Result<PlayerAccount> {
         return runMongoCatching {
             accountCollection
-                .find(Filters.eq("playerId", playerId))
+                .find(Filters.eq("userId", userId))
                 .projection(null)
                 .firstOrNull()
         }
     }
 
-    override suspend fun getPlayerIdFromName(username: String): Result<String> {
+    override suspend fun getUserIdFromName(username: String): Result<String> {
         return runMongoCatching {
             accountCollection
                 .find(Filters.eq("profile.displayName", username))
                 .projection(null)
                 .firstOrNull()
-                ?.playerId
+                ?.userId
         }
     }
 
@@ -78,22 +78,22 @@ class PlayerAccountRepositoryMongo(val accountCollection: MongoCollection<Player
     }
 
     override suspend fun updatePlayerAccount(
-        playerId: String,
+        userId: String,
         account: PlayerAccount
     ): Result<Unit> {
         return runMongoCatching {
-            val result = accountCollection.replaceOne(Filters.eq("playerId", playerId), account)
-            result.throwIfNotModified(playerId, "PlayerAccount updatePlayerAccount")
+            val result = accountCollection.replaceOne(Filters.eq("userId", userId), account)
+            result.throwIfNotModified(userId, "PlayerAccount updatePlayerAccount")
         }
     }
 
-    override suspend fun updateLastLogin(playerId: String, lastLogin: Long): Result<Unit> {
+    override suspend fun updateLastLogin(userId: String, lastLogin: Long): Result<Unit> {
         return runMongoCatching {
             val result = accountCollection.updateOne(
-                Filters.eq("playerId", playerId),
+                Filters.eq("userId", userId),
                 Updates.set("profile.lastLogin", lastLogin)
             )
-            result.throwIfNotModified(playerId, "PlayerAccount updateLastLogin")
+            result.throwIfNotModified(userId, "PlayerAccount updateLastLogin")
         }
     }
 
@@ -102,16 +102,16 @@ class PlayerAccountRepositoryMongo(val accountCollection: MongoCollection<Player
             val doc = accountCollection
                 .withDocumentClass<Document>()
                 .find(Filters.eq("profile.displayName", username))
-                .projection(Projections.include("hashedPassword", "playerId"))
+                .projection(Projections.include("hashedPassword", "userId"))
                 .firstOrNull()
 
             if (doc == null) return@runMongoCatching null
 
             val hashed = doc.getString("hashedPassword")
-            val playerId = doc.getString("playerId")
+            val userId = doc.getString("userId")
             val matches = Bcrypt.verify(password, Base64.decode(hashed))
 
-            if (matches) playerId else null
+            if (matches) userId else null
         }
     }
 }

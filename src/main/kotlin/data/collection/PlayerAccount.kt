@@ -10,7 +10,7 @@ import user.model.UserProfile
  */
 @Serializable
 data class PlayerAccount(
-    val playerId: String,
+    val userId: String,
     val hashedPassword: String,
     val profile: UserProfile,
     val metadata: ServerMetadata
@@ -18,7 +18,7 @@ data class PlayerAccount(
     companion object {
         fun admin(): PlayerAccount {
             return PlayerAccount(
-                playerId = AdminData.PLAYER_ID,
+                userId = AdminData.PLAYER_ID,
                 hashedPassword = AdminData.HASHED_PASSWORD,
                 profile = UserProfile.admin(),
                 metadata = ServerMetadata()
@@ -28,11 +28,11 @@ data class PlayerAccount(
         /**
          * Create a fake account where password is [AdminData.PASSWORD].
          */
-        fun fake(playerId: String, username: String): PlayerAccount {
+        fun fake(userId: String, username: String): PlayerAccount {
             return PlayerAccount(
-                playerId = playerId,
+                userId = userId,
                 hashedPassword = AdminData.HASHED_PASSWORD,
-                profile = UserProfile.default(playerId, username),
+                profile = UserProfile.default(userId, username),
                 metadata = ServerMetadata()
             )
         }

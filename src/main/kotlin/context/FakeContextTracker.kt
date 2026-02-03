@@ -13,18 +13,18 @@ import java.util.concurrent.ConcurrentHashMap
 class FakeContextTracker : ContextTracker {
     val players = ConcurrentHashMap<String, PlayerContext>()
 
-    override suspend fun createContext(playerId: String, connection: Connection, db: Database) = TODO("SHOULD NOT BE USED")
+    override suspend fun createContext(userId: String, connection: Connection, db: Database) = TODO("SHOULD NOT BE USED")
 
     fun fakeContext(ctx: PlayerContext) {
-        players[ctx.playerId] = ctx
+        players[ctx.userId] = ctx
     }
 
-    override fun getContext(playerId: String): PlayerContext? {
-        return players.get(playerId)
+    override fun getContext(userId: String): PlayerContext? {
+        return players.get(userId)
     }
 
-    override fun removeContext(playerId: String) {
-        players.remove(playerId)
+    override fun removeContext(userId: String) {
+        players.remove(userId)
     }
 
     override suspend fun shutdown() = Unit

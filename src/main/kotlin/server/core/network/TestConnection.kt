@@ -17,7 +17,7 @@ import kotlin.time.Duration.Companion.seconds
  * ```
  * val conn = TestConnection(
  *     connectionScope = CoroutineScope(StandardTestDispatcher()),
- *     playerId = "p1",
+ *     userId = "p1",
  *     playerName = "Alice"
  * )
  * conn.enqueueIncoming("Hello".toByteArray())
@@ -32,7 +32,7 @@ import kotlin.time.Duration.Companion.seconds
 class TestConnection(
     override val remoteAddress: String = "",
     override val connectionScope: CoroutineScope,
-    override var playerId: String,
+    override var userId: String,
     override var playerName: String
 ) : Connection {
     private val incoming = Channel<ByteArray>(Channel.UNLIMITED)
@@ -70,13 +70,13 @@ class TestConnection(
         writtenBytes += input
     }
 
-    override fun updatePlayerId(playerId: String) {
-        this.playerId = playerId
+    override fun updateUserId(userId: String) {
+        this.userId = userId
     }
 
     override suspend fun shutdown() {
         incoming.close()
     }
 
-    override fun toString(): String = "TestConnection(playerId=$playerId, playerName=$playerName)"
+    override fun toString(): String = "TestConnection(userId=$userId, playerName=$playerName)"
 }

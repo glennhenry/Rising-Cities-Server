@@ -6,18 +6,18 @@ import core.data.AdminData
  * Database-level representation of a player's game data.
  */
 data class PlayerData(
-    val playerId: String,
+    val userId: String,
 ) {
     companion object {
         fun admin(): PlayerData {
             return PlayerData(
-                playerId = AdminData.PLAYER_ID
+                userId = AdminData.PLAYER_ID
             )
         }
 
-        fun newGame(playerId: String): PlayerData {
+        fun newGame(userId: String): PlayerData {
             return PlayerData(
-                playerId = playerId
+                userId = userId
             )
         }
     }

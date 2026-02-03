@@ -21,7 +21,7 @@ import kotlin.time.toDuration
  *
  * @property runningInstances Map of task IDs to currently running [TaskInstance]s.
  * @property taskIdDerivers  Map of each [TaskName] string to a function capable of deriving a task ID
- *                           from a `playerId` and a generic [StopInput] type.
+ *                           from a `userId` and a generic [StopInput] type.
  *                           Every [ServerTask] implementation **must** call [registerTask] (in GameServer.kt)
  *                           to register how the dispatcher should compute a task ID for that category when stopping tasks.
  * @property stopTaskFactories Map of each [TaskName] string to a factory function that
@@ -29,26 +29,26 @@ import kotlin.time.toDuration
  */
 class ServerTaskDispatcher(private val time: TimeProvider = SystemTime) : TaskScheduler {
     private val runningInstances = mutableMapOf<String, TaskInstance>()
-    private val taskIdDerivers = mutableMapOf<String, (playerId: String, name: TaskName, stopInput: Any) -> String>()
+    private val taskIdDerivers = mutableMapOf<String, (userId: String, name: TaskName, stopInput: Any) -> String>()
     private val stopTaskFactories = mutableMapOf<String, () -> Any>()
 
     /**
      * Register the factory to stop task and a function that can derive
      * a task ID from a given task name.
      *
-     * The [deriveTaskId] function takes a `String` of [Connection.playerId], the task name,
+     * The [deriveTaskId] function takes a `String` of [Connection.userId], the task name,
      * and a generic [StopInput] type.
      */
     @Suppress("UNCHECKED_CAST")
     fun <StopInput : Any> registerTask(
         name: TaskName,
         stopFactory: () -> StopInput,
-        deriveTaskId: (playerId: String, name: TaskName, stopInput: StopInput) -> String
+        deriveTaskId: (userId: String, name: TaskName, stopInput: StopInput) -> String
     ) {
         stopTaskFactories[name.code] = stopFactory
-        taskIdDerivers[name.code] = { playerId, name, stopInput ->
+        taskIdDerivers[name.code] = { userId, name, stopInput ->
             try {
-                deriveTaskId(playerId, name, stopInput as StopInput)
+                deriveTaskId(userId, name, stopInput as StopInput)
             } catch (e: ClassCastException) {
                 val expectedType = stopInput::class.simpleName ?: "Unknown"
                 val actualType = stopInput::class.simpleName ?: "Unknown"
@@ -83,38 +83,38 @@ class ServerTaskDispatcher(private val time: TimeProvider = SystemTime) : TaskSc
 
         val deriveStopId = taskIdDerivers[taskToRun.name.code]
             ?: error("stopIdProvider not registered for ${taskToRun.name.code} (use registerTask)")
-        val taskId = deriveStopId(connection.playerId, taskToRun.name, stopInput)
+        val taskId = deriveStopId(connection.userId, taskToRun.name, stopInput)
 
         val job = connection.connectionScope.launch {
             try {
-                Logger.info("runTask Hello") { "Task ${taskToRun.name.code} has been scheduled to run (waiting for startDelay) for playerId=${connection.playerId}, taskId=$taskId" }
+                Logger.info("runTask Hello") { "Task ${taskToRun.name.code} has been scheduled to run (waiting for startDelay) for userId=${connection.userId}, taskId=$taskId" }
                 val scheduler = taskToRun.scheduler ?: this@ServerTaskDispatcher
                 scheduler.schedule(connection, taskId, taskToRun)
             } catch (e: CancellationException) {
                 when (e) {
                     is ForceCompleteException -> {
-                        Logger.info("ForceCompleteException") { "Task '${taskToRun.name.code}' was forced to complete for playerId=${connection.playerId}, taskId=$taskId" }
+                        Logger.info("ForceCompleteException") { "Task '${taskToRun.name.code}' was forced to complete for userId=${connection.userId}, taskId=$taskId" }
                     }
 
                     is ManualCancellationException -> {
-                        Logger.info("ManualCancellationException") { "Task '${taskToRun.name.code}' was manually cancelled for playerId=${connection.playerId}, taskId=$taskId" }
+                        Logger.info("ManualCancellationException") { "Task '${taskToRun.name.code}' was manually cancelled for userId=${connection.userId}, taskId=$taskId" }
                     }
 
                     else -> {
-                        Logger.warn("CancellationException") { "Task '${taskToRun.name.code}' was cancelled for playerId=${connection.playerId}, taskId=$taskId" }
+                        Logger.warn("CancellationException") { "Task '${taskToRun.name.code}' was cancelled for userId=${connection.userId}, taskId=$taskId" }
                     }
                 }
             } catch (e: Exception) {
-                Logger.error("runTask Exception") { "Error on task '${taskToRun.name.code}': $e for playerId=${connection.playerId}, taskId=$taskId" }
+                Logger.error("runTask Exception") { "Error on task '${taskToRun.name.code}': $e for userId=${connection.userId}, taskId=$taskId" }
             } finally {
-                Logger.info("runTask Goodbye") { "Task '${taskToRun.name.code}' no longer run for playerId=${connection.playerId}, taskId=$taskId" }
+                Logger.info("runTask Goodbye") { "Task '${taskToRun.name.code}' no longer run for userId=${connection.userId}, taskId=$taskId" }
                 runningInstances.remove(taskId)
             }
         }
 
         runningInstances[taskId] = TaskInstance(
             name = taskToRun.name.code,
-            playerId = connection.playerId,
+            userId = connection.userId,
             config = taskToRun.config,
             job = job
         )
@@ -140,7 +140,7 @@ class ServerTaskDispatcher(private val time: TimeProvider = SystemTime) : TaskSc
             task.onStart(connection)
             delay(config.startDelay)
 
-            Logger.info("[runTask Working]") { "Task '${task.name.code}' currently running for playerId=${connection.playerId}, taskId=$taskId" }
+            Logger.info("[runTask Working]") { "Task '${task.name.code}' currently running for userId=${connection.userId}, taskId=$taskId" }
 
             if (shouldRepeat) {
                 while (currentCoroutineContext().isActive) {
@@ -190,10 +190,10 @@ class ServerTaskDispatcher(private val time: TimeProvider = SystemTime) : TaskSc
     }
 
     /**
-     * Return all running tasks for [playerId].
+     * Return all running tasks for [userId].
      */
-    fun getAllRunningTaskFor(playerId: String): List<TaskInstance> {
-        return runningInstances.values.filter { it.playerId == playerId }
+    fun getAllRunningTaskFor(userId: String): List<TaskInstance> {
+        return runningInstances.values.filter { it.userId == userId }
     }
 
     /**
@@ -204,7 +204,7 @@ class ServerTaskDispatcher(private val time: TimeProvider = SystemTime) : TaskSc
     }
 
     /**
-     * Stop the task with the given [Connection.playerId], [category], and [StopInput].
+     * Stop the task with the given [Connection.userId], [category], and [StopInput].
      *
      * Depending on the [forceComplete]:
      * - If `forceComplete` is `true`, this will cause the task to fire the `onForceComplete` hook.
@@ -226,7 +226,7 @@ class ServerTaskDispatcher(private val time: TimeProvider = SystemTime) : TaskSc
             val deriveTaskId = taskIdDerivers[name.code]
                 ?: error("No stopIdProvider registered for ${name.code} (use registerTask)")
 
-            val taskId = deriveTaskId(connection.playerId, name, stopInput)
+            val taskId = deriveTaskId(connection.userId, name, stopInput)
             val instance = runningInstances.remove(taskId)
 
             if (instance == null) {
@@ -255,11 +255,11 @@ class ServerTaskDispatcher(private val time: TimeProvider = SystemTime) : TaskSc
     }
 
     /**
-     * Stop all tasks for the [playerId]
+     * Stop all tasks for the [userId]
      */
-    fun stopAllTasksForPlayer(playerId: String) {
+    fun stopAllTasksForPlayer(userId: String) {
         runningInstances
-            .filterValues { it.playerId == playerId }
+            .filterValues { it.userId == userId }
             .forEach { (taskId, _) -> stopRunningTask(taskId) }
     }
 
@@ -280,13 +280,13 @@ class ServerTaskDispatcher(private val time: TimeProvider = SystemTime) : TaskSc
 /**
  * An instance of task:
  * - identified by [name]
- * - intended for [playerId]
+ * - intended for [userId]
  * - with the config [TaskConfig]
  * - and coroutine reference [job]
  */
 data class TaskInstance(
     val name: String,
-    val playerId: String,
+    val userId: String,
     val config: TaskConfig,
     val job: Job,
 )

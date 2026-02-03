@@ -113,7 +113,7 @@ class TestLoggerDisplay {
 
         DataLogger.event(name)
             .prefixText("Test1")
-            .playerId("pid12345")
+            .userId("pid12345")
             .username("PlayerABC")
             .data("buildingId", "bldId12345")
             .data("completeAt", 12345678)
@@ -121,7 +121,7 @@ class TestLoggerDisplay {
 
         DataLogger.event(name)
             .prefixText("Test2")
-            .playerId("pid12345")
+            .userId("pid12345")
             .username("PlayerABC")
             .data("buildingId", "bldId12345")
             .data("completeAt", 12345678)
@@ -129,7 +129,7 @@ class TestLoggerDisplay {
 
         DataLogger.event(name)
             .prefixText("Test3")
-            .playerId("pid12345")
+            .userId("pid12345")
             .username("PlayerABC")
             .data("buildingId", "bldId12345")
             .data("completeAt", 12345678)
@@ -137,7 +137,7 @@ class TestLoggerDisplay {
 
         DataLogger.event(name)
             .prefixText("Test4")
-            .playerId("pid12345")
+            .userId("pid12345")
             .username("PlayerABC")
             .data("buildingId", "bldId12345")
             .data("completeAt", 12345678)
@@ -150,7 +150,7 @@ class TestLoggerDisplay {
 
         DataLogger.event(name)
             .prefixText("Test6")
-            .data("playerId", "pid12345")
+            .data("userId", "pid12345")
             .data("buildingId", "bldId12345")
             .data("completeAt", 12345678)
             .record()
@@ -171,10 +171,10 @@ class TestLoggerDisplay {
             .record()
 
         DataLogger.event(name)
-            .data("playerId", "12345")
-            .playerId("playerId")
-            .data("playerId", true)
-            .data("multiplePlayerId", "")
+            .data("userId", "12345")
+            .userId("userId")
+            .data("userId", true)
+            .data("multipleUserId", "")
             .record()
     }
 }

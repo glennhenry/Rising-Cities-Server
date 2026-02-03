@@ -10,29 +10,29 @@ class OnlinePlayerRegistry {
     private val players = ConcurrentHashMap<String, PlayerStatus>()
 
     /**
-     * Mark a player of [playerId] as online. Does nothing if the player is already online.
+     * Mark a player of [userId] as online. Does nothing if the player is already online.
      */
-    fun markOnline(playerId: String) {
+    fun markOnline(userId: String) {
         val now = getTimeMillis()
-        players[playerId] = PlayerStatus(
-            playerId = playerId,
+        players[userId] = PlayerStatus(
+            userId = userId,
             onlineSince = now,
             lastNetworkActivity = now,
         )
     }
 
     /**
-     * Mark a player of [playerId] as offline. Does nothing if the player is already offline.
+     * Mark a player of [userId] as offline. Does nothing if the player is already offline.
      */
-    fun markOffline(playerId: String) {
-        players.remove(playerId)
+    fun markOffline(userId: String) {
+        players.remove(userId)
     }
 
     /**
-     * Update the last network activity of [playerId]. Does nothing if the player is not online.
+     * Update the last network activity of [userId]. Does nothing if the player is not online.
      */
-    fun updateLastActivity(playerId: String) {
-        players.computeIfPresent(playerId) { _, status ->
+    fun updateLastActivity(userId: String) {
+        players.computeIfPresent(userId) { _, status ->
             status.copy(lastNetworkActivity = getTimeMillis())
         }
     }
@@ -54,7 +54,7 @@ class OnlinePlayerRegistry {
  *                               of the player's most recent network activity.
  */
 data class PlayerStatus(
-    val playerId: String,
+    val userId: String,
     val onlineSince: Long,
     val lastNetworkActivity: Long,
 )

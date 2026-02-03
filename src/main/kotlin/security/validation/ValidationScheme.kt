@@ -12,7 +12,7 @@ import utils.logging.Logger
  * Example:
  * ```kotlin
  * ValidationScheme("BuildingCreate") { playerService }
- *     .validateFor(playerId)
+ *     .validateFor(userId)
  *     .require("Resource Check") { getResources() >= 100 }
  *     .require("XP Check") { getXP() >= 20 }
  *     .validate(failStrategy = FailStrategy.Disconnect)
@@ -36,7 +36,7 @@ class ValidationScheme<T>(private val schemeName: String, private val factory: (
     private val stages = mutableListOf<ValidationStage<T>>()
 
     /**
-     * Defines the logical target of this validation (e.g., a player ID, username).
+     * Defines the logical target of this validation (e.g., a user ID, username).
      *
      * Used primarily for logging and debugging. If not specified,
      * defaults to `"[Undefined]"`.

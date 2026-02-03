@@ -13,16 +13,16 @@ import server.core.network.Connection
  *
  * [ServerTask] implementation should be able to provide `stopId`, a reproducible, deterministic identifier for the task.
  * The derived ID is used for referencing and cancelling tasks consistently across server components.
- * Typically it is derived from a combination of the player ID, [name], and [StopInput] instance (e.g., a `buildingId`).
+ * Typically it is derived from a combination of the user ID, [name], and [StopInput] instance (e.g., a `buildingId`).
  *
  * Example
  * ```
  * context.taskDispatcher.registerTask(
  *     code = "DT",
  *     stopInputFactory = { StopParameter() },
- *     deriveTaskId = { playerId, name, _ ->
- *         // "DT-playerId123"
- *         "${name.code}-$playerId"
+ *     deriveTaskId = { userId, name, _ ->
+ *         // "DT-userId123"
+ *         "${name.code}-$userId"
  *     }
  * )
  * ```

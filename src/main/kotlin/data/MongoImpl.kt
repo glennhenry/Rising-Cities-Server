@@ -54,7 +54,7 @@ class MongoImpl(db: MongoDatabase, private val adminEnabled: Boolean) : Database
             Logger.info { "MongoDB: User collection ready, contains $count users." }
 
             if (adminEnabled) {
-                val adminDoc = accountCollection.find(Filters.eq("playerId", AdminData.PLAYER_ID)).firstOrNull()
+                val adminDoc = accountCollection.find(Filters.eq("userId", AdminData.PLAYER_ID)).firstOrNull()
                 if (adminDoc == null) {
                     val start = getTimeMillis()
                     val doc = PlayerAccount.admin()
@@ -78,12 +78,12 @@ class MongoImpl(db: MongoDatabase, private val adminEnabled: Boolean) : Database
         accountCollection.createIndex(Indexes.text("profile.displayName"))
     }
 
-    override suspend fun loadPlayerAccount(playerId: String): PlayerAccount? {
-        return accountCollection.find(Filters.eq("playerId", playerId)).firstOrNull()
+    override suspend fun loadPlayerAccount(userId: String): PlayerAccount? {
+        return accountCollection.find(Filters.eq("userId", userId)).firstOrNull()
     }
 
-    override suspend fun loadPlayerData(playerId: String): PlayerData? {
-        return dataCollection.find(Filters.eq("playerId", playerId)).firstOrNull()
+    override suspend fun loadPlayerData(userId: String): PlayerData? {
+        return dataCollection.find(Filters.eq("userId", userId)).firstOrNull()
     }
 
     override suspend fun loadServerData(): ServerData {
@@ -91,21 +91,21 @@ class MongoImpl(db: MongoDatabase, private val adminEnabled: Boolean) : Database
     }
 
     override suspend fun createPlayer(username: String, password: String): String {
-        val playerId = UUID.new()
-        val profile = UserProfile.default(playerId, username)
+        val userId = UUID.new()
+        val profile = UserProfile.default(userId, username)
 
         val doc = PlayerAccount(
-            playerId = playerId,
+            userId = userId,
             hashedPassword = hashPw(password),
             profile = profile,
             metadata = ServerMetadata()
         )
-        val obj = PlayerData.newGame(playerId)
+        val obj = PlayerData.newGame(userId)
 
         accountCollection.insertOne(doc)
         dataCollection.insertOne(obj)
 
-        return playerId
+        return userId
     }
 
     private fun hashPw(password: String): String {
@@ -167,17 +167,17 @@ inline fun runMongoCatchingUnit(
  * Check whether update operation were matched and modified; and throw an error
  * if it's not.
  *
- * @param [playerId] The DB operation for specific [playerId].
+ * @param [userId] The DB operation for specific [userId].
  * @param info Additional info added to error message.
  *             Typically, add function or class name, or context about the operation
  * @throws NoSuchElementException if `matchedCount` is less than 1
  * @throws IllegalStateException if `modifiedCount` is less than 1
  */
-fun UpdateResult.throwIfNotModified(playerId: String, info: String = "") {
+fun UpdateResult.throwIfNotModified(userId: String, info: String = "") {
     if (matchedCount < 1) {
-        throw NoSuchElementException("playerId=$playerId not found; $info")
+        throw NoSuchElementException("userId=$userId not found; $info")
     }
     if (modifiedCount < 1) {
-        throw IllegalStateException("Failed to update one for playerId=$playerId; $info")
+        throw IllegalStateException("Failed to update one for userId=$userId; $info")
     }
 }

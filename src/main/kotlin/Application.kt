@@ -232,9 +232,9 @@ suspend fun Application.module() {
         serverContext.taskDispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = {},
-            deriveTaskId = { playerId, name, _ ->
-                // RTD-playerId123-unit
-                "${name.code}-$playerId-unit"
+            deriveTaskId = { userId, name, _ ->
+                // RTD-userId123-unit
+                "${name.code}-$userId-unit"
             }
         )
         serverContext.formatRegistry.register(RCFormat())

@@ -128,7 +128,7 @@ interface SocketMessageHandler<T : SocketMessage> {
      * validated by [handleUnsafe].
      *
      * @param ctx The handler context, containing the decoded message,
-     * connection metadata (such as player ID), and utilities such as
+     * connection metadata (such as user ID), and utilities such as
      * [HandlerContext.sendRaw] for sending responses.
      */
     suspend fun handle(ctx: HandlerContext<T>)
