@@ -1,4 +1,4 @@
-package core.data
+package core.model.constants
 
 /**
  * Resource constants
