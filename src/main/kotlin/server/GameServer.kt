@@ -133,7 +133,7 @@ class GameServer(
                 Logger.info { "Cleaning up for $connection" }
 
                 // Only perform cleanup if userId is set (client was authenticated)
-                if (connection.userId != "[Undetermined]") {
+                if (connection.userId != -1L) {
                     serverContext.onlinePlayerRegistry.markOffline(connection.userId)
                     serverContext.playerAccountRepository.updateLastLogin(connection.userId, getTimeMillis())
                     serverContext.contextTracker.removeContext(connection.userId)

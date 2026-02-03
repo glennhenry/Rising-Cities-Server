@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap
  * [fakeContext] to easily register context for a player.
  */
 class FakeContextTracker : ContextTracker {
-    val players = ConcurrentHashMap<String, PlayerContext>()
+    val players = ConcurrentHashMap<Long, PlayerContext>()
 
     override suspend fun createContext(userId: Long, connection: Connection, db: Database) = TODO("SHOULD NOT BE USED")
 

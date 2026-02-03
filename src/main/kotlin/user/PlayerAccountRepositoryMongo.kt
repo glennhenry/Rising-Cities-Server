@@ -31,7 +31,7 @@ class PlayerAccountRepositoryMongo(val accountCollection: MongoCollection<Player
         }
     }
 
-    override suspend fun getUserIdFromName(username: String): Result<String> {
+    override suspend fun getUserIdFromName(username: String): Result<Long> {
         return runMongoCatching {
             accountCollection
                 .find(Filters.eq("profile.displayName", username))
@@ -97,7 +97,7 @@ class PlayerAccountRepositoryMongo(val accountCollection: MongoCollection<Player
         }
     }
 
-    override suspend fun verifyCredentials(username: String, password: String): Result<String> {
+    override suspend fun verifyCredentials(username: String, password: String): Result<Long> {
         return runMongoCatching {
             val doc = accountCollection
                 .withDocumentClass<Document>()
@@ -108,7 +108,7 @@ class PlayerAccountRepositoryMongo(val accountCollection: MongoCollection<Player
             if (doc == null) return@runMongoCatching null
 
             val hashed = doc.getString("hashedPassword")
-            val userId = doc.getString("userId")
+            val userId = doc.getLong("userId")
             val matches = Bcrypt.verify(password, Base64.decode(hashed))
 
             if (matches) userId else null

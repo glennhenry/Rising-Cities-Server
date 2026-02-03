@@ -7,9 +7,12 @@ import kotlinx.serialization.Serializable
  *
  * This may include feature flags, progression milestones, or
  * temporary states that are not part of core player profile data.
+ *
+ * @property flags userId: flag
+ * @property extra userId: extra
  */
 @Serializable
 data class ServerMetadata(
-    val flags: Map<String, Boolean> = emptyMap(),
-    val extra: Map<String, String> = emptyMap(),
+    val flags: Map<Long, Boolean> = emptyMap(),
+    val extra: Map<Long, String> = emptyMap(),
 )

@@ -97,9 +97,9 @@ fun createLoginSuccessResponse(session: UserSession): WebLoginSuccessResponse {
         token = session.token,
         flash = FlashConfig(
             flashVars = populateFlashVars(
-                session.userId.toInt(),
+                session.userId,
                 session.token,
-                generateClientContext(EventStreamClientContext(session.userId.toInt()))
+                generateClientContext(EventStreamClientContext(session.userId))
             )
         )
     )

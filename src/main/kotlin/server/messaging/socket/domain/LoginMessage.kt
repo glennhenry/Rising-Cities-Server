@@ -14,7 +14,7 @@ import server.messaging.socket.RCResponse
  * @property ses Session identifier
  */
 @Serializable
-data class LoginRequest(val uid: String, val ses: String) : RCMessage {
+data class LoginRequest(val uid: Long, val ses: String) : RCMessage {
     override val header = ClientMessage.LOGIN
 }
 

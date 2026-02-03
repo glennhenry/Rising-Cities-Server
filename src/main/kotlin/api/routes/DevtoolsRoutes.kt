@@ -18,6 +18,7 @@ import utils.functions.UUID
 import utils.logging.Logger
 import ws.WsMessage
 import java.io.File
+import kotlin.random.Random
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 
@@ -98,7 +99,7 @@ fun Route.devtoolsRoutes(serverContext: ServerContext, tokenStorage: MutableMap<
 
         // user successful authentication: tokenValid && !cookieValid
         val session = serverContext.sessionManager.create(
-            userId = UUID.new(), validFor = 6.hours, lifetime = 6.hours
+            userId = Random.nextLong(10_000_000, 99_999_999), validFor = 6.hours, lifetime = 6.hours
         )
         call.response.cookies.append("devtools-clientId", session.token, maxAge = 21600, path = "/devtools")
         Logger.debug { "Request to /devtools: token correct, user logged in" }

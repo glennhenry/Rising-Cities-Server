@@ -1,7 +1,10 @@
 package data
 
 import com.mongodb.client.model.Filters
+import com.mongodb.client.model.FindOneAndUpdateOptions
 import com.mongodb.client.model.Indexes
+import com.mongodb.client.model.ReturnDocument
+import com.mongodb.client.model.Updates
 import com.mongodb.client.result.UpdateResult
 import com.mongodb.kotlin.client.coroutine.MongoCollection
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
@@ -15,11 +18,20 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 import user.model.ServerMetadata
 import user.model.UserProfile
 import utils.logging.Logger
-import utils.functions.UUID
 import kotlin.io.encoding.Base64
+
+/**
+ * Store the count of registered player, to generate `playerId`.
+ */
+@Serializable
+data class PlayerCounter(
+    val _id: String = "playercounter",
+    val seq: Long = 100L
+)
 
 /**
  * Implementation of [Database] using MongoDB.
@@ -28,6 +40,7 @@ class MongoImpl(db: MongoDatabase, private val adminEnabled: Boolean) : Database
     private val accountCollection = db.getCollection<PlayerAccount>("player_account")
     private val dataCollection = db.getCollection<PlayerData>("player_data")
     private val serverCollection = db.getCollection<ServerData>("server_data")
+    private val counter = db.getCollection<PlayerCounter>("playercounter")
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : Any> getCollection(name: String): MongoCollection<T> {
@@ -90,8 +103,8 @@ class MongoImpl(db: MongoDatabase, private val adminEnabled: Boolean) : Database
         return serverCollection.find().firstOrNull() ?: throw NoSuchElementException("No global ServerData found")
     }
 
-    override suspend fun createPlayer(username: String, password: String): String {
-        val userId = UUID.new()
+    override suspend fun createPlayer(username: String, password: String): Long {
+        val userId = getNextUserId()
         val profile = UserProfile.default(userId, username)
 
         val doc = PlayerAccount(
@@ -108,8 +121,24 @@ class MongoImpl(db: MongoDatabase, private val adminEnabled: Boolean) : Database
         return userId
     }
 
-    override suspend fun getNextUserId(): Int {
-        return accountCollection
+    override suspend fun getNextUserId(): Long {
+        return runMongoCatching {
+            val existing = counter.find(Filters.eq("_id", "playerCounter")).firstOrNull()
+
+            val doc = if (existing == null) {
+                // No counter yet -> insert starting value
+                counter.insertOne(PlayerCounter(_id = "playerCounter", seq = 100))
+                PlayerCounter(_id = "playerCounter", seq = 100)
+            } else {
+                // Already exists -> increment
+                counter.findOneAndUpdate(
+                    Filters.eq("_id", "playerCounter"),
+                    Updates.inc("seq", 1),
+                    FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER)
+                )!!
+            }
+            doc.seq
+        }.getOrThrow()
     }
 
     private fun hashPw(password: String): String {

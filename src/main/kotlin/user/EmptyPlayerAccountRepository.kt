@@ -12,9 +12,9 @@ class EmptyPlayerAccountRepository : PlayerAccountRepository {
     override suspend fun isEmailAvailable(email: String): Result<Boolean>  = TODO("ONLY TEST")
     override suspend fun getPlayerAccountByName(username: String): Result<PlayerAccount> = TODO("ONLY TEST")
     override suspend fun getPlayerAccountById(userId: Long): Result<PlayerAccount> = TODO("ONLY TEST")
-    override suspend fun getUserIdFromName(username: String): Result<String> = TODO("ONLY TEST")
+    override suspend fun getUserIdFromName(username: String): Result<Long> = TODO("ONLY TEST")
     override suspend fun updatePlayerAccount(userId: Long, account: PlayerAccount): Result<Unit> = TODO("ONLY TEST")
     // called in unit tests
     override suspend fun updateLastLogin(userId: Long, lastLogin: Long): Result<Unit> = Result.success(Unit)
-    override suspend fun verifyCredentials(username: String, password: String): Result<String> = TODO("ONLY TEST")
+    override suspend fun verifyCredentials(username: String, password: String): Result<Long> = TODO("ONLY TEST")
 }

@@ -13,7 +13,7 @@ interface PlayerAccountRepository {
 
     suspend fun getPlayerAccountByName(username: String): Result<PlayerAccount>
     suspend fun getPlayerAccountById(userId: Long): Result<PlayerAccount>
-    suspend fun getUserIdFromName(username: String): Result<String>
+    suspend fun getUserIdFromName(username: String): Result<Long>
 
     suspend fun updatePlayerAccount(userId: Long, account: PlayerAccount): Result<Unit>
     suspend fun updateLastLogin(userId: Long, lastLogin: Long): Result<Unit>
@@ -24,5 +24,5 @@ interface PlayerAccountRepository {
      * @return The associated `userId` if correct.
      *         Returns `null` if account don't exist or password is wrong.
      */
-    suspend fun verifyCredentials(username: String, password: String): Result<String>
+    suspend fun verifyCredentials(username: String, password: String): Result<Long>
 }

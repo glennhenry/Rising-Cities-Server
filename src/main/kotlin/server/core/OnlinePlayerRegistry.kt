@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap
  * Keeps track the status of online players.
  */
 class OnlinePlayerRegistry {
-    private val players = ConcurrentHashMap<String, PlayerStatus>()
+    private val players = ConcurrentHashMap<Long, PlayerStatus>()
 
     /**
      * Mark a player of [userId] as online. Does nothing if the player is already online.

@@ -33,7 +33,7 @@ interface Database {
      *
      * @return userId (UUID) of the newly created player.
      */
-    suspend fun createPlayer(username: String, password: String): String
+    suspend fun createPlayer(username: String, password: String): Long
 
     /**
      * Get the next UserID.

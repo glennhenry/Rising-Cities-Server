@@ -112,7 +112,7 @@ class SessionManager(
      *
      * @return `null` if the token is invalid.
      */
-    fun getUserId(token: String): String? {
+    fun getUserId(token: String): Long? {
         return sessions[token]?.takeIf { time.now() < it.expiresAt }?.userId
     }
 

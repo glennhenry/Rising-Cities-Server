@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap
  * [Connection] and [Database].
  */
 class DefaultContextTracker: ContextTracker {
-    private val players = ConcurrentHashMap<String, PlayerContext>()
+    private val players = ConcurrentHashMap<Long, PlayerContext>()
 
     /**
      * Creates and registers a new [PlayerContext] for the given player.
