@@ -35,9 +35,9 @@ class TestDefaultAuthProvider {
         val provider = DefaultAuthProvider(db, repo, manager)
 
         val account = PlayerAccount(
-            userId = "pid12345",
+            userId = 123456,
             hashedPassword = "hashed123",
-            profile = UserProfile.default("pid12345", "name"),
+            profile = UserProfile.default(123456, "name"),
             metadata = ServerMetadata()
         )
         collection.insertOne(account)

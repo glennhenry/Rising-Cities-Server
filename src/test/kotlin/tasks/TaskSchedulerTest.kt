@@ -27,7 +27,7 @@ import kotlin.time.Duration.Companion.seconds
  */
 @Ignore("slow, real-time timer")
 class TaskSchedulerTest {
-    private val PID = "userId123"
+    private val PID = 123456L
     private val NAME = "PlayerABC"
 
     @Test

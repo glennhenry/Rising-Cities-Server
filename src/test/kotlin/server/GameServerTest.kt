@@ -156,7 +156,7 @@ class GameServerTest {
     private fun createConnection(scope: CoroutineScope): TestConnection {
         return TestConnection(
             connectionScope = scope,
-            userId = "pid123",
+            userId = 123456,
             playerName = "PlayerABC"
         )
     }

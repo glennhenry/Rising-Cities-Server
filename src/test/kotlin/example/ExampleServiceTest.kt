@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import org.bson.Document
 import utils.logging.Logger
+import kotlin.properties.Delegates
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -58,7 +59,7 @@ class ExampleServiceTest {
         val service = ExampleService(mockRepo)
 
 
-        val result = service.init("123")
+        val result = service.init(123456)
         // ex. if all DB operation returned success, internal initialization shouldn't fail
         assert(result.isSuccess)
         // ex. get methods work correctly (in complex scenario, this may involve processing)
@@ -88,7 +89,7 @@ class ExampleServiceTest {
 
         // insert base data
         val baseData = ExampleModel(
-            userId = "pid123",
+            userId = 123456,
             strData = "hello",
             intData = 42,
             manyStrData = listOf("a", "b", "c")
@@ -99,7 +100,7 @@ class ExampleServiceTest {
         val service = ExampleService(repo)
 
         // init and ensure service initialization correctness
-        service.init("pid123")
+        service.init(123456)
         assertEquals(42, service.getIntData())
 
         // try using the service to update data
@@ -248,7 +249,7 @@ class ExampleRepositoryMongo(val data: MongoCollection<ExampleModel>) : ExampleR
  * Example service class holding a repository contract.
  */
 class ExampleService(private val exampleRepository: ExampleRepository) : PlayerService {
-    private lateinit var userId: Long
+    private var userId by Delegates.notNull<Long>()
     private var strData: String = ""
     private var intData: Int = 0
     private val manyStrData = mutableListOf<String>()

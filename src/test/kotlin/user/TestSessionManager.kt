@@ -23,7 +23,7 @@ class TestSessionManager {
     fun `test verify unexpired session return true`() {
         val time = FakeTimeProvider(1)
         val manager = SessionManager(time)
-        val session = manager.create("pid123", validFor = 1.hours)
+        val session = manager.create(123456, validFor = 1.hours)
         assertTrue(manager.verify(session.token))
 
         // session max is 1 hr, should still be valid
@@ -35,7 +35,7 @@ class TestSessionManager {
     fun `test verify expired session return false`() {
         val time = FakeTimeProvider(1)
         val manager = SessionManager(time)
-        val session = manager.create("pid123", validFor = 90.minutes)
+        val session = manager.create(123456, validFor = 90.minutes)
 
         // session max is 1.5 hr, this is invalid because it must be refreshed first
         time.advance(2.hours)
@@ -46,7 +46,7 @@ class TestSessionManager {
     fun `test verify session lifetime exceeded the session duration but refreshed in between return true`() {
         val time = FakeTimeProvider(1)
         val manager = SessionManager(time)
-        val session = manager.create("pid123", validFor = 1.hours, lifetime = 6.hours)
+        val session = manager.create(123456, validFor = 1.hours, lifetime = 6.hours)
 
         time.advance(40.minutes)
         manager.refresh(session.token)
@@ -60,7 +60,7 @@ class TestSessionManager {
         val time = FakeTimeProvider(1)
         val dispatcher = StandardTestDispatcher()
         val manager = SessionManager(time, dispatcher)
-        val session = manager.create("pid123")
+        val session = manager.create(123456)
 
         time.advance(2.hours)
         advanceTimeBy(2.hours)
@@ -77,7 +77,7 @@ class TestSessionManager {
         val time = FakeTimeProvider(1)
         val dispatcher = StandardTestDispatcher()
         val manager = SessionManager(time, dispatcher)
-        val session = manager.create("pid123", validFor = 1.hours, lifetime = 6.hours)
+        val session = manager.create(123456, validFor = 1.hours, lifetime = 6.hours)
 
         time.advance(7.hours)
         advanceTimeBy(7.hours)

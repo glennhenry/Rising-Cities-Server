@@ -42,7 +42,7 @@ import kotlin.test.assertEquals
 class ExampleHandlerTest {
     @Test
     fun testHandler1() = runTest {
-        val userId = "pid123"
+        val userId = 123456L
         val playerName = "player123"
 
         // encapsulate every state
@@ -66,7 +66,7 @@ class ExampleHandlerTest {
 
     @Test
     fun testHandler2() = runTest {
-        val userId = "pid123"
+        val userId = 123456L
         val playerName = "player123"
 
         // encapsulate every state
