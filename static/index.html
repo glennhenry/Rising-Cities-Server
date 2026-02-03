@@ -40,67 +40,6 @@
         // html js
         function hidePayment() { console.log("hidePayment called") }
         function hideProfilePage() { console.log("hideProfilePage called") }
-
-        var flashVars = {
-            uid: '1',
-            lang: 'en',
-            sid: 'test-session',
-            connectionUrl: 'http://127.0.0.1:7777',
-            supportUrl: 'http://127.0.0.1:8080/support',
-            logoutUrl: 'http://127.0.0.1:8080/logout',
-            profileUrl: 'http://127.0.0.1:8080/profile',
-            forumUrl: 'http://127.0.0.1:8080/forum',
-            paymentUrl: 'http://127.0.0.1:8080/payment',
-            cvtagfilepath: 'xml/cvFileLinks.xml',
-            debugMode: 'true',
-            debugLayerUrl: 'http://127.0.0.1:8080/debug',
-            cvtagruntimepath: 'xml/cvRuntimeLinks.xml',
-            isIE: 'false',
-            isSsoUser: 'false',
-            evoucherUrl: 'http://127.0.0.1:8080/evoucher',
-            unreadMessages: 'false',
-            soldOffers: 'false',
-            buffLevel: '6',
-            marketLevel: '5',
-            newsscreenLinkType: '',
-            newsscreenLinkValue: '',
-            improvmentLevel: '7',
-            boosterStoreLevel: '7',
-            cinemaMaintenance: 'false',
-            cinemaDisabled: 'false',
-            upsell: 'false',
-            inviteDisabled: 'false',
-            projectId: '865',
-            eventStream: 'eyJ1aWQiOjF9'
-        };
-
-        var flashParams = {
-            menu: 'false',
-            scale: 'showAll',
-            allowFullscreen: 'true',
-            allowFullScreenInteractive: 'true',
-            allowScriptAccess: 'always',
-            bgcolor: '#000000',
-            wmode: 'direct'
-        };
-
-        var flashAttributes = {
-            id: 'Rising_Cities_Flash',
-            name: 'Rising_Cities_Flash_Name',
-            align: 'middle'
-        };
-
-        swfobject.embedSWF(
-            './game/Main.swf',
-            'client-placeholder',
-            '100%',
-            '100%',
-            '10.2.0',
-            null,
-            flashVars,
-            flashParams,
-            flashAttributes
-        );
     </script>
 
     <style>
@@ -126,7 +65,6 @@
         #client-placeholder {
             width: 100%;
             height: 100%;
-            position: relative;
         }
 
         .footer {
@@ -148,11 +86,81 @@
         .hidden {
             display: none;
         }
+
+
+        #loading {
+            color: #e0e0e0;
+            position: absolute;
+            text-align: center;
+            font-size: 1.2em;
+            border: 1px solid black;
+            background-color: #2f2f2f;
+            padding: 24px;
+            width: 300px;
+        }
+
+        input {
+            border: 1px solid black;
+            border-radius: 4px;
+        }
+
+        #username-info,
+        #password-info,
+        #login-info {
+            text-align: start;
+            margin-bottom: 20px;
+            font-size: 0.8em;
+        }
+
+        #login-button {
+            padding: 4px;
+        }
+
+        #login-button:disabled {
+            background-color: rgb(165, 157, 157);
+            cursor: not-allowed;
+            opacity: 0.6;
+            border: none;
+        }
+
+        #flashvars-settings {
+            font-size: 0.8em;
+        }
     </style>
 </head>
 
 <body>
     <div class="page">
+        <div id="loading">
+            <p>Login Please...</p>
+            <div id="login-form">
+                <form id="rc-login">
+                    <div>
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" id="username" name="username" required />
+                        </div>
+                        <div id="username-info"></div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" id="password" name="password" required />
+                        </div>
+                        <div id="password-info"></div>
+                    </div>
+                    <div>
+                        <button type="submit" id="login-button">Register/Login</button>
+                        <div id="login-info"></div>
+                    </div>
+                </form>
+            </div>
+            <div id="flashvars-settings">
+                <p>Flashvars settings</p>
+                <input type="checkbox" id="debug-mode-cb">
+                <label for="debug-mode-cb">Debug Mode</label>
+            </div>
+        </div>
         <div class="frame-container">
             <div class="client-frame">
                 <div class="payment hidden" id="payment">
@@ -173,6 +181,289 @@
             <a class="discord" href="https://discord.gg/tVPSUgvG8n">Discord</a>
         </footer>
     </div>
+    <script>
+        // auth fields
+        let usernameField = document.getElementById("username");
+        let usernameInfo = document.getElementById("username-info");
+
+        let passwordField = document.getElementById("password");
+        let passwordInfo = document.getElementById("password-info");
+
+        let loginBtn = document.getElementById("login-button");
+        let loginInfo = document.getElementById("login-info");
+
+        let loginForm = document.getElementById("login-form");
+
+        let isUsernameValid = false;
+        let isPasswordValid = false;
+        let loggedIn = false;
+
+        let debounceTimeout;
+        let usernameTimer;
+
+        // flashvars settings
+        let flashVars = { debugMode: 'false' };
+        let flashParams;
+        let flashAttributes;
+        let debugModeCb = document.getElementById("debug-mode-cb")
+
+        window.addEventListener("DOMContentLoaded", () => {
+            // initial check for username
+            updateSubmitButton();
+
+            // if username is valid, set a timer of 500ms to check to the server
+            const initialUsername = usernameField.value;
+            if (initialUsername) {
+                if (validateUsername(initialUsername)) {
+                    clearTimeout(usernameTimer);
+                    usernameTimer = setTimeout(() => {
+                        doesUserExist(initialUsername);
+                    }, 500);
+                }
+            }
+
+            // whenever username changes, validate it
+            // also validate password
+            // then, set a timer of 500ms to check to the server
+            usernameField.addEventListener("input", function () {
+                const value = usernameField.value
+
+                clearTimeout(debounceTimeout);
+                usernameInfo.textContent = ""
+                debounceTimeout = setTimeout(() => {
+                    if (validateUsername(value)) {
+                        clearTimeout(usernameTimer);
+                        usernameTimer = setTimeout(() => {
+                            doesUserExist(value);
+                        }, 500);
+                    }
+
+                    const currentPassword = passwordField.value;
+                    validatePassword(currentPassword);
+                }, 500);
+            })
+
+            // whenever password changes, validate it
+            // then, set a timer of 500ms to check to the server
+            passwordField.addEventListener("input", function () {
+                const value = passwordField.value
+
+                clearTimeout(debounceTimeout);
+                passwordInfo.textContent = ""
+                debounceTimeout = setTimeout(() => {
+                    validatePassword(value);
+                }, 500);
+            })
+
+            // when login button is pressed, send login request to server
+            loginForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+                var username = usernameField.value;
+                var password = passwordField.value;
+                // if login succeed, start the game
+                login(username, password).then((success) => {
+                    if (success) {
+                        hideLogin()
+                        showGame()
+                        loggedIn = true
+                        startGame()
+                    }
+                });
+            })
+
+            // whenever debug mode changes, update flashvars
+            debugModeCb.addEventListener('change', function () {
+                if (this.checked) {
+                    flashVars.debugMode = true
+                } else {
+                    flashVars.debugMode = false
+                }
+            });
+        })
+
+        // update submit button clickability, only enable when username and password valid
+        // to prevent client from hitting the server without valid credentials
+        function updateSubmitButton() {
+            if (isUsernameValid && isPasswordValid) {
+                loginBtn.disabled = false;
+            } else {
+                loginBtn.disabled = true;
+            }
+        }
+
+        // validate username with regex (only letters and numbers)
+        // minimal 6 characters, no badwords
+        function validateUsername(username) {
+            const usernameRegex = /^[a-zA-Z0-9]+$/;
+            const badwords = ["dick"]; // expand as needed
+
+            if (username.length < 6 || !usernameRegex.test(username)) {
+                usernameInfo.textContent = "Username must be at least 6 characters. Only letters and digits allowed."
+                usernameInfo.style.color = "red";
+                isUsernameValid = false;
+                updateSubmitButton();
+                return false;
+            }
+
+            if (badwords.some((bad) => username.toLowerCase().includes(bad))) {
+                usernameInfo.textContent = "Possible badword detected. Please choose another name."
+                usernameInfo.style.color = "orange";
+                isUsernameValid = false;
+                updateSubmitButton();
+                return false;
+            }
+
+            usernameInfo.textContent = "Checking to server..."
+            usernameInfo.style.color = "orange";
+            return true;
+        }
+
+        // check username availability to server
+        function doesUserExist(username) {
+            fetch(`/api/userexist?username=${encodeURIComponent(username)}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "text/plain",
+                },
+            })
+                .then(async (response) => {
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.reason || "User check failed");
+                    }
+                    return response.text();
+                })
+                .then((result) => {
+                    if (result === "granted") {
+                        usernameInfo.textContent = "Admin account available. You will log in as admin."
+                        usernameInfo.style.color = "green"
+                        isUsernameValid = true;
+                    } else if (result === "reserved") {
+                        usernameInfo.textContent = "Admin account is disabled on this server."
+                        usernameInfo.style.color = "red"
+                        isUsernameValid = false;
+                    } else if (result === "yes") {
+                        usernameInfo.textContent = "Username already exists. Input the correct password if you are trying to log in."
+                        usernameInfo.style.color = "#7a8bac"
+                        const p = document.createElement("p");
+                        p.style.color = "#b86b5f"
+                        p.textContent = "If you are trying to register, choose another name."
+                        usernameInfo.appendChild(p)
+                        isUsernameValid = true;
+                    } else if (result == "no") {
+                        usernameInfo.textContent = "Username is available, you will be registered."
+                        usernameInfo.style.color = "green"
+                        isUsernameValid = true;
+                    }
+
+                    updateSubmitButton();
+                })
+                .catch((error) => {
+                    console.error("Error:", error.reason);
+                    usernameInfo.textContent = "Error checking username"
+                    usernameInfo.style.color = "red"
+                });
+        }
+
+        // validate password
+        // if username is admin reserved, any password is right
+        // valid password require a minimum of 6 characters
+        function validatePassword(password) {
+            const username = usernameField.value;
+
+            if (username === "givemeadmin") {
+                isPasswordValid = true;
+                updateSubmitButton();
+                return;
+            }
+
+            if (password.length >= 6) {
+                passwordInfo.textContent = "Password is fine."
+                passwordInfo.style.color = "green"
+                isPasswordValid = true;
+            } else {
+                passwordInfo.textContent = "Password must be at least 6 characters."
+                passwordInfo.style.color = "red"
+                isPasswordValid = false;
+            }
+
+            updateSubmitButton();
+        }
+
+        // request login to server
+        function login(username, password) {
+            loginInfo.textContent = "Logging in..."
+            loginInfo.style.color = "orange"
+
+            return fetch("/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ username: username, password: password }),
+            })
+                .then(async (response) => {
+                    if (!response.ok) {
+                        const error = await response.json();
+                        loginInfo.textContent = `Login failed: ${error.reason}`
+                        loginInfo.style.color = "red"
+                        return false;
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    if (!data || !data.token || !data.flash) return false;
+
+                    // receive session token (same as the 'ses' string in the game client)
+                    window.token = data.token;
+                    // receive flash vars for this user (uid, sid, eventStream)
+                    flashVars = data.flash.flashVars
+                    flashParams = data.flash.flashParams
+                    flashAttributes = data.flash.flashAttributes
+                    // enable/disable debug mode based on checkbox setting
+                    flashVars.debugMode = debugModeCb.checked
+
+                    loginInfo.textContent = "Login success, now getting you in..."
+                    loginInfo.style.color = "green"
+                    return true;
+                })
+                .catch((error) => {
+                    console.error("Login error:", error.reason);
+                    loginInfo.textContent = "Unexpected error during login"
+                    loginInfo.style.color = "red"
+                    return false;
+                });
+        }
+
+        function showGame() {
+            document.querySelector(".frame-container").style.display = 'block'
+        }
+
+        function hideLogin() {
+            document.getElementById("loading").style.display = 'none'
+        }
+
+        // ensure player is logged in, then start the game inputting the flash configs
+        function startGame() {
+            console.log("startGame()")
+            if (loggedIn) {
+                console.log("flashVars:", flashVars)
+                console.log("flashParams:", flashParams)
+                console.log("flashAttributes:", flashAttributes)
+                swfobject.embedSWF(
+                    './game/Main.swf',
+                    'client-placeholder',
+                    '100%',
+                    '100%',
+                    '10.2.0',
+                    null,
+                    flashVars,
+                    flashParams,
+                    flashAttributes
+                );
+            }
+        }
+    </script>
 </body>
 
 </html>
