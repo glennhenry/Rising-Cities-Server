@@ -187,6 +187,9 @@ class GameServer(
             buildString {
                 appendLine("=====> [SOCKET RECEIVE]")
                 appendLine("$LOG_INDENT_PREFIX userId  : ${connection.userId}")
+                if (connection.userId == -1L) {
+                    appendLine("$LOG_INDENT_PREFIX address   : ${connection.remoteAddress}")
+                }
                 appendLine("$LOG_INDENT_PREFIX bytes     : ${data.size}")
                 appendLine("$LOG_INDENT_PREFIX raw       : ${data.safeAsciiString()}")
                 append("$LOG_INDENT_PREFIX raw (hex) : ${data.hexString()}")
