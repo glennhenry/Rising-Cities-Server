@@ -121,7 +121,7 @@ class GameServer(
                         buildString {
                             appendLine("<===== [SOCKET END]")
                             appendLine("$LOG_INDENT_PREFIX type      : $msgType")
-                            appendLine("$LOG_INDENT_PREFIX userId  : ${connection.userId}")
+                            appendLine("$LOG_INDENT_PREFIX userId    : ${connection.userId}")
                             if (connection.userId == -1L) {
                                 appendLine("$LOG_INDENT_PREFIX address   : ${connection.remoteAddress}")
                             }
@@ -186,15 +186,15 @@ class GameServer(
         Logger.debug {
             buildString {
                 appendLine("=====> [SOCKET RECEIVE]")
-                appendLine("$LOG_INDENT_PREFIX userId  : ${connection.userId}")
+                appendLine("$LOG_INDENT_PREFIX userId    : ${connection.userId}")
                 if (connection.userId == -1L) {
                     appendLine("$LOG_INDENT_PREFIX address   : ${connection.remoteAddress}")
                 }
                 appendLine("$LOG_INDENT_PREFIX bytes     : ${data.size}")
                 appendLine("$LOG_INDENT_PREFIX raw       : ${data.safeAsciiString()}")
-                append("$LOG_INDENT_PREFIX raw (hex) : ${data.hexString()}")
             }
         }
+        Logger.debug { "raw (hex) : ${data.hexString()}" }
 
         val matched = mutableListOf<Pair<String, SocketMessage>>()
         val possibleFormats = serverContext.formatRegistry.identifyFormat(data)
