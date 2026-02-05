@@ -2,6 +2,7 @@ package server.messaging.format
 
 import annotation.Untested
 import server.messaging.ClientMessage
+import server.messaging.socket.EmptyRCMessage
 import server.messaging.socket.RCResponse
 import server.messaging.socket.SocketMessage
 import server.messaging.socket.UnknownRCMessage
@@ -93,6 +94,10 @@ class RCFormat : MessageFormat<RCFrame> {
             ClientMessage.LOGIN -> {
                 val json = JSON.decode<LoginRequest>(decoded.jsonPayload)
                 LoginRequest(json.uid, json.ses)
+            }
+
+            ClientMessage.SLAYER_INVITE_REQUEST_FRIENDLIST -> {
+                EmptyRCMessage(decoded.header, decoded.jsonPayload)
             }
 
             else -> {

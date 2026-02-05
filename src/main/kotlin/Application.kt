@@ -42,6 +42,7 @@ import server.ServerContainer
 import server.core.OnlinePlayerRegistry
 import server.core.Server
 import server.handler.impl.LoginHandler
+import server.handler.impl.RequestFriendlistHandler
 import server.messaging.format.MessageFormatRegistry
 import server.messaging.format.RCFormat
 import server.messaging.socket.RCResponse
@@ -231,6 +232,7 @@ suspend fun Application.module() {
 
     val gameServer = GameServer(gameServerConfig) { socketDispatcher, serverContext ->
         socketDispatcher.register(LoginHandler(serverContext))
+        socketDispatcher.register(RequestFriendlistHandler())
         serverContext.taskDispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = {},

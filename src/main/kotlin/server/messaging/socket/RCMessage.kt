@@ -43,6 +43,17 @@ interface RCResponse {
 }
 
 /**
+ * Represent an empty but identified RC messages.
+ */
+@Serializable
+data class EmptyRCMessage(
+    override val header: String,
+    val jsonPayload: String
+) : RCMessage {
+    override fun toString(): String = "EmptyRCMessage(json=$jsonPayload)"
+}
+
+/**
  * Represent an unknown (unidentified header) or any unimplemented
  * RC messages.
  */
