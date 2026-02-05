@@ -14,5 +14,5 @@ data class ConfigPlayfieldDTO(
     @SerialName("ev") val expansionValue: Int,
     // anonymous variable: if (param1.m), read param1.ma
     @SerialName("m") val hasMasteryChallenge: Boolean = false,
-    @SerialName("ma") val masteryChallenge: ConfigMasteryChallengeDTO = ConfigMasteryChallengeDTO(),
+    @SerialName("ma") val masteryChallenge: ConfigMasteryChallengeDTO? = null,
 )

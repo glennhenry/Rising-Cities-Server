@@ -26,7 +26,7 @@ class Playground {
     fun run1() {
         val charPool = ('a'..'z') + ('A'..'Z')
 
-        val policy = GenerationPolicy(
+        val randomPolicy = GenerationPolicy(
             collections = CollectionPolicy.ONE,
             values = ValuePolicy(
                 int = { Random.nextInt(1, 100000) },
@@ -43,6 +43,25 @@ class Playground {
                 long = { Random.nextLong(1, 100000).toString() },
                 string = { randomString(Random.nextInt(4, 8), charPool) },
                 boolean = { Random.nextBoolean().toString() }
+            )
+        )
+        val policy = GenerationPolicy(
+            collections = CollectionPolicy.ONE,
+            values = ValuePolicy(
+                int = { 1 },
+                uint = { 1u },
+                long = { 1L },
+                string = { "" },
+                boolean = { false },
+                float = { 1.0f },
+                double = { 1.0 }
+            ),
+            keys = KeyPolicy(
+                int = { "1" },
+                uint = { "1" },
+                long = { "1" },
+                string = { randomString(Random.nextInt(4, 8), charPool) },
+                boolean = { "false" }
             )
         )
 
