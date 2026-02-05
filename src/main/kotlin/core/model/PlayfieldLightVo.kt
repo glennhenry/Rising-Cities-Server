@@ -4,8 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GoodDTO(
+data class PlayfieldLightVo(
     @SerialName("id") val id: Long = 1,
-    @SerialName("c") val configId: Long = 1,
-    @SerialName("a") val amount: Long = 0
+    @SerialName("c") val configId: Long = 1
 )

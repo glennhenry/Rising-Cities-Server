@@ -7,6 +7,6 @@ import kotlinx.serialization.Serializable
 @RevisitLater("constants")
 @Serializable
 data class ConfigFeatureRequirementDTO(
-    @SerialName("eid") val correspondingConfigId: Long = 0,
+    @SerialName("eid") val correspondingConfigId: Long = 1,
     @SerialName("t") val type: String = "",
 )

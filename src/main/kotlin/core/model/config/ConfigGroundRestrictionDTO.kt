@@ -7,8 +7,8 @@ import kotlinx.serialization.Serializable
 @RevisitLater("constants")
 @Serializable
 data class ConfigGroundRestrictionDTO(
-    @SerialName("id") val id: Long = 0,
-    @SerialName("pid") val playfieldId: Long = 0,
+    @SerialName("id") val id: Long = 1,
+    @SerialName("pid") val playfieldId: Long = 1,
     @SerialName("bw") val whiteList: Boolean = false,
     @SerialName("gt") val groundType: String = "",
     @SerialName("shape") val configGroundRestrictionShapes: List<ConfigGroundRestrictionShapeDTO> = emptyList(),

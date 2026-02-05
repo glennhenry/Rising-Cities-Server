@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PlayfieldItemPermissionDTO(
-    @SerialName("cid") val permissionConfigId: Long = 0,
+    @SerialName("cid") val permissionConfigId: Long = 1,
     @SerialName("l") val permissionsLeft: Long = 0,
     @SerialName("b") val permissionsBought: Int = 0,
 )

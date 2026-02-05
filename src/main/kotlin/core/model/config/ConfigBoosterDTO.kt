@@ -5,9 +5,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ConfigBoosterDTO(
-    @SerialName("cid") val id: Long = 0,
-    @SerialName("gfx") val gfxId: Long = 0,
-    @SerialName("lid") val locaId: Long = 0,
+    @SerialName("cid") val id: Long = 1,
+    @SerialName("gfx") val gfxId: Long = 1,
+    @SerialName("lid") val locaId: Long = 1,
     @SerialName("tag") val tags: List<String> = emptyList(),
     @SerialName("cst") val priceConfigs: List<ConfigOutputDTO> = emptyList(),
 )

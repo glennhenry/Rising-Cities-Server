@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class ConfigUpcomingEventDTO(
     @SerialName("e") val configEvent: ConfigEventDTO = ConfigEventDTO(),
     @SerialName("l") val locaId: String = "",
-    @SerialName("gId") val gfxId: Int = 0,
+    @SerialName("gId") val gfxId: Long = 1,
 )

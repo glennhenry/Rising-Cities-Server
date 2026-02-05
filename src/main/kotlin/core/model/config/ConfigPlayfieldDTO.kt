@@ -5,10 +5,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ConfigPlayfieldDTO(
-    @SerialName("id") val id: Long = 0,
-    @SerialName("t") val typeId: Long = 0,
-    @SerialName("l") val levelId: Long = 0,
-    @SerialName("gf") val gfxId: Int = 0,
+    @SerialName("id") val id: Long = 1,
+    @SerialName("t") val typeId: Long = 1,
+    @SerialName("l") val levelId: Long = 1,
+    @SerialName("gf") val gfxId: Long = 1,
     @SerialName("x") val maxX: Long = 0,
     @SerialName("y") val maxY: Long = 0,
     @SerialName("ev") val expansionValue: Int,

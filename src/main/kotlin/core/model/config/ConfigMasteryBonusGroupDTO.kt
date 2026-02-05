@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ConfigMasteryBonusGroupDTO(
-    @SerialName("gid") val groupId: Int = 0,
-    @SerialName("sid") val selectionId: Int = 0,
+    @SerialName("gid") val groupId: Long = 1,
+    @SerialName("sid") val selectionId: Long = 1,
     @SerialName("out") val configOutputs: List<ConfigOutputDTO> = emptyList(),
 )

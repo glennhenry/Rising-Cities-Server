@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ConfigPlayfieldLayerDTO(
-    @SerialName("id") val id: Long = 0,
+    @SerialName("id") val id: Long = 1,
 )

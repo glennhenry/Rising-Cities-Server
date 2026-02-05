@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ConfigImprovementDTO(
-    @SerialName("cid") val id: Long = 0,
-    @SerialName("gfx") val gfxId: Int = 0,
+    @SerialName("cid") val id: Long = 1,
+    @SerialName("gfx") val gfxId: Long = 1,
     @SerialName("lo") val locaId: String = "",
     @SerialName("q") val quality: String = "",
     @SerialName("t") val lifetime: Long? = null,

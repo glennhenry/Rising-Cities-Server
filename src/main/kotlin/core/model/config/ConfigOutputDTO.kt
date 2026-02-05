@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ConfigOutputDTO(
     @SerialName("t") val type: String = "",
-    @SerialName("cid") val configId: Long = 0,
+    @SerialName("cid") val configId: Long = 1,
     @SerialName("o") val outputAmount: Long = 0,
     @SerialName("m") val multiplier: Long = 0,
 )

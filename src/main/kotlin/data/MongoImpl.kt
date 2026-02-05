@@ -113,7 +113,7 @@ class MongoImpl(db: MongoDatabase, private val adminEnabled: Boolean) : Database
             profile = profile,
             metadata = ServerMetadata()
         )
-        val obj = PlayerData.newGame(userId)
+        val obj = PlayerData.newGame(userId, username)
 
         accountCollection.insertOne(doc)
         dataCollection.insertOne(obj)

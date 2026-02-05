@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 
 @Serializable
 data class InventoryItemDTO(
-    @SerialName("bid") val id: Long = 0,
+    @SerialName("bid") val id: Long = 1,
     @SerialName("b") val buildingDTO: BuildingDTO? = null,
     // named as decorationVo, constructed from DecorationVo but reqwuire DecorationDTO
     @SerialName("d") val decorationDTO: DecorationDTO? = null,

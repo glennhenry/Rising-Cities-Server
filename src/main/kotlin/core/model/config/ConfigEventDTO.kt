@@ -9,8 +9,8 @@ import kotlinx.serialization.Serializable
 // See `ConfigEventDTO.as` constructor
 @Serializable
 data class ConfigEventDTO(
-    @SerialName("id") val id: Long = 0,
-//    @SerialName("l") val levelId: Int = 0,
+    @SerialName("id") val id: Long = 1,
+//    @SerialName("l") val levelId: Long = 1,
     @SerialName("tt") val totalAvailabilityTime: Long = 0,
     @SerialName("st") val availabilityTimeStart: Long = 0,
     @SerialName("y") val eventType: String = "",

@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MasteryBonusDTO(
-    @SerialName("bid") val configBonusId: Long = 0,
+    @SerialName("bid") val configBonusId: Long = 1,
     @SerialName("g") val highestUnlockedBonusGroup: Int = 0,
     @SerialName("s") val selectedBonus: Int? = 0,
 )

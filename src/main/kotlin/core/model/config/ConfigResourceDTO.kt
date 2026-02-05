@@ -10,9 +10,9 @@ import kotlinx.serialization.Serializable
 @RevisitLater("constants")
 @Serializable
 data class ConfigResourceDTO(
-    @SerialName("id") val id: Long = 0,
+    @SerialName("id") val id: Long = 1,
     @SerialName("t") val type: String = "",
-    @SerialName("l") val levelId: Long = 0,
+    @SerialName("l") val levelId: Long = 1,
     @SerialName("s") val sellable: Boolean = false,
     @SerialName("b") val buyable: Boolean = false,
     @SerialName("g") val giftable: Boolean = false,

@@ -10,9 +10,9 @@ data class ConfigPhaseDTO(
     @SerialName("to") val listTriggerOutput: List<ConfigOutputDTO>? = null,
     @SerialName("ifc") val instantFinshOutput: List<ConfigOutputDTO>? = null,
     @SerialName("d") val duration: ConfigDurationVo? = null,
-    @SerialName("oid") val phaseOrderId: Int = 0,
+    @SerialName("oid") val phaseOrderId: Long = 1,
     @SerialName("t") val phaseType: String = "",
-    @SerialName("pid") val phaseId: Long = 0,
+    @SerialName("pid") val phaseId: Long = 1,
 ) {
     init {
         require(phaseType in ServerPhaseType.ALL) {

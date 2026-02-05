@@ -5,8 +5,8 @@ import kotlinx.serialization.SerialName
 
 @Serializable
 data class BuildingDTO(
-    @SerialName("id") val id: Long = 0,
-    @SerialName("c") val configId: Long = 0,
+    @SerialName("id") val id: Long = 1,
+    @SerialName("c") val configId: Long = 1,
     @SerialName("x") val posX: Long = 0,
     @SerialName("y") val posY: Long = 0,
     @SerialName("cr") val created: Long = 0,

@@ -7,9 +7,9 @@ import kotlinx.serialization.Serializable
 @RevisitLater("constants")
 @Serializable
 data class ConfigPaymentPackUpsellingDTO(
-    @SerialName("id") val id: Int = 0,
+    @SerialName("id") val id: Long = 1,
     @SerialName("c") val category: String = "",
     @SerialName("k") val key: String = "",
-    @SerialName("gf") val gfxId: Int = 0,
+    @SerialName("gf") val gfxId: Long = 1,
     @SerialName("fl") val localeId: String = "",
 )

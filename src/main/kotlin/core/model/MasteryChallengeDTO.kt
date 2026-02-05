@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MasteryChallengeDTO(
-    @SerialName("id") val id: Long = 0,
+    @SerialName("id") val id: Long = 1,
     @SerialName("v") val currentProgress: Int = 0
 )

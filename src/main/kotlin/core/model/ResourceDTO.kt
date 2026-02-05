@@ -21,8 +21,8 @@ import core.model.config.ConfigDTO
  */
 @Serializable
 data class ResourceDTO(
-    @SerialName("id") val id: Long = 0,
-    @SerialName("c") val configId: Long = 0,
+    @SerialName("id") val id: Long = 1,
+    @SerialName("c") val configId: Long = 1,
     @SerialName("a") val amount: Long = 0,
     @SerialName("ac") val amountCap: Long = 0,
     @SerialName("imagePath") val imagePath: String = "",

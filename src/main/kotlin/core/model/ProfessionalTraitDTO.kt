@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ProfessionalTraitDTO(
     @SerialName("s") val stacks: UInt = 0u,
-    @SerialName("cpt") val configId: Long = 0,
-    @SerialName("prof") val professionalId: Long = 0,
+    @SerialName("cpt") val configId: Long = 1,
+    @SerialName("prof") val professionalId: Long = 1,
 )

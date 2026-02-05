@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ConfigInventoryDTO(
-    @SerialName("id") val id: Long = 0,
+    @SerialName("id") val id: Long = 1,
     @SerialName("b") val configInventoryBags: List<ConfigInventoryBagDTO>? = null,
 )

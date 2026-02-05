@@ -11,6 +11,6 @@ data class ConfigSecurityGradeDTO(
     @SerialName("ry") val rangeY: Int = 0,
     @SerialName("v") val value: Int = 0,
     @SerialName("dt") val type: String = "",
-    @SerialName("cid") val id: Long = 0,
-    @SerialName("o") val orderId: Long = 0,
+    @SerialName("cid") val id: Long = 1,
+    @SerialName("o") val orderId: Long = 1,
 )
