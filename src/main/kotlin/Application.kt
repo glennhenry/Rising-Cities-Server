@@ -1,6 +1,7 @@
 import api.routes.apiRoutes
 import api.routes.devtoolsRoutes
 import api.routes.fileRoutes
+import api.routes.phpRoutes
 import api.routes.timeUnderMinutes
 import api.routes.webLoginRoutes
 import com.mongodb.kotlin.client.coroutine.MongoClient
@@ -207,6 +208,7 @@ suspend fun Application.module() {
         devtoolsRoutes(serverContext, devtoolsToken)
         apiRoutes()
         webLoginRoutes(serverContext, config().getBoolean("game.enableAdmin", true))
+        phpRoutes()
     }
 
     /* 11. Initialize servers */
