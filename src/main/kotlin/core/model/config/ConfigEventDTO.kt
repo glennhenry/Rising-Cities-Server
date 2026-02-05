@@ -4,7 +4,7 @@ import annotation.RevisitLater
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@RevisitLater("constants")
+@RevisitLater("unknown constants")
 // l is used twice, as a number and as an array, probably one is for [ConfigEventSaleDTO]
 // See `ConfigEventDTO.as` constructor
 @Serializable

@@ -6,7 +6,7 @@ package core.model.constants
  * from `ServerResConst.as`
  */
 @Suppress("Unused", "SpellCheckingInspection")
-object ResourceConstants {
+object ServerResConst {
     const val RESOURCE_EXPERIENCE: String = "RES_XP"
     const val RESOURCE_VIRTUALCURRENCY: String = "CURR_VIRT"
     const val RESOURCE_REALCURRENCY: String = "CURR_REAL"
@@ -20,4 +20,19 @@ object ResourceConstants {
     const val RESOURCE_ACADEMICS: String = "POP_TEACHER"
     const val RESOURCE_PRODUCTIONPOINTS: String = "CURR_PROD"
     const val RESOURCE_EDUCATIONPOINTS: String = "CURR_EDUC"
+    val ALL = setOf(
+        RESOURCE_EXPERIENCE,
+        RESOURCE_VIRTUALCURRENCY,
+        RESOURCE_REALCURRENCY,
+        RESOURCE_ENERGY_POSITIVE,
+        RESOURCE_ENERGY_NEGATIVE,
+        RESOURCE_HAPPINESS_POSITIVE,
+        RESOURCE_HAPPINESS_NEGATIVE,
+        RESOURCE_POPULATION,
+        RESOURCE_WORKERS,
+        RESOURCE_RICHMEN,
+        RESOURCE_ACADEMICS,
+        RESOURCE_PRODUCTIONPOINTS,
+        RESOURCE_EDUCATIONPOINTS
+    )
 }

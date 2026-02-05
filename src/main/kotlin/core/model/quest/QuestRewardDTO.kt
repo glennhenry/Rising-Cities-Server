@@ -1,5 +1,6 @@
 package core.model.quest
 
+import core.model.constants.QuestSystemRewardTypeConstants
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 

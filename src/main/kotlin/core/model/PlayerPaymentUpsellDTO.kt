@@ -1,8 +1,10 @@
 package core.model
 
+import annotation.RevisitLater
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@RevisitLater("unknown constants")
 @Serializable
 data class PlayerPaymentUpsellDTO(
     @SerialName("id") val id: Long = 1,

@@ -4,7 +4,7 @@ import annotation.RevisitLater
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 
-@RevisitLater("constants")
+@RevisitLater("unknown constants")
 @Serializable
 data class InventoryItemBagDTO(
     @SerialName("t") val type: String = "",

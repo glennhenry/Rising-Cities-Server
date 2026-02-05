@@ -11,7 +11,7 @@ data class ConfigPhaseDTO(
     @SerialName("ifc") val instantFinshOutput: List<ConfigOutputDTO>? = null,
     @SerialName("d") val duration: ConfigDurationVo? = null,
     @SerialName("oid") val phaseOrderId: Long = 1,
-    @SerialName("t") val phaseType: String = "",
+    @SerialName("t") val phaseType: String = ServerPhaseType.UPGRADE,
     @SerialName("pid") val phaseId: Long = 1,
 ) {
     init {

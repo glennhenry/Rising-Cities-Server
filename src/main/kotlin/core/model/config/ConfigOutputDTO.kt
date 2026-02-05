@@ -1,14 +1,19 @@
 package core.model.config
 
-import annotation.RevisitLater
+import core.model.constants.ServerOutputConstants
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@RevisitLater("constants")
 @Serializable
 data class ConfigOutputDTO(
-    @SerialName("t") val type: String = "",
+    @SerialName("t") val type: String = ServerOutputConstants.GOOD,
     @SerialName("cid") val configId: Long = 1,
     @SerialName("o") val outputAmount: Long = 0,
     @SerialName("m") val multiplier: Long = 0,
-)
+) {
+    init {
+        require(type in ServerOutputConstants.ALL) {
+            "Invalid constants: $type"
+        }
+    }
+}

@@ -4,7 +4,7 @@ import annotation.RevisitLater
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@RevisitLater("constants")
+@RevisitLater("unknown constants")
 @Serializable
 data class ConfigPlayfieldExpansionDTO(
     @SerialName("id") val id: Long = 1,

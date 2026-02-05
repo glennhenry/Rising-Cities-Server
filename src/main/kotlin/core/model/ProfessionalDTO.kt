@@ -1,10 +1,8 @@
 package core.model
 
-import annotation.RevisitLater
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@RevisitLater("constants")
 @Serializable
 data class ProfessionalDTO(
     @SerialName("pid") val id: Long = 1,

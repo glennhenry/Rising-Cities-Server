@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ConfigDurationVo(
-    @SerialName("d") val duration: Long = 0,
+    @SerialName("d") val duration: Long = 1,
     @SerialName("tu") val timeUnit: String = "",
 )

@@ -1,15 +1,14 @@
 package core.model.config
 
-import annotation.RevisitLater
+import core.model.constants.ServerPaymentPackConst
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@RevisitLater("constants")
 @Serializable
 data class ConfigPaymentPackDTO(
     @SerialName("id") val id: Long = 1,
     @SerialName("k") val key: String = "",
-    @SerialName("t") val type: String = "",
+    @SerialName("t") val type: String = ServerPaymentPackConst.CURRENCY,
     @SerialName("fl") val locaId: Long = 1,
     @SerialName("gf") val gfxId: Long = 1,
     @SerialName("rc") val priceRC: Long? = null,
@@ -20,4 +19,10 @@ data class ConfigPaymentPackDTO(
     @SerialName("i") val improvements: List<ConfigOutputDTO>? = null,
     @SerialName("tag") val tagIds: List<Long>? = null,
     @SerialName("up") val upsellPackages: List<ConfigPaymentPackUpsellingDTO> = emptyList(),
-)
+) {
+    init {
+        require(type in ServerPaymentPackConst.ALL) {
+            "Invalid constants: $type"
+        }
+    }
+}
