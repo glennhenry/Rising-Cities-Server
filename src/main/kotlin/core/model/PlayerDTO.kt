@@ -20,7 +20,10 @@ data class PlayerDTO(
     @SerialName("q") val questBooks: QuestBookManagerVo = QuestBookManagerVo(),
     @SerialName("i") val inventory: InventoryDTO = InventoryDTO(),
     @SerialName("c") val cities: List<CityDTO> = emptyList(),
-    @SerialName("r") val resources: Map<Long, ResourceDTO> = emptyMap(),
+    /**
+     * key is Long in client side, be sure to convert
+     */
+    @SerialName("r") val resources: Map<String, ResourceDTO> = emptyMap(),
     @SerialName("ns") val configNewsscreenList: ConfigNewsscreenListDTO? = null,
     @SerialName("p") val playerPaymentPackInfo: PlayerPaymentDTO = PlayerPaymentDTO(),
     @SerialName("ef") val enabledFeatures: List<String> = emptyList(),

@@ -2,10 +2,12 @@ package data.collection
 
 import core.data.AdminData
 import core.model.PlayerDTO
+import kotlinx.serialization.Serializable
 
 /**
  * Database-level representation of a player's game data.
  */
+@Serializable
 data class PlayerData(
     val userId: Long,
     val playerDTO: PlayerDTO
