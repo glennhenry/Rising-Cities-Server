@@ -6,7 +6,7 @@ An attempt to create a server emulator for the flash game **Rising Cities**, dev
 
 ## How to Play?
 
-As of now, it is still not playable. We are still stuck in the loading screen.
+As of now, it is still not playable. We are still stuck in the game initialization.
 
 <img src="./loading.png" alt="Loading screen" width="400"/>
 
