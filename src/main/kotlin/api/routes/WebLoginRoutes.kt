@@ -55,7 +55,7 @@ fun Route.webLoginRoutes(serverContext: ServerContext, adminEnabled: Boolean) {
                 // if login success, return successful login response
                 val loginSession = loginResult.getOrNull()
                 if (loginSession != null) {
-                    Logger.info { "Web login result of username '$username': success" }
+                    Logger.info { "Web login result of username '$username' (uid=${loginSession.userId}): success" }
                     call.respond(HttpStatusCode.OK, json.encodeToString(createLoginSuccessResponse(loginSession)))
                 } else {
                     Logger.info { "Web login result of username '$username': password wrong" }
@@ -81,7 +81,7 @@ fun Route.webLoginRoutes(serverContext: ServerContext, adminEnabled: Boolean) {
                 // registration succeed, return successful login response
                 val session = registerResult.getOrNull()
                 if (session != null) {
-                    Logger.info { "Web register result of username '$username': success=${registerResult.isSuccess}" }
+                    Logger.info { "Web register result of username '$username' (uid=${session.userId}): success=${registerResult.isSuccess}" }
                     call.respond(HttpStatusCode.OK, json.encodeToString(createLoginSuccessResponse(session)))
                 } else {
                     Logger.info { "Web register success but session is null for '$username'" }
