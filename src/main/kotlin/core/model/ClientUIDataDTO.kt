@@ -16,12 +16,3 @@ data class ClientUIDataDTO(
     @SerialName("vpi") val viewedPlayfieldItemConfigIds: List<Long>? = null,
     @SerialName("vq") val viewedQuests: List<Long>? = null,
 )
-
-
-
-
-
-
-
-
-
