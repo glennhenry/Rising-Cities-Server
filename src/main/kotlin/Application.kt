@@ -43,10 +43,12 @@ import server.core.OnlinePlayerRegistry
 import server.core.Server
 import server.handler.impl.LoginHandler
 import server.handler.impl.RequestFriendlistHandler
+import server.handler.impl.UpdateClientUIDataHandler
 import server.messaging.format.MessageFormatRegistry
 import server.messaging.format.RCFormat
 import server.messaging.socket.RCResponse
 import server.messaging.socket.domain.LoginResponse
+import server.messaging.socket.domain.UpdateClientUIDataResponse
 import server.tasks.ServerTaskDispatcher
 import server.tasks.TaskName
 import user.PlayerAccountRepositoryMongo
@@ -110,6 +112,7 @@ suspend fun Application.module() {
     val module = SerializersModule {
         polymorphic(RCResponse::class) {
             subclass(LoginResponse::class, LoginResponse.serializer())
+            subclass(UpdateClientUIDataResponse::class, UpdateClientUIDataResponse.serializer())
         }
     }
     val json = Json {
@@ -233,6 +236,7 @@ suspend fun Application.module() {
     val gameServer = GameServer(gameServerConfig) { socketDispatcher, serverContext ->
         socketDispatcher.register(LoginHandler(serverContext))
         socketDispatcher.register(RequestFriendlistHandler())
+        socketDispatcher.register(UpdateClientUIDataHandler(serverContext))
         serverContext.taskDispatcher.registerTask(
             name = TaskName.DummyName,
             stopFactory = {},

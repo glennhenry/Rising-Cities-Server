@@ -7,6 +7,7 @@ import server.messaging.socket.RCResponse
 import server.messaging.socket.SocketMessage
 import server.messaging.socket.UnknownRCMessage
 import server.messaging.socket.domain.LoginRequest
+import server.messaging.socket.domain.UpdateClientUIDataRequest
 import utils.JSON
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -98,6 +99,11 @@ class RCFormat : MessageFormat<RCFrame> {
 
             ClientMessage.SLAYER_INVITE_REQUEST_FRIENDLIST -> {
                 EmptyRCMessage(decoded.header, decoded.jsonPayload)
+            }
+
+            ClientMessage.UPDATE_CLIENT_UI_DATA -> {
+                val json = JSON.decode<UpdateClientUIDataRequest>(decoded.jsonPayload)
+                UpdateClientUIDataRequest(json.dat)
             }
 
             else -> {
