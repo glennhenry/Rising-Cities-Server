@@ -16,6 +16,6 @@ data class ConfigResourceDTO(
     @SerialName("s") val sellable: Boolean = false,
     @SerialName("b") val buyable: Boolean = false,
     @SerialName("g") val giftable: Boolean = false,
-    @SerialName("c") val cap: Long = 0,
+    @SerialName("c") val cap: Long = 10000,
     @SerialName("es") val resourceEffectIds: List<Long> = emptyList(),
 )
