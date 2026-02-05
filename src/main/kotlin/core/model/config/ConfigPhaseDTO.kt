@@ -15,7 +15,7 @@ data class ConfigPhaseDTO(
     @SerialName("pid") val phaseId: Long = 1,
 ) {
     init {
-        require(phaseType in ServerPhaseType.ALL) {
+        require(phaseType in ServerPhaseType.ALL || phaseType == "") {
             "Invalid constants: $phaseType"
         }
     }

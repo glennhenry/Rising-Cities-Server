@@ -14,7 +14,7 @@ data class ConfigProfessionalAttributeThresholdDTO(
     @SerialName("cid") val optionalConfigId: Long = 1,
 ) {
     init {
-        require(type in ServerProfessionalConstants.ALL) {
+        require(type in ServerProfessionalConstants.ALL || type == "") {
             "Invalid constants: $type"
         }
     }

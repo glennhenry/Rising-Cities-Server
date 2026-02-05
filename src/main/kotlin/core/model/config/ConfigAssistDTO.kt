@@ -15,7 +15,7 @@ data class ConfigAssistDTO(
     @SerialName("o") val behaviourOutput: Int = 0
 ) {
     init {
-        require(type in ServerAssistTypeConstants.ALL) {
+        require(type in ServerAssistTypeConstants.ALL || type == "") {
             "Invalid constants: $type"
         }
     }

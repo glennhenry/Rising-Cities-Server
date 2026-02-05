@@ -21,7 +21,7 @@ data class ConfigPaymentPackDTO(
     @SerialName("up") val upsellPackages: List<ConfigPaymentPackUpsellingDTO> = emptyList(),
 ) {
     init {
-        require(type in ServerPaymentPackConst.ALL) {
+        require(type in ServerPaymentPackConst.ALL || type == "") {
             "Invalid constants: $type"
         }
     }

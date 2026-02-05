@@ -15,7 +15,7 @@ data class ConfigEffectDTO(
     @SerialName("out") val targetOutputList: List<ConfigOutputDTO> = emptyList(),
 ) {
     init {
-        require(type in ServerOutputConstants.ALL) {
+        require(type in ServerOutputConstants.ALL || type == "") {
             "Invalid constants: $type"
         }
     }

@@ -11,7 +11,7 @@ data class QuestRequirementDTO(
     @SerialName("id") val configID: UInt = 0u,
 ) {
     init {
-        require(type in QuestSystemTypeConstants.ALL) {
+        require(type in QuestSystemTypeConstants.ALL || type == "") {
             "Invalid constants: $type"
         }
     }

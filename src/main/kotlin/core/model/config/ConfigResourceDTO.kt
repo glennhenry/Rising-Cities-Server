@@ -21,7 +21,7 @@ data class ConfigResourceDTO(
     @SerialName("es") val resourceEffectIds: List<Long> = emptyList(),
 ) {
     init {
-        require(type in ServerResConst.ALL) {
+        require(type in ServerResConst.ALL || type == "") {
             "Invalid constants: $type"
         }
     }

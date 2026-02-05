@@ -14,7 +14,7 @@ data class QuestRewardDTO(
     @SerialName("m") val isMainReward: Boolean = false,
 ) {
     init {
-        require(rewardType in QuestSystemRewardTypeConstants.ALL) {
+        require(rewardType in QuestSystemRewardTypeConstants.ALL || rewardType == "") {
             "Invalid constants: $rewardType"
         }
     }

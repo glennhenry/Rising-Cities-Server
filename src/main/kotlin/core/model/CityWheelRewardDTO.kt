@@ -16,7 +16,7 @@ data class CityWheelRewardDTO(
     @SerialName("r") val drawnReward: Boolean = false,
 ) {
     init {
-        require(type in ServerTagConstants.ALL) {
+        require(type in ServerTagConstants.ALL || type == "") {
             "Invalid constants: $type"
         }
     }

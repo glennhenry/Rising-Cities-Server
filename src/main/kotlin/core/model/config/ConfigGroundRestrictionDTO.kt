@@ -14,7 +14,7 @@ data class ConfigGroundRestrictionDTO(
     @SerialName("gid") val configTagIds: List<Long> = emptyList(),
 ) {
     init {
-        require(groundType in ServerRestrictionConstants.ALL) {
+        require(groundType in ServerRestrictionConstants.ALL || groundType == "") {
             "Invalid constants: $groundType"
         }
     }

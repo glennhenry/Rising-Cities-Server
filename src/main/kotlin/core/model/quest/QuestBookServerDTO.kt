@@ -11,7 +11,7 @@ data class QuestBookServerDTO(
     @SerialName("h") val history: List<QuestHistoryVo> = emptyList()
 ) {
     init {
-        require(type in QuestSystemTypeConstants.ALL) {
+        require(type in QuestSystemTypeConstants.ALL || type == "") {
             "Invalid constants: $type"
         }
     }

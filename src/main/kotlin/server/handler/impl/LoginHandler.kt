@@ -18,7 +18,7 @@ class LoginHandler(private val serverContext: ServerContext) : SocketMessageHand
     override val name: String = "LoginHandler"
     override val messageType: String = ClientMessage.LOGIN
     override val expectedMessageClass: KClass<LoginRequest> = LoginRequest::class
-    private val configDTO: ConfigDTO = JSON.decode(File("static/game/config.json").readText())
+    private val configDTO: ConfigDTO = JSON.decode(File("static/game/config_minimal.json").readText())
 
     @RevisitLater("Don't generate PlayerDTO and CityDTO, should load from DB instead")
     override suspend fun handle(ctx: HandlerContext<LoginRequest>) = with(ctx) {

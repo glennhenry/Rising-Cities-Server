@@ -12,7 +12,7 @@ data class ConfigOutputDTO(
     @SerialName("m") val multiplier: Long = 0,
 ) {
     init {
-        require(type in ServerOutputConstants.ALL) {
+        require(type in ServerOutputConstants.ALL || type == "") {
             "Invalid constants: $type"
         }
     }

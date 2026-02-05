@@ -11,7 +11,7 @@ data class ConfigFeatureDTO(
     @SerialName("rq") val requirements: List<ConfigFeatureRequirementDTO> = emptyList(),
 ) {
     init {
-        require(type in ServerFeatureConstants.ALL) {
+        require(type in ServerFeatureConstants.ALL || type == "") {
             "Invalid constants: $type"
         }
     }

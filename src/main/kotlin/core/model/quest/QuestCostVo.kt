@@ -13,7 +13,7 @@ data class QuestCostVo (
     @SerialName("id") val rewardConfigID: Long = 1,
 ) {
     init {
-        require(rewardType in QuestSystemRewardTypeConstants.ALL) {
+        require(rewardType in QuestSystemRewardTypeConstants.ALL || rewardType == "") {
             "Invalid constants: $rewardType"
         }
     }

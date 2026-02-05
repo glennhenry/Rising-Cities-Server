@@ -14,7 +14,7 @@ data class ConfigBoosterDTO(
 ) {
     init {
         tags.forEach {
-            require(it in ServerTagConstants.ALL) {
+            require(it in ServerTagConstants.ALL || it == "") {
                 "Invalid constants: $it"
             }
         }

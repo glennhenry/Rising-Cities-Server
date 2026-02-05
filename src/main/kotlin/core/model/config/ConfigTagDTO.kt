@@ -10,7 +10,7 @@ data class ConfigTagDTO(
     @SerialName("tn") val tagName: String = ServerTagConstants.SHOP,
 ) {
     init {
-        require(tagName in ServerTagConstants.ALL) {
+        require(tagName in ServerTagConstants.ALL || tagName == "") {
             "Invalid constants: $tagName"
         }
     }

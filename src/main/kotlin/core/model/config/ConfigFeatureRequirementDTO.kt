@@ -10,7 +10,7 @@ data class ConfigFeatureRequirementDTO(
     @SerialName("t") val type: String = ServerFeatureConstants.EXPANSION,
 ) {
     init {
-        require(type in ServerFeatureConstants.ALL) {
+        require(type in ServerFeatureConstants.ALL || type == "") {
             "Invalid constants: $type"
         }
     }
