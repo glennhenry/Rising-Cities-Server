@@ -30,55 +30,41 @@ data class PlayerDTO(
     @SerialName("ui") val ui: ClientUIDataDTO? = null,
 ) {
     companion object {
-        fun admin(): PlayerDTO {
-            return PlayerDTO(
-                id = AdminData.USER_ID,
-                defaultCity = CityDTO.admin(),
-                configUserLevelId = 1,
-                premiumPlayer = false,
-                playerName = AdminData.DISPLAY_NAME,
-                questBooks = QuestBookManagerVo(),
-                inventory = InventoryDTO(),
-                cities = emptyList(),
-                resources = emptyMap(),
-                configNewsscreenList = null,
-                playerPaymentPackInfo = PlayerPaymentDTO(),
-                enabledFeatures = emptyList(),
-                ui = null
-            )
-        }
-
         fun newGame(userId: Long, username: String): PlayerDTO {
+            // configId is refernece to ConfigResourceDTO ("r" in ConfigDTO)
+            // those have types of RES_XP, CURR_VIRT, etc.
+            val res = listOf(
+                ResourceDTO(1, 1000, 12345, 13000, ""),
+                ResourceDTO(2, 1001, 1234, 10000, ""),
+                ResourceDTO(3, 1002, 3214, 10000, ""),
+                ResourceDTO(4, 1003, 1233, 10000, ""),
+                ResourceDTO(5, 1004, 4125, 10000, ""),
+                ResourceDTO(6, 1005, 5265, 10000, ""),
+                ResourceDTO(7, 1006, 3414, 10000, ""),
+                ResourceDTO(8, 1007, 5235, 10000, ""),
+                ResourceDTO(9, 1008, 7457, 10000, ""),
+                ResourceDTO(10, 1009, 7845, 10000, ""),
+                ResourceDTO(11, 1010, 7547, 10000, ""),
+                ResourceDTO(12, 1011, 7545, 10000, ""),
+                ResourceDTO(13, 1012, 8658, 10000, "")
+            )
+            val city = CityDTO.newGame(userId, username, res)
+
             return PlayerDTO(
                 id = userId,
-                defaultCity = CityDTO.newGame(userId, username),
+                defaultCity = city,
                 configUserLevelId = 1,
                 premiumPlayer = false,
                 playerName = AdminData.DISPLAY_NAME,
                 questBooks = QuestBookManagerVo(),
                 inventory = InventoryDTO(),
-                cities = emptyList(),
-                resources = mapOf(
-                    // this string key is Long typed ID of ConfigResourceDTO ("r" in ConfigDTO)
-                    // those with types of e.g., RES_XP, CURR_VIRT
-                    "1000" to ResourceDTO(1, 1000, 1000, 10000, ""),
-                    "1001" to ResourceDTO(1, 1001, 1000, 10000, ""),
-                    "1002" to ResourceDTO(1, 1002, 1000, 10000, ""),
-                    "1003" to ResourceDTO(1, 1003, 1000, 10000, ""),
-                    "1004" to ResourceDTO(1, 1004, 1000, 10000, ""),
-                    "1005" to ResourceDTO(1, 1005, 1000, 10000, ""),
-                    "1006" to ResourceDTO(1, 1006, 1000, 10000, ""),
-                    "1007" to ResourceDTO(1, 1007, 1000, 10000, ""),
-                    "1008" to ResourceDTO(1, 1008, 1000, 10000, ""),
-                    "1009" to ResourceDTO(1, 1009, 1000, 10000, ""),
-                    "1010" to ResourceDTO(1, 1010, 1000, 10000, ""),
-                    "1011" to ResourceDTO(1, 1011, 1000, 10000, ""),
-                    "1012" to ResourceDTO(1, 1012, 1000, 10000, ""),
-                ),
+                cities = listOf(city),
+                // e.g., "1001" to ResourceDTO(), "1002" to ResourceDTO()
+                resources = res.associateBy { it.id.toString() },
                 configNewsscreenList = null,
                 playerPaymentPackInfo = PlayerPaymentDTO(),
                 enabledFeatures = emptyList(),
-                ui = null
+                ui = ClientUIDataDTO()
             )
         }
     }

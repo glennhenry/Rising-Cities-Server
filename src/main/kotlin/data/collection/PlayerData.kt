@@ -17,7 +17,7 @@ data class PlayerData(
         fun admin(): PlayerData {
             return PlayerData(
                 userId = AdminData.USER_ID,
-                playerDTO = PlayerDTO.admin()
+                playerDTO = PlayerDTO.newGame(AdminData.USER_ID, AdminData.DISPLAY_NAME)
             )
         }
 
