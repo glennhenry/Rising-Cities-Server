@@ -4,7 +4,20 @@ import io.ktor.http.*
 import io.ktor.server.http.content.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import utils.logging.Logger
 import java.io.File
+
+val iconOffset = """
+    <?xml version="1.0" encoding="UTF-8"?>
+    <iconOffsets>
+    </iconOffsets>
+""".trimIndent()
+
+val xmlStub = """
+    <?xml version="1.0" encoding="UTF-8"?>
+    <root>
+    </root>
+""".trimIndent()
 
 fun Route.fileRoutes() {
     get("/") {
@@ -12,7 +25,26 @@ fun Route.fileRoutes() {
     }
     staticFiles("site", File("static/site"))
     staticFiles("game", File("static/game"))
-    staticFiles("/xml", File("static/game/xml"))
+    staticFiles("/xml", File("static/game/xml")) {
+        fallback { string, call ->
+            Logger.debug { "Request to /xml/$string (fallback response)" }
+            val file = File("static/game/xml", string)
+            if (string.contains("iconOffset")) {
+                file.writeText(iconOffset)
+                call.respondFile(file)
+            } else {
+                file.writeText(xmlStub)
+                call.respondFile(file)
+            }
+        }
+    }
+
+    staticFiles("/swf", File("static/game/swf")) {
+        fallback { string, call ->
+            Logger.debug { "Request to /swf/$string (fallback response)" }
+            call.respondFile(File("static/game/Main.swf"))
+        }
+    }
 
     get("/docs") {
         val docsIndex = File("docs/index.html")

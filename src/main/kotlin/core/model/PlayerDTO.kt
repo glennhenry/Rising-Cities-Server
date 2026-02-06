@@ -34,19 +34,19 @@ data class PlayerDTO(
             // configId is refernece to ConfigResourceDTO ("r" in ConfigDTO)
             // those have types of RES_XP, CURR_VIRT, etc.
             val res = listOf(
-                ResourceDTO(1, 1000, 12345, 13000, ""),
-                ResourceDTO(2, 1001, 1234, 10000, ""),
-                ResourceDTO(3, 1002, 3214, 10000, ""),
-                ResourceDTO(4, 1003, 1233, 10000, ""),
-                ResourceDTO(5, 1004, 4125, 10000, ""),
-                ResourceDTO(6, 1005, 5265, 10000, ""),
-                ResourceDTO(7, 1006, 3414, 10000, ""),
-                ResourceDTO(8, 1007, 5235, 10000, ""),
-                ResourceDTO(9, 1008, 7457, 10000, ""),
-                ResourceDTO(10, 1009, 7845, 10000, ""),
-                ResourceDTO(11, 1010, 7547, 10000, ""),
-                ResourceDTO(12, 1011, 7545, 10000, ""),
-                ResourceDTO(13, 1012, 8658, 10000, "")
+                ResourceDTO(1, 1000, 12345, 13000, "images/stub.png"),
+                ResourceDTO(2, 1001, 1234, 10000, "images/stub.png"),
+                ResourceDTO(3, 1002, 3214, 10000, "images/stub.png"),
+                ResourceDTO(4, 1003, 1233, 10000, "images/stub.png"),
+                ResourceDTO(5, 1004, 4125, 10000, "images/stub.png"),
+                ResourceDTO(6, 1005, 5265, 10000, "images/stub.png"),
+                ResourceDTO(7, 1006, 3414, 10000, "images/stub.png"),
+                ResourceDTO(8, 1007, 5235, 10000, "images/stub.png"),
+                ResourceDTO(9, 1008, 7457, 10000, "images/stub.png"),
+                ResourceDTO(10, 1009, 7845, 10000, "images/stub.png"),
+                ResourceDTO(11, 1010, 7547, 10000, "images/stub.png"),
+                ResourceDTO(12, 1011, 7545, 10000, "images/stub.png"),
+                ResourceDTO(13, 1012, 8658, 10000, "images/stub.png")
             )
             val city = CityDTO.newGame(userId, username, res)
 
